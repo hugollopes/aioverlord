@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+ <script src="https://unpkg.com/vue"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    API tets
+    <button type="submit" onclick="UserAction()">Search</button>
+    <script>
+
+function UserAction() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("get", "http://127.0.0.1:5000/", false);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send();
+    var response = JSON.parse(xhttp.responseText);
+    console.log(response);
+     //console.log(app);
+}
+</script>
+
+
+
+
+</head>
+<body>
+internal app
+  <div id="app">
+    {{ results }}
+  </div>
+
+  <script src="http://127.0.0.1:5000/code.js"></script>
+</body>
+</html>
