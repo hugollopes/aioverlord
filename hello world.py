@@ -10,7 +10,7 @@ class User(object):
     name = ""
     age = 0
 
-    # The class "constructor" - It's actually an initializer
+    # The class "constructor" - It's actually an initializer     
     def __init__(self, name, age, ):
         self.name = name
         self.age = age
