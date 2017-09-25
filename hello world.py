@@ -28,7 +28,7 @@ def hello():
         name=user.name,
         age=user.age,
         )
-    #resp.headers['Access-Control-Allow-Origin'] = '*'sdsd
+    #resp.headers['Access-Control-Allow-Origin'] = '*'sdsdfffsdf
     return resp
 
 @app.route("/attack")
@@ -41,7 +41,7 @@ def root(path):
     #return "here"
 
 if __name__ == "__main__":
-    # Check the System Type before to decide to bind
+    # Check the System Type before to decide to bindd
     # If the system is a Linux machine -:)
     if platform.system() == "Linux":
         app.run(host='0.0.0.0', port=5000, debug=True)
