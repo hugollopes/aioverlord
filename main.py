@@ -1,10 +1,15 @@
 from flask import Flask
 from flask import Response
 from flask import jsonify
+from flask_pymongo import PyMongo
 import platform
 
 app = Flask(__name__, static_url_path='')
 
+app.config['MONGO_DBNAME'] = 'restdb'
+app.config['MONGO_URI'] = 'mongodb://localhost:27017/local'
+
+mongo = PyMongo(app)
 
 
 class User(object):
@@ -33,7 +38,12 @@ def hello():
 
 @app.route("/attack")
 def hellow():
-    return "Hello World!2222"
+    star = mongo.db.users
+    output = []
+    for s in star.find():
+        output.append({'name': s['name'], 'id': s['id']})
+    return jsonify({'result': output})
+    #return "Hello World!2222"
 
 @app.route('/<path:path>')
 def root(path):

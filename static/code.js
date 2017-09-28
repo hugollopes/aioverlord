@@ -4,7 +4,7 @@ const vm = new Vue({
     results: []
   },
   mounted() {
-    axios.get("http://127.0.0.1:50000/")
+    axios.get("http://10.0.2.2:50000/")
     .then(response => {this.results = response.data})
   }
 });

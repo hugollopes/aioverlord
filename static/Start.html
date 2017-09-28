@@ -11,11 +11,11 @@
 
 function UserAction() {
     var xhttp = new XMLHttpRequest();
-    xhttp.open("get", "http://127.0.0.1:50000/", false);
-    xhttp.setRequestHeader("Content-type", "application/json");
-    xhttp.send();
-    var response = JSON.parse(xhttp.responseText);
-    console.log(response);
+   // xhttp.open("get", "http://10.0.2.2:50000/", false);
+    //xhttp.setRequestHeader("Content-type", "application/json");
+    //xhttp.send();
+    //var response = JSON.parse(xhttp.responseText);
+    //console.log(response);
      //console.log(app);
 }
 </script>
@@ -30,6 +30,6 @@ internal app
     {{ results }}
   </div>
 
-  <script src="http://127.0.0.1:50000/code.js"></script>
+  <script src="http://10.0.2.2:50000/code.js"></script>
 </body>
 </html>
