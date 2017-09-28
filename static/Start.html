@@ -1,35 +1,79 @@
 <!DOCTYPE html>
- <script src="https://unpkg.com/vue"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+<script src="https://unpkg.com/vue"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    API tets
-    <button type="submit" onclick="UserAction()">Search</button>
-    <script>
+   <head>
+      <meta charset="UTF-8">
+   </head>
+   <body>
+      <div id="app" >
 
-function UserAction() {
-    var xhttp = new XMLHttpRequest();
-   // xhttp.open("get", "http://10.0.2.2:50000/", false);
-    //xhttp.setRequestHeader("Content-type", "application/json");
-    //xhttp.send();
-    //var response = JSON.parse(xhttp.responseText);
-    //console.log(response);
-     //console.log(app);
-}
-</script>
+          <table class="table">
+
+  <tbody>
+    <tr>
+
+      <td>Cash</td>
+      <td>{{ user.cash }}</td>
+      <td><button v-on:click="run">run</button></td>
+
+    </tr>
+    <tr>
+
+      <td>Factory 1</td>
+      <td>{{ user.factory1Level }}</td>
+      <td><button v-on:click="raiselevel1">up level factory 1</button></td>
+    </tr>
+    <tr>
+        <td>Factory 2</td>
+      <td>{{ user.factory2Level }}</td>
+      <td><button v-on:click="raiselevel2">up level factory 2</button></td>
+    </tr>
+  </tbody>
+</table>
+
+         <li >
+
+            {{ user.name }}
+         </li>
+              <li >
+
+            {{ user.cash }}
+              <li >
+
+            {{ user.factory1Level }}
+         </li>
+              <li >
+
+            {{ user.factory2Level }}
+         </li>
+                 <li >
+
+             <button v-on:click="tick">tick</button>
+         </li>
+          <li >
+
+             <button v-on:click="raiselevel1">up level factory 1</button>
+         </li>
+                    <li >
+
+             <button v-on:click="raiselevel2">up level factory 2</button>
+         </li>
+            <li >
+
+             <button v-on:click="run">run</button>
+         </li>
+
+
+              {{ user }}
 
 
 
-
-</head>
-<body>
-internal app
-  <div id="app">
-    {{ results }}
-  </div>
-
-  <script src="http://10.0.2.2:50000/code.js"></script>
-</body>
+      </div>
+      <script src="http://127.0.0.1:50000/code.js"></script>
+   <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+   </body>
 </html>

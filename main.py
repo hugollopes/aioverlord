@@ -2,6 +2,7 @@ from flask import Flask
 from flask import Response
 from flask import jsonify
 from flask_pymongo import PyMongo
+from bson.json_util import dumps
 import platform
 
 app = Flask(__name__, static_url_path='')
@@ -25,6 +26,27 @@ class User(object):
 def make_user(name, age):
     student = User(name, age, )
     return student
+
+@app.route("/createuser")
+def new_user():
+    result = mongo.db.users.insert_one(
+        {
+            "name": "testUser1",
+            "cash": 10,
+            "factory1Level": 1,
+            "factory2Level": 2
+            }
+    )
+    return "done"
+
+
+@app.route("/getuser")
+def get_user():
+    users = mongo.db.users
+    cursor = users.find_one({"name": "testUser1"})
+    return dumps(cursor)
+
+
 
 @app.route("/")
 def hello():
