@@ -16,7 +16,7 @@
 
       <td>Cash</td>
       <td>{{ user.cash }}</td>
-      <td><button v-on:click="run">run</button></td>
+      <td><button v-on:click="run">run</button><button v-on:click="tick">tick</button></td>
 
     </tr>
     <tr>
@@ -33,40 +33,15 @@
   </tbody>
 </table>
 
-         <li >
 
-            {{ user.name }}
-         </li>
-              <li >
-
-            {{ user.cash }}
-              <li >
-
-            {{ user.factory1Level }}
-         </li>
-              <li >
-
-            {{ user.factory2Level }}
-         </li>
-                 <li >
-
-             <button v-on:click="tick">tick</button>
-         </li>
-          <li >
-
-             <button v-on:click="raiselevel1">up level factory 1</button>
-         </li>
-                    <li >
-
-             <button v-on:click="raiselevel2">up level factory 2</button>
-         </li>
-            <li >
-
-             <button v-on:click="run">run</button>
-         </li>
+<div>
+  <div v-on:click="isShow = !isShow" class="control">
+    click me to toggle (show/hide) json element
+  </div>
+  <div v-show="isShow"  class="content">{{ user }}</div>
+</div>
 
 
-              {{ user }}
 
 
 

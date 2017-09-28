@@ -1,6 +1,7 @@
 const vm = new Vue({
   el: '#app',
   data: {
+  isShow: false,
     user: []
   },
   mounted() {
@@ -17,16 +18,16 @@ const vm = new Vue({
       raiselevel1: function (event) {
       // `this` inside methods point to the Vue instance
       // `event` is the native DOM event
-      if(this.user.cash >= 10)
+      if(this.user.cash >= 10){
         this.user.factory1Level = this.user.factory1Level +1;
-        this.user.cash = this.user.cash - 10;
+        this.user.cash = this.user.cash - 10;}
       },
       raiselevel2: function (event) {
       // `this` inside methods point to the Vue instance
       // `event` is the native DOM event
-      if(this.user.cash >= 100)
+      if(this.user.cash >= 100){
         this.user.factory2Level = this.user.factory2Level + 1;
-        this.user.cash = this.user.cash - 100;
+        this.user.cash = this.user.cash - 100;}
       },
       run: function(){
     const self = this;
