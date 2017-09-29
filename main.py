@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 from flask import Response
 from flask import jsonify
 from flask_pymongo import PyMongo
@@ -46,6 +46,23 @@ def get_user():
     cursor = users.find_one({"name": "testUser1"})
     return dumps(cursor)
 
+#todo validate post request
+@app.route("/saveuser", methods=['POST'])
+def save_user():
+    request_data = request.get_json()
+    users = mongo.db.users
+    cursor = users.update(
+        {"name": request_data["name"]},
+            {
+                "name": request_data["name"],
+                "cash": request_data["cash"],
+                "factory1Level": request_data["factory1Level"],
+                "factory2Level": request_data["factory2Level"]
+            },
+        upsert=True
+    )
+    return dumps(cursor)
+
 
 
 @app.route("/")
@@ -55,17 +72,8 @@ def hello():
         name=user.name,
         age=user.age,
         )
-    #resp.headers['Access-Control-Allow-Origin'] = '*'sdsdfffsdf
     return resp
 
-@app.route("/attack")
-def hellow():
-    star = mongo.db.users
-    output = []
-    for s in star.find():
-        output.append({'name': s['name'], 'id': s['id']})
-    return jsonify({'result': output})
-    #return "Hello World!2222"
 
 @app.route('/<path:path>')
 def root(path):
@@ -73,7 +81,7 @@ def root(path):
     #return "here"
 
 if __name__ == "__main__":
-    # Check the System Type before to decide to bindd
+    # Check the System Type before to decide to bind
     # If the system is a Linux machine -:)
     if platform.system() == "Linux":
         app.run(host='0.0.0.0', port=5000, debug=True)

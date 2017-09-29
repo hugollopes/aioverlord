@@ -29,6 +29,15 @@ const vm = new Vue({
         this.user.factory2Level = this.user.factory2Level + 1;
         this.user.cash = this.user.cash - 100;}
       },
+        saveuser: function (event) {
+      // `this` inside methods point to the Vue instance
+      // `event` is the native DOM event
+      axios.post('http://127.0.0.1:50000/saveuser', this.user)
+  .then(function(response){
+    console.log('saved successfully')
+  });},
+
+
       run: function(){
     const self = this;
     this.intervalid1 = setInterval(function(){
