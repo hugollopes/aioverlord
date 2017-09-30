@@ -1,9 +1,13 @@
 from flask import Flask, request
+import os
 import datetime
 from flask import jsonify
 from flask_pymongo import PyMongo
 from bson.json_util import dumps
 import platform
+import gridfs
+
+cwd = os.getcwd()
 
 app = Flask(__name__, static_url_path='')
 
@@ -11,6 +15,7 @@ app.config['MONGO_DBNAME'] = 'restdb'
 app.config['MONGO_URI'] = 'mongodb://localhost:27017/local'
 
 mongo = PyMongo(app)
+#fs = gridfs.GridFS(mongo.db)
 
 
 @app.route("/createuser")
@@ -34,6 +39,7 @@ def get_user():
     #calculate seconds between now and database.
     timestamp_db = int(cursor['timestamp'])
     timestamp = int(datetime.datetime.now().timestamp())
+    #calculate saved ticks
     for x in range(timestamp - timestamp_db):
         cursor['cash'] = cursor['cash'] + 1 + cursor['factory1Level'] * 1 + cursor['factory2Level'] * 10;
         print('cursor cash:',cursor['cash'])
@@ -41,6 +47,7 @@ def get_user():
 
 
 # todo validate post request
+@app.route("/")
 @app.route("/saveuser", methods=['POST'])
 def save_user():
     request_data = request.get_json()
@@ -60,10 +67,28 @@ def save_user():
     return dumps(cursor)
 
 
-@app.route("/")
-def hello():
-    return "alive"
+@app.route("/savepicturetests")
+def savepicturetests():
+    image_dir = os.path.join(cwd,"static","images")
+    image_path = os.path.join(image_dir,"image.jpg")
+    pictures = mongo.db.pictures
+    image = open(image_path, "rb")
+    fs = gridfs.GridFS(mongo.db)
+    fs_id = fs.put(image.read(), filename="image.jpg")
+    data = {"about": "image.jpg", "file_id": fs_id}
+    pictures.insert(data)
+    return image_dir
 
+@app.route("/retrievepictests")
+def retrievepictests():
+    image_dir = os.path.join(cwd, "static", "images","unclassified")
+    image_path = os.path.join(image_dir, "image.jpg")
+    fs = gridfs.GridFS(mongo.db)
+    image_file = fs.get_last_version("image.jpg")
+    file = open(image_path, 'wb')
+    file.write(image_file.read())
+    file.close()
+    return "done"
 
 @app.route('/<path:path>')
 def root(path):
