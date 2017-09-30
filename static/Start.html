@@ -1,54 +1,84 @@
 <!DOCTYPE html>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
+      integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
 <script src="https://unpkg.com/vue"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <html lang="en">
-   <head>
-      <meta charset="UTF-8">
-   </head>
-   <body>
-      <div id="app" >
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<div id="app">
+    <div class="row">
+        <div class="col-12"><h2 class="text-center">AI Overlord</h2></div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6 col-lg-3">Cash</div>
+        <div class="col-sm-6 col-lg-3">{{ user.cash }}</div>
+        <div class="col-sm-6 col-lg-3">Neurons</div>
+        <div class="col-sm-6 col-lg-3">4757663</div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <img src="http://127.0.0.1:50000/images/neural.jpg" class="rounded mx-auto d-block" alt="Responsive image">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <img src="http://127.0.0.1:50000/images/image.jpg" class="rounded" alt="Responsive image">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <button v-on:click="topology">topology</button>
+            <button v-on:click="trainnn">trainNN/nnconfig</button>
+            <button v-on:click="topology">data sets</button>
+            <button v-on:click="topology">label data</button>
+        </div>
+    </div>
+<div v-on:click="isShow = !isShow" class="control">show debug
+    </div>
+    <div class="row" v-show="isShow" class="content">
+        <div class="col-12">
+            <button v-on:click="run">run</button>
+            <button v-on:click="tick">tick</button>
+            <button v-on:click="saveuser">save</button>
+            Factory 1: {{ user.factory1Level }}
+            <button v-on:click="raiselevel1">up level factory 1</button>
+        </div>
+    </div>
+    <div class="row" v-show="isShow" class="content">
+        <div class="col-12">
+            Factory 1: {{ user.factory1Level }}
+            <button v-on:click="raiselevel1">up level factory 1</button>
+        </div>
+    </div>
+    <div class="row" v-show="isShow" class="content">
+        <div class="col-12">
+            Factory 2: {{ user.factory2Level }}
+            <button v-on:click="raiselevel2">up level factory 2</button>
+        </div>
+    </div>
 
-          <table class="table">
+    <div class="row" v-show="isShow" class="content">
+        <div class="col-12">
 
-  <tbody>
-    <tr>
+               {{ user }}
 
-      <td>Cash</td>
-      <td>{{ user.cash }}</td>
-      <td><button v-on:click="run">run</button><button v-on:click="tick">tick</button><button v-on:click="saveuser">save</button></td>
+        </div>
+    </div>
+ </div>
 
-    </tr>
-    <tr>
-
-      <td>Factory 1</td>
-      <td>{{ user.factory1Level }}</td>
-      <td><button v-on:click="raiselevel1">up level factory 1</button></td>
-    </tr>
-    <tr>
-        <td>Factory 2</td>
-      <td>{{ user.factory2Level }}</td>
-      <td><button v-on:click="raiselevel2">up level factory 2</button></td>
-    </tr>
-  </tbody>
-</table>
-
-
-<div>
-  <div v-on:click="isShow = !isShow" class="control">
-    click me to toggle (show/hide) json element
-  </div>
-  <div v-show="isShow"  class="content">{{ user }}</div>
 </div>
-
-
-
-
-
-      </div>
-      <script src="http://127.0.0.1:50000/code.js"></script>
-   <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
-   </body>
+<script src="http://127.0.0.1:50000/code.js"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"
+        integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"
+        integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"
+        integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn"
+        crossorigin="anonymous"></script>
+</body>
 </html>
