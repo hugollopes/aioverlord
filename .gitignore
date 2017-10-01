@@ -27,6 +27,14 @@ $RECYCLE.BIN/
 .DS_Store
 .AppleDouble
 .LSOverride
+.DS_Store
+.DS_Store
+aioverlordUI/node_modules/
+aioverlordUI/dist/
+aioverlordUI/npm-debug.log*
+aioverlordUI/yarn-debug.log*
+aioverlordUI/yarn-error.log*
+
 
 # Thumbnails
 ._*

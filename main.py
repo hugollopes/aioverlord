@@ -59,7 +59,6 @@ def get_user():
 
 
 # todo validate post request
-@app.route("/")
 @app.route("/saveuser", methods=['POST'])
 def save_user():
     request_data = request.get_json()
@@ -111,6 +110,24 @@ def classify():
         "images": ["./images/unclassified/image.jpg","./images/unclassified/neural.jpg"]
         }
     return json.dumps(api_return)
+
+
+@app.route("/saveclassification", methods=['POST'])
+def save_classification():
+    request_data = request.get_json()
+    pictures = mongo.db.pictures
+    datetime_string = datetime.datetime.now().timestamp()
+    cursor = pictures.update(
+        {"file_id": request_data["file_id"]},
+        {
+            "file_id": request_data["file_id"],
+            "labeled": request_data["labeled"],
+            "timestamp": datetime_string
+        },
+        upsert=True
+    )
+    return dumps(cursor)
+
 
 @app.route('/<path:path>')
 def root(path):
