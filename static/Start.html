@@ -18,25 +18,43 @@
         <div class="col-sm-6 col-lg-3">Neurons</div>
         <div class="col-sm-6 col-lg-3">4757663</div>
     </div>
-    <div class="row">
-        <div class="col-12">
-            <img src="http://127.0.0.1:50000/images/neural.jpg" class="rounded mx-auto d-block" alt="Responsive image">
+    <div v-show="!showClassify" class="content">
+        <div class="row">
+            <div class="col-12">
+                <img src="http://127.0.0.1:50000/images/neural.jpg" class="rounded mx-auto d-block"
+                     alt="Responsive image" height="200">
+            </div>
+        </div>
+    </div>
+    <div v-show="showClassify" class="content">
+        <div class="row">
+            <ul>
+                <li v-for="url in classification.images">
+                    <img v-bind:src="url" height=100>
+                    <ul>
+                        <li v-for="label in classification.labels"> <button v-on:click="pick">{{ label }}</button></li>
+                    </ul>
+                </li>
+            </ul>
         </div>
     </div>
     <div class="row">
-        <div class="col-12">
-            <img src="http://127.0.0.1:50000/images/image.jpg" class="rounded" alt="Responsive image">
+        <div class="col-6"></div>
+        <div class="col-2">
+            <img src="http://127.0.0.1:50000/images/image.jpg" class="rounded mx-auto d-block" alt="Responsive image"
+                 height="200">
         </div>
+        <div class="col-6"></div>
     </div>
     <div class="row">
         <div class="col-12">
-            <button v-on:click="topology">topology</button>
-            <button v-on:click="trainnn">trainNN/nnconfig</button>
-            <button v-on:click="topology">data sets</button>
-            <button v-on:click="topology">label data</button>
+            <button v-on:click="classify">topology</button>
+            <button v-on:click="classify">trainNN/nnconfig</button>
+            <button v-on:click="classify">data sets</button>
+            <button v-on:click="classify">label data</button>
         </div>
     </div>
-<div v-on:click="isShow = !isShow" class="control">show debug
+    <div v-on:click="isShow = !isShow" class="control">show debug
     </div>
     <div class="row" v-show="isShow" class="content">
         <div class="col-12">
@@ -63,11 +81,11 @@
     <div class="row" v-show="isShow" class="content">
         <div class="col-12">
 
-               {{ user }}
+            {{ showClassify }} {{ user }} {{ classification }}
 
         </div>
     </div>
- </div>
+</div>
 
 </div>
 <script src="http://127.0.0.1:50000/code.js"></script>

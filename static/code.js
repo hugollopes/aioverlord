@@ -2,7 +2,11 @@ const vm = new Vue({
   el: '#app',
   data: {
   isShow: false,
-    user: []
+  showClassify: false,
+    user: [],
+    classification: {},
+    picked: ""
+
   },
   mounted() {
     axios.get("http://127.0.0.1:50000/getuser")
@@ -15,6 +19,12 @@ const vm = new Vue({
       this.user.cash = this.user.cash + 1 + this.user.factory1Level*1 + this.user.factory2Level*10;
 
     },
+     classify() {
+    axios.get("http://127.0.0.1:50000/classify")
+    .then(response => {this.classification = response.data});
+    this.showClassify = true;
+     },
+
       raiselevel1: function (event) {
       // `this` inside methods point to the Vue instance
       // `event` is the native DOM event

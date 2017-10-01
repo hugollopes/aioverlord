@@ -6,6 +6,8 @@ from flask_pymongo import PyMongo
 from bson.json_util import dumps
 import platform
 import gridfs
+import json
+
 
 cwd = os.getcwd()
 
@@ -15,7 +17,6 @@ app.config['MONGO_DBNAME'] = 'restdb'
 app.config['MONGO_URI'] = 'mongodb://localhost:27017/local'
 
 mongo = PyMongo(app)
-#fs = gridfs.GridFS(mongo.db)
 
 
 @app.route("/createuser")
@@ -30,6 +31,17 @@ def new_user():
         }
     )
     return result
+
+
+@app.route("/create_classification")
+def new_classification():
+    result = mongo.db.classification.insert_one(
+        {
+            "name": "is_triangle",
+            "labels": [ "yes", "no"]
+        }
+    )
+    return str(result)
 
 
 @app.route("/getuser")
@@ -70,12 +82,12 @@ def save_user():
 @app.route("/savepicturetests")
 def savepicturetests():
     image_dir = os.path.join(cwd,"static","images")
-    image_path = os.path.join(image_dir,"image.jpg")
+    image_path = os.path.join(image_dir,"neural.jpg")
     pictures = mongo.db.pictures
     image = open(image_path, "rb")
     fs = gridfs.GridFS(mongo.db)
-    fs_id = fs.put(image.read(), filename="image.jpg")
-    data = {"about": "image.jpg", "file_id": fs_id}
+    fs_id = fs.put(image.read(), filename="neural.jpg")
+    data = {"about": "neural.jpg", "file_id": fs_id}
     pictures.insert(data)
     return image_dir
 
@@ -90,9 +102,27 @@ def retrievepictests():
     file.close()
     return "done"
 
+
+@app.route("/classify")
+def classify():
+    api_return = {
+        "name": "is_triangle",
+        "labels": [ "yes", "no"],
+        "images": ["./images/unclassified/image.jpg","./images/unclassified/neural.jpg"]
+        }
+    return json.dumps(api_return)
+
 @app.route('/<path:path>')
 def root(path):
     return app.send_static_file(path)
+
+#needed to allow API access from any site.
+@app.after_request
+def after_request(response):
+  response.headers.add('Access-Control-Allow-Origin', '*')
+  response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+  response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+  return response
 
 
 if __name__ == "__main__":
