@@ -7,13 +7,13 @@
     <classifier v-show="show_classify" ></classifier>
     <div class="row">
       <div class="col-12">
-        <img src="http://0.0.0.0:5000/images/neural.jpg" class="rounded mx-auto d-block"
+        <img src="../images/neural.jpg" class="rounded mx-auto d-block"
         alt="Responsive image" height="100">
       </div>
     </div>
     <div class="row">
       <div class="col-12">
-        <img src="http://127.0.0.1:50000/images/image.jpg" class="rounded mx-auto d-block" alt="Responsive image"
+        <img src="../images/image.jpg" class="rounded mx-auto d-block" alt="Responsive image"
         height="100">
       </div>
     </div>

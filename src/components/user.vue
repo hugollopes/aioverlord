@@ -20,7 +20,8 @@ export default {
     }
   },
   created: function(){
-    axios.get("http://0.0.0.0:5000/getuser")
+  console.log(process.env.API_URL);
+    axios.get(process.env.API_URL + "/getuser")
     .then(response => {this.name = response.data.name;
       this.credits = response.data.cash})
     }

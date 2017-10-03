@@ -31,13 +31,13 @@ export default {
       classifed: false
     }
   },
-  created: function(){axios.get("http://127.0.0.1:50000/classify")
+  created: function(){axios.get(process.env.API_URL +"/classify")
   .then(response => {this.classification = response.data});
 },
 methods: {
   classify_choice: function (event) {
     this.classifed = true;
-    axios.post('http://127.0.0.1:50000/saveclassification', {
+    axios.post(process.env.API_URL + '/saveclassification', {
                 "file_id": "59cfa2d58d28793cd091d1a8",
                 "labeled": "yes"
             })
