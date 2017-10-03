@@ -129,8 +129,11 @@ def save_classification():
     return dumps(cursor)
 
 
+#todo: does not work in ubunto
+@app.route('/')
 @app.route('/<path:path>')
 def root(path):
+    print(path)
     return app.send_static_file(path)
 
 #needed to allow API access from any site.

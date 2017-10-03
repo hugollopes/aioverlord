@@ -20,7 +20,7 @@ export default {
     }
   },
   created: function(){
-    axios.get("http://127.0.0.1:50000/getuser")
+    axios.get("http://0.0.0.0:5000/getuser")
     .then(response => {this.name = response.data.name;
       this.credits = response.data.cash})
     }
