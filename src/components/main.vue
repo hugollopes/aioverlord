@@ -17,6 +17,7 @@
         height="100">
       </div>
     </div>
+
     <div class="row">
       <div class="col-xs-12">
         <button v-on:click="classify">topology</button>
@@ -25,11 +26,14 @@
         <button v-on:click="classify">label data</button>
       </div>
     </div>
+    <fileupload></fileupload>
   </div>
 </template>
 <script>
 import user from '@/components/user';
 import classifier from '@/components/classifier';
+import fileupload from '@/components/fileupload';
+
 
 export default {
   name: 'main',
@@ -42,13 +46,20 @@ export default {
   },
   components: {
     user,
-    classifier
+    classifier,
+    fileupload
   },
   methods: {
     classify: function (event) {
       this.show_classify = !this.show_classify;
 
-    }},
+    },
+    uploadpicture: function (event) {
+      axios.post(process.env.API_URL + '/uploadpicture', this.user)
+      .then(function(response){
+        console.log('saved successfully')
+      }
+    );}}
 
   }
   </script>

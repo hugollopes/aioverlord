@@ -7,6 +7,8 @@ from bson.json_util import dumps
 import platform
 import gridfs
 import json
+import base64
+from io import BytesIO
 
 
 cwd = os.getcwd()
@@ -77,6 +79,18 @@ def save_user():
     )
     return dumps(cursor)
 
+@app.route('/uploadpicture', methods=['POST'])
+def upload_picture():
+    request_data = request.get_json()
+    print("request_data: " + request_data["file_data"])
+    image = BytesIO(base64.b64decode(request_data["file_data"]))
+    fs = gridfs.GridFS(mongo.db)
+    fs_id = fs.put(image.read(), filename=request_data["file_name"])
+    data = {"file_name": request_data["file_name"], "file_id": fs_id}
+    pictures = mongo.db.pictures
+    pictures.insert(data)
+    return "inserted"
+
 
 @app.route("/savepicturetests")
 def savepicturetests():
@@ -93,9 +107,9 @@ def savepicturetests():
 @app.route("/retrievepictests")
 def retrievepictests():
     image_dir = os.path.join(cwd, "static", "images","unclassified")
-    image_path = os.path.join(image_dir, "image.jpg")
+    image_path = os.path.join(image_dir, "neural3.jpg")
     fs = gridfs.GridFS(mongo.db)
-    image_file = fs.get_last_version("image.jpg")
+    image_file = fs.get_last_version("neural3.jpg")
     file = open(image_path, 'wb')
     file.write(image_file.read())
     file.close()
