@@ -9,7 +9,12 @@ import gridfs
 import json
 import base64
 from io import BytesIO
+import logging,sys
+from bson.objectid import ObjectId
 
+
+logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
+ObjectId
 
 cwd = os.getcwd()
 
@@ -54,9 +59,10 @@ def get_user():
     timestamp_db = int(cursor['timestamp'])
     timestamp = int(datetime.datetime.now().timestamp())
     #calculate saved ticks
-    for x in range(timestamp - timestamp_db):
-        cursor['cash'] = cursor['cash'] + 1 + cursor['factory1Level'] * 1 + cursor['factory2Level'] * 10;
-        print('cursor cash:',cursor['cash'])
+    #for x in range(timestamp - timestamp_db):
+    #    cursor['cash'] = cursor['cash'] + 1 + cursor['factory1Level'] * 1 + cursor['factory2Level'] * 10;
+    #    print('cursor cash:',cursor['cash'])
+    cursor['cash'] = (cursor['cash'] + 1 + cursor['factory1Level'] * 1 + cursor['factory2Level'] * 10)*(timestamp - timestamp_db);
     return dumps(cursor)
 
 
@@ -118,28 +124,50 @@ def retrievepictests():
 
 @app.route("/classify")
 def classify():
+    # get classification
+    # todo: randomize classification or set it as input
+    classification_collection = mongo.db.classification
+    classification_cursor = classification_collection.find_one({"name": "is_triangle"})
+
+    logging.debug("classification_cursor: " + dumps(classification_cursor))
+
+    # todo: evolve picture label systems, randomize selection
+    # get picture with the classification not set
+    picture_collection = mongo.db.pictures
+    picture_cursor = picture_collection.find_one({"labeled": None})
+    logging.debug("picture_cursor: " + dumps(picture_cursor))
+
+    # get picture base64 string
+    fs = gridfs.GridFS(mongo.db)
+    picture_file = fs.get(picture_cursor["file_id"])
+    logging.debug("picture_file_cursor:  " + dumps(picture_file))
+
+    # buildup json
     api_return = {
-        "name": "is_triangle",
-        "labels": [ "yes", "no"],
-        "images": ["./images/unclassified/image.jpg","./images/unclassified/neural.jpg"]
-        }
-    return json.dumps(api_return)
+      "name": classification_cursor["name"],
+      "labels": classification_cursor["labels"],
+      "image_name": picture_cursor["file_name"],
+      "file_id": str(picture_cursor["file_id"]),
+      "image": base64.standard_b64encode(picture_file.read()).decode("ascii")
+    }
+    return dumps(api_return)
 
-
+# todo:misses validation and authentication
 @app.route("/saveclassification", methods=['POST'])
 def save_classification():
     request_data = request.get_json()
+    logging.debug("request_data: " + dumps(request_data))
     pictures = mongo.db.pictures
     datetime_string = datetime.datetime.now().timestamp()
     cursor = pictures.update(
-        {"file_id": request_data["file_id"]},
+        {"file_id": ObjectId(request_data["file_id"])},
         {
-            "file_id": request_data["file_id"],
+            "file_id": ObjectId(request_data["file_id"]),
             "labeled": request_data["labeled"],
             "timestamp": datetime_string
-        },
-        upsert=True
-    )
+        }
+        )
+    logging.debug("update result: " + dumps(cursor))
     return dumps(cursor)
 
 
@@ -149,6 +177,7 @@ def save_classification():
 def root(path):
     print(path)
     return app.send_static_file(path)
+
 
 #needed to allow API access from any site.
 @app.after_request
