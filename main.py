@@ -160,12 +160,12 @@ def save_classification():
     pictures = mongo.db.pictures
     datetime_string = datetime.datetime.now().timestamp()
     cursor = pictures.update(
-        {"file_id": ObjectId(request_data["file_id"])},
-        {
+        {"file_id": ObjectId(request_data["file_id"])},{
+        "$set": {
             "file_id": ObjectId(request_data["file_id"]),
             "labeled": request_data["labeled"],
             "timestamp": datetime_string
-        }
+        }}
         )
     logging.debug("update result: " + dumps(cursor))
     return dumps(cursor)

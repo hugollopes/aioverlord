@@ -4,7 +4,10 @@
       <div><h2 class="text-center">AI Overlord</h2></div>
     </div>
     <user></user>
-    <classifier v-show="show_classify" ></classifier>
+    {{show_classify}}
+    <classifier v-show="show_classify"
+        v-bind:classification="classification"
+        v-on:changeShowClassify="changeShowClassify()"></classifier>
     <div class="row">
       <div class="col-12">
         <img src="../images/neural.jpg" class="rounded mx-auto d-block"
@@ -33,6 +36,7 @@
 import user from '@/components/user';
 import classifier from '@/components/classifier';
 import fileupload from '@/components/fileupload';
+import axios from 'axios'
 
 
 export default {
@@ -40,7 +44,8 @@ export default {
   data () {
     return {
       user_id: "",
-      show_classify: false
+      classification: {},
+      show_classify : false
 
     }
   },
@@ -50,16 +55,18 @@ export default {
     fileupload
   },
   methods: {
-    classify: function (event) {
-      this.show_classify = !this.show_classify;
-
+    changeShowClassify: function (){
+      console.log("classification.show_classify")
+      this.show_classify = false;
     },
-    uploadpicture: function (event) {
-      axios.post(process.env.API_URL + '/uploadpicture', this.user)
-      .then(function(response){
-        console.log('saved successfully')
-      }
-    );}}
+    classify: function (event) {
+      axios.get(process.env.API_URL +"/classify")
+      .then(response => {this.classification = response.data; //todo: fix the string concat bellow
+                          this.classification.image = "data:image/jpg;base64," + this.classification.image;
+                          this.show_classify = true;
+                          });
+    }
+  }
 
   }
   </script>
