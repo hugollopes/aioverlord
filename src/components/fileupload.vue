@@ -2,9 +2,8 @@
 
   <div class="row" >
     <div class="col-xs-12">
-      <h2>here</h2>
       <div class="file-upload-form">
-        Upload an image file:
+        Upload an image file(jpg):
         <input type="file" @change="previewImage" accept="image/*" ref="inputFile">
       </div>
       <div class="image-preview" v-if="imageData.length > 0">

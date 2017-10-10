@@ -14,12 +14,7 @@
         alt="Responsive image" height="100">
       </div>
     </div>
-    <div class="row">
-      <div class="col-12">
-        <img src="../images/image.jpg" class="rounded mx-auto d-block" alt="Responsive image"
-        height="100">
-      </div>
-    </div>
+    <component v-bind:is="NeuralNetArea"></component>
 
     <div class="row">
       <div class="col-xs-12">
@@ -29,13 +24,20 @@
         <button v-on:click="classify">label data</button>
       </div>
     </div>
-    <fileupload></fileupload>
+    <div class="row">
+
+      <div class="col-xs-12">
+          <h1>debug functions!!!</h1>
+        <button v-on:click="fileupload">file upload</button>
+      </div>
+    </div>
   </div>
 </template>
 <script>
 import user from '@/components/user';
 import classifier from '@/components/classifier';
 import fileupload from '@/components/fileupload';
+import neuralnet from '@/components/neuralnet';
 import axios from 'axios'
 
 
@@ -45,14 +47,16 @@ export default {
     return {
       user_id: "",
       classification: {},
-      show_classify : false
+      show_classify : false,
+      NeuralNetArea : "neuralnet"
 
     }
   },
   components: {
     user,
     classifier,
-    fileupload
+    fileupload,
+    neuralnet
   },
   methods: {
     changeShowClassify: function (){
@@ -65,6 +69,14 @@ export default {
                           this.classification.image = "data:image/jpg;base64," + this.classification.image;
                           this.show_classify = true;
                           });
+    },
+    fileupload: function () {
+      if( this.NeuralNetArea == "neuralnet" ){
+        this.NeuralNetArea = "fileupload";
+      }
+      else {
+        this.NeuralNetArea = "neuralnet";
+      }
     }
   }
 
