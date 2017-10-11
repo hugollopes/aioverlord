@@ -1,12 +1,14 @@
-import logging
-from flask import Blueprint
-from database import mongo
-from bson.json_util import dumps
-import gridfs
 import base64
-from bson.objectid import ObjectId
-from flask import request
 import datetime
+import logging
+
+import gridfs
+from bson.json_util import dumps
+from bson.objectid import ObjectId
+from flask import Blueprint
+from flask import request
+
+from ai_overlord_backend_app.database import mongo
 
 # blueprint definition
 classify_route = Blueprint('classify_route', __name__)

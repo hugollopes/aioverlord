@@ -1,7 +1,11 @@
 <component name="ProjectDictionaryState">
   <dictionary name="hugo">
     <words>
+      <w>createuser</w>
+      <w>retrievepictests</w>
       <w>saveclassification</w>
+      <w>savepicturetests</w>
+      <w>uploadpicture</w>
     </words>
   </dictionary>
 </component>

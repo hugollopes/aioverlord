@@ -1,17 +1,12 @@
-from flask import Flask, request
-from classification import *
 import os
-import datetime
-from flask import jsonify
-from bson.json_util import dumps
 import platform
-import gridfs
-import json
-import base64
+import sys
 from io import BytesIO
-import logging,sys
-from database import mongo
 
+from flask import Flask
+
+from ai_overlord_backend_app.classification import *
+from ai_overlord_backend_app.user import *
 
 logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 
@@ -27,58 +22,12 @@ app.config['MONGO_URI'] = 'mongodb://localhost:27017/local'
 app.register_blueprint(classify_route)
 app.register_blueprint(create_classification_route)
 app.register_blueprint(save_classification_route)
+app.register_blueprint(get_user_route)
+app.register_blueprint(save_user_route)
+app.register_blueprint(create_user_route)
 
 
 mongo.init_app(app)
-
-
-@app.route("/createuser")
-def new_user():
-    result = mongo.db.users.insert_one(
-        {
-            "name": "testUser1",
-            "cash": 10,
-            "factory1Level": 1,
-            "factory2Level": 2,
-            "timestamp": datetime.datetime.now().timestamp()
-        }
-    )
-    return result
-
-
-@app.route("/getuser")
-def get_user():
-    users = mongo.db.users
-    cursor = users.find_one({"name": "testUser1"})
-    # calculate seconds between now and database.
-    timestamp_db = int(cursor['timestamp'])
-    timestamp = int(datetime.datetime.now().timestamp())
-    #calculate saved ticks
-    #for x in range(timestamp - timestamp_db):
-    #    cursor['cash'] = cursor['cash'] + 1 + cursor['factory1Level'] * 1 + cursor['factory2Level'] * 10;
-    #    print('cursor cash:',cursor['cash'])
-    cursor['cash'] = (cursor['cash'] + 1 + cursor['factory1Level'] * 1 + cursor['factory2Level'] * 10)*(timestamp - timestamp_db);
-    return dumps(cursor)
-
-
-# todo validate post request
-@app.route("/saveuser", methods=['POST'])
-def save_user():
-    request_data = request.get_json()
-    users = mongo.db.users
-    datetime_string = datetime.datetime.now().timestamp()
-    cursor = users.update(
-        {"name": request_data["name"]},
-        {
-            "name": request_data["name"],
-            "cash": request_data["cash"],
-            "factory1Level": request_data["factory1Level"],
-            "factory2Level": request_data["factory2Level"],
-            "timestamp": datetime_string
-        },
-        upsert=True
-    )
-    return dumps(cursor)
 
 
 @app.route('/')
@@ -112,8 +61,9 @@ def savepicturetests():
     pictures.insert(data)
     return image_dir
 
+
 @app.route("/retrievepictests")
-def retrievepictests():
+def retrieve_pic_tests():
     image_dir = os.path.join(cwd, "static", "images","unclassified")
     image_path = os.path.join(image_dir, "neural3.jpg")
     fs = gridfs.GridFS(mongo.db)
@@ -130,13 +80,13 @@ def root(path):
     return app.send_static_file(path)
 
 
-#needed to allow API access from any site.
+# needed to allow API access from any site.
 @app.after_request
 def after_request(response):
-  response.headers.add('Access-Control-Allow-Origin', '*')
-  response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-  response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
-  return response
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+    return response
 
 
 if __name__ == "__main__":
