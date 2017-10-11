@@ -1,8 +1,8 @@
 from flask import Flask, request
+from classification import *
 import os
 import datetime
 from flask import jsonify
-from flask_pymongo import PyMongo
 from bson.json_util import dumps
 import platform
 import gridfs
@@ -10,20 +10,26 @@ import json
 import base64
 from io import BytesIO
 import logging,sys
-from bson.objectid import ObjectId
+from database import mongo
 
 
 logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
-ObjectId
+
 
 cwd = os.getcwd()
 
 app = Flask(__name__, static_url_path='')
-
+# configure DB
 app.config['MONGO_DBNAME'] = 'restdb'
 app.config['MONGO_URI'] = 'mongodb://localhost:27017/local'
 
-mongo = PyMongo(app)
+# blueprints
+app.register_blueprint(classify_route)
+app.register_blueprint(create_classification_route)
+app.register_blueprint(save_classification_route)
+
+
+mongo.init_app(app)
 
 
 @app.route("/createuser")
@@ -40,22 +46,11 @@ def new_user():
     return result
 
 
-@app.route("/create_classification")
-def new_classification():
-    result = mongo.db.classification.insert_one(
-        {
-            "name": "is_triangle",
-            "labels": [ "yes", "no"]
-        }
-    )
-    return str(result)
-
-
 @app.route("/getuser")
 def get_user():
     users = mongo.db.users
     cursor = users.find_one({"name": "testUser1"})
-    #calculate seconds between now and database.
+    # calculate seconds between now and database.
     timestamp_db = int(cursor['timestamp'])
     timestamp = int(datetime.datetime.now().timestamp())
     #calculate saved ticks
@@ -84,6 +79,13 @@ def save_user():
         upsert=True
     )
     return dumps(cursor)
+
+
+@app.route('/')
+def dummy_root():
+    logging.debug("server alive")
+    return "server alive"
+
 
 @app.route('/uploadpicture', methods=['POST'])
 def upload_picture():
@@ -122,57 +124,6 @@ def retrievepictests():
     return "done"
 
 
-@app.route("/classify")
-def classify():
-    # get classification
-    # todo: randomize classification or set it as input
-    classification_collection = mongo.db.classification
-    classification_cursor = classification_collection.find_one({"name": "is_triangle"})
-
-    logging.debug("classification_cursor: " + dumps(classification_cursor))
-
-    # todo: evolve picture label systems, randomize selection
-    # get picture with the classification not set
-    picture_collection = mongo.db.pictures
-    picture_cursor = picture_collection.find_one({"labeled": None})
-    logging.debug("picture_cursor: " + dumps(picture_cursor))
-
-    # get picture base64 string
-    fs = gridfs.GridFS(mongo.db)
-    picture_file = fs.get(picture_cursor["file_id"])
-    logging.debug("picture_file_cursor:  " + dumps(picture_file))
-
-    # buildup json
-    api_return = {
-      "name": classification_cursor["name"],
-      "labels": classification_cursor["labels"],
-      "image_name": picture_cursor["file_name"],
-      "file_id": str(picture_cursor["file_id"]),
-      "image": base64.standard_b64encode(picture_file.read()).decode("ascii")
-    }
-    return dumps(api_return)
-
-# todo:misses validation and authentication
-@app.route("/saveclassification", methods=['POST'])
-def save_classification():
-    request_data = request.get_json()
-    logging.debug("request_data: " + dumps(request_data))
-    pictures = mongo.db.pictures
-    datetime_string = datetime.datetime.now().timestamp()
-    cursor = pictures.update(
-        {"file_id": ObjectId(request_data["file_id"])},{
-        "$set": {
-            "file_id": ObjectId(request_data["file_id"]),
-            "labeled": request_data["labeled"],
-            "timestamp": datetime_string
-        }}
-        )
-    logging.debug("update result: " + dumps(cursor))
-    return dumps(cursor)
-
-
-#todo: does not work in ubunto
-@app.route('/')
 @app.route('/<path:path>')
 def root(path):
     print(path)
