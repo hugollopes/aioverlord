@@ -30,21 +30,24 @@ def classify():
     picture_collection = mongo.db.pictures
     picture_cursor = picture_collection.find_one({"labeled": None})
     logging.debug("picture_cursor: " + dumps(picture_cursor))
+    if picture_cursor != None:
+        # get picture base64 string
+        fs = gridfs.GridFS(mongo.db)
+        picture_file = fs.get(picture_cursor["file_id"])
 
-    # get picture base64 string
-    fs = gridfs.GridFS(mongo.db)
-    picture_file = fs.get(picture_cursor["file_id"])
-    logging.debug("picture_file_cursor:  " + dumps(picture_file))
+        logging.debug("picture_file_cursor:  " + dumps(picture_file))
 
-    # buildup json
-    api_return = {
-      "name": classification_cursor["name"],
-      "labels": classification_cursor["labels"],
-      "image_name": picture_cursor["file_name"],
-      "file_id": str(picture_cursor["file_id"]),
-      "image": base64.standard_b64encode(picture_file.read()).decode("ascii")
-    }
-    return dumps(api_return)
+        # buildup json
+        api_return = {
+          "name": classification_cursor["name"],
+          "labels": classification_cursor["labels"],
+          "image_name": picture_cursor["file_name"],
+          "file_id": str(picture_cursor["file_id"]),
+          "image": base64.standard_b64encode(picture_file.read()).decode("ascii")
+        }
+        return dumps(api_return)
+    else:
+        return "no results"
 
 
 @create_classification_route.route("/create_classification")
