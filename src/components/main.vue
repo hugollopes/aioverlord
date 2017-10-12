@@ -65,9 +65,16 @@ export default {
     },
     classify: function (event) {
       axios.get(process.env.API_URL +"/classify")
-      .then(response => {this.classification = response.data; //todo: fix the string concat bellow
-                          this.classification.image = "data:image/jpg;base64," + this.classification.image;
-                          this.show_classify = true;
+      .then(response => { console.log(response);
+                          if(response.data == "no results"){
+                            console.log("nothing to classify");
+                          }
+                          else {
+                            this.classification = response.data; //todo: fix the string concat bellow
+                            this.classification.image = "data:image/jpg;base64," + this.classification.image;
+                            this.show_classify = true;
+                          }
+
                           });
     },
     fileupload: function () {
