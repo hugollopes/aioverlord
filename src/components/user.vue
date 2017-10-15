@@ -10,13 +10,14 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from 'axios';
+
 export default {
   name: 'user',
   data () {
     return {
       name: "",
-      credits: 1
+      credits: 1,
     }
   },
   created: function(){
