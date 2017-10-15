@@ -10,14 +10,12 @@
 </template>
 
 <script>
-import axios from 'axios'
 export default {
   name: 'neuralnet',
-  data () {
+  data() {
     return {
-      name: ""  //nothing
-
-    }
-  }
-  }
-  </script>
+      name: '',  // nothing
+    };
+  },
+};
+</script>

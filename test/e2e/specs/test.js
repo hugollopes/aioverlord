@@ -11,8 +11,11 @@ module.exports = {
     browser
       .url(devServer)
       .waitForElementVisible('#app', 5000)
-      .assert.elementPresent('.main')
-      .assert.containsText('h2', 'AI Overlord')
+      .assert.containsText('h1', 'AI Overlord')
+      .assert.containsText('#Downmenubutton', 'label data')
+      .click('button[id=Downmenubutton]')
+      .pause(4000)
+      .assert.containsText('#classificationName', 'is_triangle')
       .end();
   },
 };

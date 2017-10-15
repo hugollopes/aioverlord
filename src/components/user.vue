@@ -14,17 +14,19 @@ import axios from 'axios';
 
 export default {
   name: 'user',
-  data () {
+  data() {
     return {
-      name: "",
+      name: '',
       credits: 1,
-    }
+    };
   },
-  created: function(){
-  console.log(process.env.API_URL);
-    axios.get(process.env.API_URL + "/getuser")
-    .then(response => {this.name = response.data.name;
-      this.credits = response.data.cash})
-    }
-  }
-  </script>
+  created: function () {
+    console.log(process.env.API_URL);
+    axios.get(`${process.env.API_URL}/getuser`)
+    .then((response) => {
+      this.name = response.data.name;
+      this.credits = response.data.cash;
+    });
+  },
+};
+</script>
