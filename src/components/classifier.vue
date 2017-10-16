@@ -28,22 +28,20 @@ export default {
     };
   },
   methods: {
-    classify_choice: function (choice) {
+    classify_choice(choice) {
+      const postdata = { file_id: this.classification.file_id,
+        labeled: choice,
+      };
       this.classifed = true;
-      var postdata =  { "file_id": this.classification.file_id,
-      labeled : choice};
-      //todo: find console logging object.
+
+      // todo: find console logging object.
       console.log(postdata);
       this.$emit('changeShowClassify');
-      axios.post(process.env.API_URL + '/saveclassification', postdata)
-      .then(function(response){
+      axios.post(`${process.env.API_URL}/saveclassification`, postdata)
+      .then(() => {
         console.log('saved successfully');
-
       });
-
-    }
-
+    },
   },
-}
-
+};
 </script>

@@ -20,7 +20,7 @@ export default {
       credits: 1,
     };
   },
-  created: function () {
+  created() {
     console.log(process.env.API_URL);
     axios.get(`${process.env.API_URL}/getuser`)
     .then((response) => {

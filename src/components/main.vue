@@ -58,30 +58,27 @@ export default {
     neuralnet,
   },
   methods: {
-    changeShowClassify: function () {
+    changeShowClassify() {
       console.log('classification.show_classify');
       this.show_classify = false;
     },
-    classify: function () {
+    classify() {
       axios.get(`${process.env.API_URL}/classify`)
       .then((response) => {
         console.log(response);
         if (response.data === 'no results') {
           console.log('nothing to classify');
-        }
-        else {
+        } else {
           this.classification = response.data; // todo: fix the string concat bellow
-          this.classification.image = 'data:image/jpg;base64,'
-          + this.classification.image;
+          this.classification.image = `data:image/jpg;base64,${this.classification.image}`;
           this.show_classify = true;
         }
       });
     },
-    fileupload: function () {
+    fileupload() {
       if (this.NeuralNetArea === 'neuralnet') {
         this.NeuralNetArea = 'fileupload';
-      }
-      else {
+      } else {
         this.NeuralNetArea = 'neuralnet';
       }
     },
