@@ -5,4 +5,4 @@ const steps = require('./steps/steps');
 
 defineSupportCode((gherkinObj) => {
   steps(gherkinObj)
-})
+});

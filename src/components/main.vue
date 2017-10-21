@@ -28,7 +28,7 @@
 
       <div class="col-xs-12">
         <h1>debug functions!!!</h1>
-        <button v-on:click="fileupload">file upload</button>
+        <button id="debugFunctions"  v-on:click="fileupload">file upload</button>
       </div>
     </div>
   </div>
