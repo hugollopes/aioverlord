@@ -44,9 +44,9 @@ export default {
           // post file base64 encoded.
           axios.post(`${process.env.API_URL}/uploadpicture`, postdata)
           .then(() => {
-            console.log('saved successfully');
+            this.$log.debug('saved successfully');
           });
-          console.log(postdata);
+          this.$log.debug(postdata);
         };
         // Start the reader job - read file as a data url (base64 format)
         reader.readAsDataURL(input.files[0]);

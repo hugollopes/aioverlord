@@ -35,11 +35,11 @@ export default {
       this.classifed = true;
 
       // todo: find console logging object.
-      console.log(postdata);
+      this.$log.debug(postdata);
       this.$emit('changeShowClassify');
       axios.post(`${process.env.API_URL}/saveclassification`, postdata)
       .then(() => {
-        console.log('saved successfully');
+        this.$log.debug('saved successfully');
       });
     },
   },

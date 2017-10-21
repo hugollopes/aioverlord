@@ -21,7 +21,7 @@ export default {
     };
   },
   created() {
-    console.log(process.env.API_URL);
+    this.$log.debug(process.env.API_URL);
     axios.get(`${process.env.API_URL}/getuser`)
     .then((response) => {
       this.name = response.data.name;

@@ -59,15 +59,15 @@ export default {
   },
   methods: {
     changeShowClassify() {
-      console.log('classification.show_classify');
+      this.$log.debug('classification.show_classify');
       this.show_classify = false;
     },
     classify() {
       axios.get(`${process.env.API_URL}/classify`)
       .then((response) => {
-        console.log(response);
+        this.$log.debug(response);
         if (response.data === 'no results') {
-          console.log('nothing to classify');
+          this.$log.debug('nothing to classify');
         } else {
           this.classification = response.data; // todo: fix the string concat bellow
           this.classification.image = `data:image/jpg;base64,${this.classification.image}`;
