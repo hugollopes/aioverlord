@@ -28,7 +28,16 @@ function steps({ Given, Then }) {
     return client
       .waitForElementVisible('#fileuploadarea', 1000);
   });
-
+  Then(/^neurons visible$/, () => {
+    return client
+      .waitForElementVisible('#neuronsLabel', 1000)
+      .waitForElementVisible('#neurons', 1000);
+  });
+  Then(/^credits visible$/, () => {
+    return client
+    .waitForElementVisible('#creditsLabel', 1000)
+    .waitForElementVisible('#credits', 1000);
+  });
 }
 
 module.exports = steps;

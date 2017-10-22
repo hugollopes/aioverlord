@@ -1,10 +1,10 @@
 <template>
-  <div id="main">
-    <div class="row">
-      <div><h1 class="text-center">AI Overlord</h1></div>
+  <div id="main" class="container">
+    <div class="row header">
+      <div class="col">
+        <h1 class="text-center">AI Overlord</h1></div>
     </div>
     <user></user>
-    {{show_classify}}
     <classifier v-show="show_classify"
     v-bind:classification="classification"
     v-on:changeShowClassify="changeShowClassify()"></classifier>
@@ -85,3 +85,12 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.header  {
+    color: grey;
+    padding: 2rem 1rem;
+    background-color: #e9ecef;
+    border-radius: .3rem;
+}
+</style>

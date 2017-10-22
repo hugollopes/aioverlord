@@ -1,12 +1,10 @@
 <template>
-
   <div class="row">
-    <div class="col-6 col-sm-3">Cash</div>
-    <div class="col-6 col-sm-3">{{credits}}</div>
-    <div class="col-6 col-sm-3">Neurons</div>
-    <div class="col-6 col-sm-3">4757663</div>
+    <div class="col-xs-3 panel" id="creditsLabel">Credits: </div>
+    <div class="col-xs-3 panel panel2" id="credits">{{credits}}</div>
+    <div class="col-xs-3 panel" id="neuronsLabel">Neurons:</div>
+    <div class="col-xs-3 panel panel2" id="neurons">{{neurons}}</div>
   </div>
-
 </template>
 
 <script>
@@ -17,16 +15,32 @@ export default {
   data() {
     return {
       name: '',
-      credits: 1,
+      credits: 0,
+      neurons: 0,
     };
   },
-  created() {
+  mounted() {
     this.$log.debug(process.env.API_URL);
     axios.get(`${process.env.API_URL}/getuser`)
     .then((response) => {
       this.name = response.data.name;
-      this.credits = response.data.cash;
+      this.credits = response.data.credits;
+      this.neurons = response.data.neurons;
     });
   },
 };
 </script>
+
+
+<style scoped>
+.panel  {
+
+  background-color: #2284a1;
+}
+.panel2  {
+  background-color: green;
+}
+
+
+
+</style>

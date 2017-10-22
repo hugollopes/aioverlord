@@ -6,3 +6,5 @@ Feature: Main page
     Scenario: Verify main Page
         Given I open application
         Then the title exists
+        And neurons visible
+        And credits visible

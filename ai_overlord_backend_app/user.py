@@ -1,5 +1,5 @@
-from flask import Blueprint
 import datetime
+import logging
 
 from bson.json_util import dumps
 from flask import Blueprint
@@ -21,11 +21,17 @@ def get_user():
     timestamp_db = int(cursor['timestamp'])
     timestamp = int(datetime.datetime.now().timestamp())
     # calculate saved ticks
-    # for x in range(timestamp - timestamp_db):
-    #    cursor['cash'] = cursor['cash'] + 1 + cursor['factory1Level'] * 1 + cursor['factory2Level'] * 10;
-    #    print('cursor cash:',cursor['cash'])
-    cursor['cash'] = (cursor['cash'] + 1 + cursor['factory1Level'] * 1 +
-                      cursor['factory2Level'] * 10)*(timestamp - timestamp_db)
+    for x in range(timestamp - timestamp_db):
+        cursor['credits'] = cursor['credits'] + 1 + cursor['neurons'] * 1
+    logging.debug("ticks: " + str(range(timestamp - timestamp_db)))
+    update_cursor = users.update({"name": "testUser1"},
+                                 {
+                                   "$set": {
+                                     "timestamp": timestamp,
+                                     "credits": cursor['credits']
+                                   }
+                                 })
+    logging.debug("update_cursor: " + dumps(update_cursor))
     return dumps(cursor)
 
 
@@ -39,9 +45,8 @@ def save_user():
         {"name": request_data["name"]},
         {
             "name": request_data["name"],
-            "cash": request_data["cash"],
-            "factory1Level": request_data["factory1Level"],
-            "factory2Level": request_data["factory2Level"],
+            "credits": request_data["cash"],
+            "neurons": request_data["neurons"],
             "timestamp": datetime_string
         },
         upsert=True
@@ -54,9 +59,8 @@ def new_user():
     result = mongo.db.users.insert_one(
         {
             "name": "testUser1",
-            "cash": 10,
-            "factory1Level": 1,
-            "factory2Level": 2,
+            "credits": 10,
+            "neurons": 1,
             "timestamp": datetime.datetime.now().timestamp()
         }
     )
