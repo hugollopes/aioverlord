@@ -38,6 +38,19 @@ function steps({ Given, Then }) {
     .waitForElementVisible('#creditsLabel', 1000)
     .waitForElementVisible('#credits', 1000);
   });
+  Then(/^End$/, () => {
+    return client
+    .end();
+  });
+  Then(/^I see credits grow$/, () => {
+    return client
+    .waitForElementVisible('#credits', 1000)
+    .pause(2000)
+    .getText('#credits', function(result)
+      {client.assert.ok(Number(result.value) > 0);}
+      )
+    .waitForElementVisible('#credits', 1000);
+  });
 }
 
 module.exports = steps;

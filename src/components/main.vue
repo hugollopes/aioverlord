@@ -4,7 +4,7 @@
       <div class="col">
         <h1 class="text-center">AI Overlord</h1></div>
     </div>
-    <user></user>
+    <user ref="user"></user>
     <classifier v-show="show_classify"
     v-bind:classification="classification"
     v-on:changeShowClassify="changeShowClassify()"></classifier>
@@ -29,6 +29,7 @@
       <div class="col-xs-12">
         <h1>debug functions!!!</h1>
         <button id="debugFunctions"  v-on:click="fileupload">file upload</button>
+        <button id="runTicker"  v-on:click="runTicker">run Ticker</button>
       </div>
     </div>
   </div>
@@ -82,7 +83,11 @@ export default {
         this.NeuralNetArea = 'neuralnet';
       }
     },
-  },
+    runTicker() {
+        this.$refs.user.run();
+      }
+
+    },
 };
 </script>
 

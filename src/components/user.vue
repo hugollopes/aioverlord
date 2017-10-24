@@ -17,6 +17,7 @@ export default {
       name: '',
       credits: 0,
       neurons: 0,
+      tick: 0,
     };
   },
   mounted() {
@@ -27,7 +28,22 @@ export default {
       this.credits = response.data.credits;
       this.neurons = response.data.neurons;
     });
+    this.run();
   },
+  methods: {
+    run() {
+      const self = this;
+      this.intervalid1 = setInterval(() => {
+      self.$log.debug(process.env.API_URL);
+      axios.get(`${process.env.API_URL}/getuser`)
+        .then((response) => {
+          self.credits = response.data.credits;
+          self.neurons = response.data.neurons;
+          self.$log.debug("tick", );
+      });
+    },1000);
+  },
+  }
 };
 </script>
 

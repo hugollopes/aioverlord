@@ -6,3 +6,4 @@ Feature: Debug functions
         Given I open application
         And I click button file upload
         Then I see choose file button
+        And End
