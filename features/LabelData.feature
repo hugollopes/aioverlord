@@ -6,4 +6,3 @@ Feature: Label Data
         Given I open application
         And I click button label data
         Then I see is triangle
-        And End

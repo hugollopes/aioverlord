@@ -42,10 +42,10 @@ const vm = new Vue({
         saveuser: function (event) {
       // `this` inside methods point to the Vue instance
       // `event` is the native DOM event
-      axios.post('http://127.0.0.1:50000/saveuser', this.user)
-  .then(function(response){
-    console.log('saved successfully')
-  });},
+          axios.post('http://127.0.0.1:50000/saveuser', this.user)
+            .then(function(response){
+              console.log('saved successfully')
+        });},
 
 
       run: function(){
@@ -60,4 +60,3 @@ const vm = new Vue({
     }
 
 });
-

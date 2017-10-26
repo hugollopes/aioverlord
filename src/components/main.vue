@@ -84,10 +84,9 @@ export default {
       }
     },
     runTicker() {
-        this.$refs.user.run();
-      }
-
+      this.$refs.user.run();
     },
+  },
 };
 </script>
 

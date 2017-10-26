@@ -17,7 +17,6 @@ export default {
       name: '',
       credits: 0,
       neurons: 0,
-      tick: 0,
     };
   },
   mounted() {
@@ -34,16 +33,15 @@ export default {
     run() {
       const self = this;
       this.intervalid1 = setInterval(() => {
-      self.$log.debug(process.env.API_URL);
-      axios.get(`${process.env.API_URL}/getuser`)
+        self.$log.debug(process.env.API_URL);
+        axios.get(`${process.env.API_URL}/getuser`)
         .then((response) => {
           self.credits = response.data.credits;
           self.neurons = response.data.neurons;
-          self.$log.debug("tick", );
-      });
-    },1000);
+        });
+      }, 1000);
+    },
   },
-  }
 };
 </script>
 

@@ -8,4 +8,3 @@ Feature: Main page
         Then the title exists
         And neurons visible
         And credits visible
-        And End

@@ -1,8 +1,8 @@
 
 const { client } = require('nightwatch-cucumber');
+let creditsValue = 0;
 
-
-function steps({ Given, Then }) {
+function steps({ Given, Then, After }) {
   Given(/^I open application$/, () => {
     return client
         .url('http://localhost:8080/#/')
@@ -38,19 +38,24 @@ function steps({ Given, Then }) {
     .waitForElementVisible('#creditsLabel', 1000)
     .waitForElementVisible('#credits', 1000);
   });
-  Then(/^End$/, () => {
+  After(() => {
     return client
     .end();
   });
   Then(/^I see credits grow$/, () => {
     return client
-    .waitForElementVisible('#credits', 1000)
-    .pause(2000)
-    .getText('#credits', function(result)
-      {client.assert.ok(Number(result.value) > 0);}
-      )
+      .waitForElementVisible('#credits', 1000)
+      .getText('#credits', (result) => {
+        creditsValue = Number(result.value);
+      })
+      .pause(1000)
+      .getText('#credits', (result) => {
+        client.assert.ok(Number(result.value) > creditsValue);
+      })
     .waitForElementVisible('#credits', 1000);
   });
 }
+
+
 
 module.exports = steps;
