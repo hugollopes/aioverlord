@@ -35,7 +35,8 @@ module.exports = {
       selenium_host: 'localhost',
       silent: true,
       globals: {
-        devServerURL: 'http://localhost:' + (process.env.PORT || config.dev.port)
+        devServerURL: 'http://localhost:' + (process.env.PORT || config.dev.port),
+        devAPIURL: 'http://0.0.0.0:5000',  // should come from config
       }
     },
 
