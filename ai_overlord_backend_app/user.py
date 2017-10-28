@@ -54,14 +54,22 @@ def save_user():
     return dumps(cursor)
 
 
-@create_user_route.route("/createuser")
+@create_user_route.route("/createuser", methods=['POST'])
 def new_user():
-    result = mongo.db.users.insert_one(
+    # todo: needs check for existing
+    request_data = request.get_json()
+    users = mongo.db.users
+    datetime_string = datetime.datetime.now().timestamp()
+    cursor = users.update(
+        {"email": request_data["email"]},
         {
-            "name": "testUser1",
+            "name": request_data["email"],
+            "email": request_data["email"],
+            "password": request_data["password"],
             "credits": 10,
             "neurons": 1,
-            "timestamp": datetime.datetime.now().timestamp()
-        }
+            "timestamp": datetime_string
+        },
+        upsert=True
     )
-    return result
+    return dumps(cursor)

@@ -1,9 +1,16 @@
 <template>
   <div class="row">
-    <div class="col-xs-3 panel" id="creditsLabel">Credits: </div>
-    <div class="col-xs-3 panel panel2" id="credits">{{credits}}</div>
-    <div class="col-xs-3 panel" id="neuronsLabel">Neurons:</div>
-    <div class="col-xs-3 panel panel2" id="neurons">{{neurons}}</div>
+    <div class="container">
+    <div class="row">
+      <div class="col-xs-12 panel" id="userId">{{userId}}</div>
+    </div>
+    <div class="row">
+      <div class="col-xs-3 panel" id="creditsLabel">Credits: </div>
+      <div class="col-xs-3 panel panel2" id="credits">{{credits}}</div>
+      <div class="col-xs-3 panel" id="neuronsLabel">Neurons:</div>
+      <div class="col-xs-3 panel panel2" id="neurons">{{neurons}}</div>
+    </div>
+    </div>
   </div>
 </template>
 
@@ -12,6 +19,13 @@ import axios from 'axios';
 
 export default {
   name: 'user',
+  props: {
+    userId: {
+      type: String,
+      required: false,
+      default: 'default',
+    },
+  },
   data() {
     return {
       name: '',
@@ -50,9 +64,11 @@ export default {
 .panel  {
 
   background-color: #2284a1;
+      margin-bottom: 0px;
 }
 .panel2  {
   background-color: green;
+      margin-bottom: 0px;
 }
 
 

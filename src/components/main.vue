@@ -2,9 +2,14 @@
   <div id="main" class="container">
     <div class="row header">
       <div class="col">
-        <h1 class="text-center">AI Overlord</h1></div>
+        <h1 class="text-center" id="title">AI Overlord</h1></div>
     </div>
-    <user ref="user"></user>
+    <login v-on:checkCredentials="checkCredentials($event)">
+      :errorMessage="errorMessage"
+      passwordPattern=".{2,8}"
+      passwordMessage="Greater than 1 and less than 9"
+    </login>
+    <user ref="user"  v-bind:userId="userId"></user>
     <classifier v-show="show_classify"
     v-bind:classification="classification"
     v-on:changeShowClassify="changeShowClassify()"></classifier>
@@ -39,6 +44,7 @@ import user from '@/components/user';
 import classifier from '@/components/classifier';
 import fileupload from '@/components/fileupload';
 import neuralnet from '@/components/neuralnet';
+import login from '@/components/login';
 import axios from 'axios';
 
 
@@ -46,7 +52,7 @@ export default {
   name: 'main',
   data() {
     return {
-      user_id: '',
+      userId: '',
       classification: {},
       show_classify: false,
       NeuralNetArea: 'neuralnet',
@@ -57,6 +63,7 @@ export default {
     classifier,
     fileupload,
     neuralnet,
+    login,
   },
   methods: {
     changeShowClassify() {
@@ -85,6 +92,11 @@ export default {
     },
     runTicker() {
       this.$refs.user.run();
+    },
+    checkCredentials(event) {
+      this.userId = event.email;
+      this.$log.debug(`Email is: ${event.email}`);
+      this.$log.debug(`Password is: ${event.password}`);
     },
   },
 };

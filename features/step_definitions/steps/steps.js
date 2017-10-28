@@ -1,3 +1,5 @@
+//import axios from 'axios';
+const axios  = require('axios');
 
 const { client } = require('nightwatch-cucumber');
 let creditsValue = 0;
@@ -18,7 +20,7 @@ function steps({ Given, Then, After }) {
         .click('button[id=debugFunctions]');
   });
   Then(/^the title exists$/, () => {
-    return client.assert.containsText('h1', 'AI Overlord');
+    return client.assert.containsText('#title', 'AI Overlord');
   });
   Then(/^I see is triangle$/, () => {
     return client
@@ -53,6 +55,80 @@ function steps({ Given, Then, After }) {
         client.assert.ok(Number(result.value) > creditsValue);
       })
     .waitForElementVisible('#credits', 1000);
+  });
+  Given(/^cookies are empty$/, () => {
+    return client
+    .setCookie({
+      name: 'email',
+      value: '',
+      domain: 'localhost',
+      path: '/',
+    })
+    .setCookie({
+      name: 'password',
+      value: '',
+      domain: 'localhost',
+      path: '/',
+    });
+  });
+  Given(/^user "(.*)" exists in server with password "(.*)"$/, (user, password) => {
+    console.log(`loading into DB user ${user} with password ${password}`);
+    // complete this.
+
+    const postdata = {
+      email: user,
+      password: password,
+    };
+    axios.post("http://0.0.0.0:5000/createuser", postdata)
+
+      //`${process.env.API_URL}/createuser`, postdata)
+    .then(() => {
+      console.log('saved successfully');
+    });
+    return client;
+  });
+  Then(/^login dialog is visible$/, () => {
+    return client
+    .waitForElementVisible('#loginPanel', 1000)
+    .assert.containsText('#loginPanel', 'Login');
+  });
+  Then(/^I fullfill with user "(.*)" with password "(.*)"$/, (user, password) => {
+    return client
+    .setValue('input[id=email]', user)
+    .setValue('input[id=password]', password);
+  });
+  Then(/^I click Sign In$/, () => {
+    return client
+    .waitForElementVisible('#loginButton', 1000)
+    .pause(1000)
+    .getAttribute('#loginButton', 'disabled', (result) => {
+      if (result.value === 'true') {
+        client.assert.ok(false);
+      } else {
+        client.assert.ok(true);
+      }
+    })
+    .click('button[id=loginButton]');
+  });
+  Then(/^user is visible with "(.*)"$/, (user) => {
+    return client
+    .waitForElementVisible('#userId', 1000)
+    .assert.containsText('#userId', user);
+  });
+  Then(/^user cookies are "(.*)" and with password "(.*)"$/, (user, password) => {
+    return client
+    .setCookie({
+      name: 'email',
+      value: user,
+      domain: 'localhost',
+      path: '/',
+    })
+    .setCookie({
+      name: 'password',
+      value: password,
+      domain: 'localhost',
+      path: '/',
+    });
   });
 }
 
