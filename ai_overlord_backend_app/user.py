@@ -13,10 +13,12 @@ save_user_route = Blueprint('save_user_route', __name__)
 create_user_route = Blueprint('create_user_route', __name__)
 
 
-@get_user_route.route("/getuser")
+@get_user_route.route("/getuser", methods=['POST'])
 def get_user():
     users = mongo.db.users
-    cursor = users.find_one({"name": "testUser1"})
+    request_data = request.get_json()
+    logging.debug("request dump" + dumps(request_data))
+    cursor = users.find_one({"name": request_data["name"]})
     # calculate seconds between now and database.
     timestamp_db = int(cursor['timestamp'])
     timestamp = int(datetime.datetime.now().timestamp())
@@ -24,7 +26,7 @@ def get_user():
     for x in range(timestamp - timestamp_db):
         cursor['credits'] = cursor['credits'] + 1 + cursor['neurons'] * 1
     logging.debug("ticks: " + str(range(timestamp - timestamp_db)))
-    update_cursor = users.update({"name": "testUser1"},
+    update_cursor = users.update({"name": request_data["name"]},
                                  {
                                    "$set": {
                                      "timestamp": timestamp,

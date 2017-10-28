@@ -33,8 +33,6 @@ export default {
         labeled: choice,
       };
       this.classifed = true;
-
-      // todo: find console logging object.
       this.$log.debug(postdata);
       this.$emit('changeShowClassify');
       axios.post(`${process.env.API_URL}/saveclassification`, postdata)

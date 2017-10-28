@@ -2,11 +2,7 @@ Feature: User related functionality
     user can login
     user gets informed of his information and see his credits grow
 
-    Scenario: credits tick
-        Given I open application
-        Then I see credits grow
-
-    Scenario: login with no cookies
+    Scenario: login with no cookies and credits grow
         Given I open application
         And user "test@testmail.com" exists in server with password "hackpass"
         And cookies are empty
@@ -14,6 +10,7 @@ Feature: User related functionality
         And I fullfill with user "test@testmail.com" with password "hackpass"
         And I click Sign In
         Then user is visible with "test@testmail.com"
+        Then I see credits grow
 
     Scenario: login with cookies
         Given I open application

@@ -34,13 +34,6 @@ export default {
     };
   },
   mounted() {
-    this.$log.debug(process.env.API_URL);
-    axios.get(`${process.env.API_URL}/getuser`)
-    .then((response) => {
-      this.name = response.data.name;
-      this.credits = response.data.credits;
-      this.neurons = response.data.neurons;
-    });
     this.run();
   },
   methods: {
@@ -48,7 +41,9 @@ export default {
       const self = this;
       this.intervalid1 = setInterval(() => {
         self.$log.debug(process.env.API_URL);
-        axios.get(`${process.env.API_URL}/getuser`)
+        const postdata = { name: this.userId,
+        };
+        axios.post(`${process.env.API_URL}/getuser`,postdata)
         .then((response) => {
           self.credits = response.data.credits;
           self.neurons = response.data.neurons;

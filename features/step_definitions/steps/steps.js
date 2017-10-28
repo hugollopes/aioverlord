@@ -1,4 +1,3 @@
-//import axios from 'axios';
 const axios  = require('axios');
 
 const { client } = require('nightwatch-cucumber');
@@ -7,7 +6,7 @@ let creditsValue = 0;
 function steps({ Given, Then, After }) {
   Given(/^I open application$/, () => {
     return client
-        .url('http://localhost:8080/#/')
+        .url(client.globals.devServerURL)
         .waitForElementVisible('#app', 5000);
   });
   Given(/^I click button label data$/, () => {
@@ -46,7 +45,7 @@ function steps({ Given, Then, After }) {
   });
   Then(/^I see credits grow$/, () => {
     return client
-      .waitForElementVisible('#credits', 1000)
+      .waitForElementVisible('#credits', 1100)
       .getText('#credits', (result) => {
         creditsValue = Number(result.value);
       })
@@ -79,7 +78,7 @@ function steps({ Given, Then, After }) {
       email: user,
       password: password,
     };
-    axios.post("http://0.0.0.0:5000/createuser", postdata)
+    axios.post(client.globals.devAPIURL + '/createuser', postdata)
 
       //`${process.env.API_URL}/createuser`, postdata)
     .then(() => {
