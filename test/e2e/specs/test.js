@@ -1,6 +1,6 @@
 // For authoring Nightwatch tests, see
 // http://nightwatchjs.org/guide#usage
-
+/*
 module.exports = {
   'default e2e tests': function test(browser) {
     // automatically uses dev Server port from /config.index.js
@@ -18,4 +18,4 @@ module.exports = {
       .assert.containsText('#classificationName', 'is_triangle')
       .end();
   },
-};
+};*/

@@ -10,6 +10,7 @@ Feature: User related functionality
         And I fullfill with user "test@testmail.com" with password "hackpass"
         And I click Sign In
         Then user is visible with "test@testmail.com"
+        And Login is not visible
         Then I see credits grow
 
     Scenario: login with cookies
@@ -21,3 +22,4 @@ Feature: User related functionality
         Then login dialog is visible
         And I click Sign In
         Then user is visible with "test@testmail.com"
+        And Login is not visible

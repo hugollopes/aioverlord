@@ -129,6 +129,10 @@ function steps({ Given, Then, After }) {
       path: '/',
     });
   });
+  Then(/^Login is not visible$/, () => {
+    return client
+    .expect.element('#loginPanel').to.not.be.visible.after(100);
+  });
 }
 
 

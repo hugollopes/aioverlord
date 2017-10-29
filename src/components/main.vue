@@ -4,7 +4,7 @@
       <div class="col">
         <h1 class="text-center" id="title">AI Overlord</h1></div>
     </div>
-    <login v-on:checkCredentials="checkCredentials($event)">
+    <login v-on:checkCredentials="checkCredentials($event)" v-show="showLogin">
       :errorMessage="errorMessage"
       passwordPattern=".{2,8}"
       passwordMessage="Greater than 1 and less than 9"
@@ -53,6 +53,7 @@ export default {
   data() {
     return {
       userId: '',
+      showLogin: true,
       classification: {},
       show_classify: false,
       NeuralNetArea: 'neuralnet',
@@ -90,13 +91,15 @@ export default {
         this.NeuralNetArea = 'neuralnet';
       }
     },
-    runTicker() {
-      this.$refs.user.run();
+    runTicker(userId) {
+      this.$refs.user.run(userId);
     },
     checkCredentials(event) {
       this.userId = event.email;
       this.$log.debug(`Email is: ${event.email}`);
       this.$log.debug(`Password is: ${event.password}`);
+      this.showLogin = false;
+      this.runTicker(this.userId);
     },
   },
 };
