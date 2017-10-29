@@ -38,19 +38,19 @@ export default {
   },
   methods: {
     run(userId) {
-      console.log("ahhaa" + userId);
       const self = this;
-      if(userId != ''){
-      this.intervalid1 = setInterval(() => {
-        self.$log.debug(process.env.API_URL);
-        const postdata = { name: userId,
-        };
-        axios.post(`${process.env.API_URL}/getuser`,postdata)
+      if (userId !== '') {
+        this.intervalid1 = setInterval(() => {
+          self.$log.debug(process.env.API_URL);
+          const postdata = { name: userId,
+          };
+          axios.post(`${process.env.API_URL}/getuser`, postdata)
         .then((response) => {
           self.credits = response.data.credits;
           self.neurons = response.data.neurons;
         });
-      }, 1000);}
+        }, 1000);
+      }
     },
   },
 };
