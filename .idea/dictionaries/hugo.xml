@@ -2,6 +2,7 @@
   <dictionary name="hugo">
     <words>
       <w>createuser</w>
+      <w>dont</w>
       <w>retrievepictests</w>
       <w>saveclassification</w>
       <w>savepicturetests</w>

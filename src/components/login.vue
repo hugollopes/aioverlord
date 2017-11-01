@@ -37,6 +37,7 @@
 </template>
 
 <script>
+  import axios from 'axios';
   // original code from here: https://github.com/tcstx/vue-bootstrap3-login-component-tutorial
   export default {
     name: 'LoginComponent',
@@ -114,12 +115,24 @@
           document.cookie = 'password=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
           this.$log.debug(`We just deleted the cookies: ${document.cookie}`);
         }
-        this.$emit('checkCredentials',
-          {
-            email,
-            password,
-          },
-      );
+        const postdata = {
+          username: email,
+          password: password,
+
+        };
+        this.$log.debug(postdata);
+        axios.post(`${process.env.API_URL}/gettoken`, postdata)
+        .then((response) => {
+          const token = response.data.token;
+          this.$emit('checkCredentials',
+            {
+              email,
+              token,
+            },
+        );
+
+          });
+
       },
     },
   };

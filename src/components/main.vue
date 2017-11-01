@@ -91,15 +91,15 @@ export default {
         this.NeuralNetArea = 'neuralnet';
       }
     },
-    runTicker(userId) {
-      this.$refs.user.run(userId);
+    runTicker(userId,token) {
+      this.$refs.user.run(userId,token);
     },
     checkCredentials(event) {
       this.userId = event.email;
       this.$log.debug(`Email is: ${event.email}`);
-      this.$log.debug(`Password is: ${event.password}`);
+      this.$log.debug(`token is: ${event.token}`);
       this.showLogin = false;
-      this.runTicker(this.userId);
+      this.runTicker(this.userId,event.token);
     },
   },
 };

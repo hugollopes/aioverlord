@@ -75,14 +75,26 @@ function steps({ Given, Then, After }) {
     // complete this.
 
     const postdata = {
-      email: user,
+      username: user,
       password: password,
     };
-    axios.post(client.globals.devAPIURL + '/createuser', postdata)
-
-      //`${process.env.API_URL}/createuser`, postdata)
-    .then(() => {
+    const updatedata = {
+      username: user,
+      password: password,
+      credits: 0,
+      neurons: 1,
+    };
+    axios.post(client.globals.devAPIURL + '/createUser', postdata)
+    .then((response) => {
       console.log('saved successfully');
+    })
+    .catch((error) => {
+      console.log("not saved with error code: " + error.response.data.error);
+      if (error.response.data.error === 'userAlreadyExists')
+      axios.post(client.globals.devAPIURL + '/updateUserStatus', updatedata)
+      .then((response) => {
+        console.log('updated successfully');
+      })
     });
     return client;
   });
@@ -111,7 +123,8 @@ function steps({ Given, Then, After }) {
   });
   Then(/^user is visible with "(.*)"$/, (user) => {
     return client
-    .waitForElementVisible('#userId', 1000)
+    .waitForElementVisible('#userId', 3000)
+    .pause(1000)
     .assert.containsText('#userId', user);
   });
   Then(/^user cookies are "(.*)" and with password "(.*)"$/, (user, password) => {

@@ -4,6 +4,8 @@ import sys
 from io import BytesIO
 
 from flask import Flask
+from flask_httpauth import HTTPBasicAuth
+
 
 from ai_overlord_backend_app.classification import *
 from ai_overlord_backend_app.user import *
@@ -23,11 +25,17 @@ app.register_blueprint(classify_route)
 app.register_blueprint(create_classification_route)
 app.register_blueprint(save_classification_route)
 app.register_blueprint(get_user_route)
-app.register_blueprint(save_user_route)
+app.register_blueprint(update_user_route)
 app.register_blueprint(create_user_route)
+app.register_blueprint(get_token_route)
+
+auth = HTTPBasicAuth()
+
 
 
 mongo.init_app(app)
+
+
 
 
 @app.route('/')
