@@ -4,7 +4,7 @@ Feature: User related functionality
 
     Scenario: login with no cookies and credits grow
         Given I open application
-        And user "test@testmail.com" exists in server with password "hackpass"
+        And user "test@testmail.com" exists in server with password "hackpass" and role "user"
         And cookies are empty
         Then login dialog is visible
         And I fullfill with user "test@testmail.com" with password "hackpass"
@@ -18,7 +18,7 @@ Feature: User related functionality
         Given user cookies are "test@testmail.com" and with password "hackpass"
         # need to reopend the application to make cookies visible.
         Given I open application
-        And user "test@testmail.com" exists in server with password "hackpass"
+        And user "test@testmail.com" exists in server with password "hackpass" and role "user"
         Then login dialog is visible
         And I click Sign In
         Then user is visible with "test@testmail.com"

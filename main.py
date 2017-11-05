@@ -2,11 +2,8 @@ import os
 import platform
 import sys
 from io import BytesIO
-
 from flask import Flask
 from flask_httpauth import HTTPBasicAuth
-
-
 from ai_overlord_backend_app.classification import *
 from ai_overlord_backend_app.user import *
 
@@ -102,6 +99,7 @@ if __name__ == "__main__":
     # If the system is a Linux machine -:)
     if platform.system() == "Linux":
         app.run(host='0.0.0.0', port=5000, debug=True)
+        # app.run(host='0.0.0.0', port=5000, debug=True, ssl_context=('cert.pem', 'key.pem'))
     # If the system is a windows /!\ Change  /!\ the   /!\ Port
     elif platform.system() == "Windows":
         app.run(host='127.0.0.1', port=50000, debug=True)

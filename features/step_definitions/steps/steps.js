@@ -70,17 +70,18 @@ function steps({ Given, Then, After }) {
       path: '/',
     });
   });
-  Given(/^user "(.*)" exists in server with password "(.*)"$/, (user, password) => {
-    console.log(`loading into DB user ${user} with password ${password}`);
-    // complete this.
+  Given(/^user "(.*)" exists in server with password "(.*)" and role "(.*)"$/, (user, password,role) => {
+    console.log(`loading into DB user ${user} with password ${password} and role ${role}`);
 
     const postdata = {
       username: user,
       password: password,
+      role: role,
     };
     const updatedata = {
       username: user,
       password: password,
+      role: role,
       credits: 0,
       neurons: 1,
     };

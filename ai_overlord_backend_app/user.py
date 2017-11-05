@@ -6,7 +6,7 @@ from flask import Blueprint, g
 from flask import request, jsonify, abort
 from passlib.apps import custom_app_context as pwd_context
 from ai_overlord_backend_app.database import mongo
-from ai_overlord_backend_app.security import auth, generate_auth_token, verify_auth_token, token_expire
+from ai_overlord_backend_app.security import auth, generate_auth_token, token_expire, requires_roles
 
 
 # blueprint definition
@@ -16,30 +16,11 @@ create_user_route = Blueprint('create_user_route', __name__)
 get_token_route = Blueprint('get_token_route', __name__)
 
 
-@auth.verify_password
-def verify_password(username, password):  # don't work.  get variables from request
-    user = mongo.db.users.find_one({"username": request.json.get('username')})
-    g.current_user_id = str(user['_id'])
-    if not user:
-        logging.debug("authentication user does not exist: " + str(request.json.get('username')))
-        return False
-    user_id = ''
-    if request.json.get('token') is not None:
-        user_id = verify_auth_token(request.json.get('token'))
-        logging.debug("user_id : " + str(user_id)  + "request.json.get('token'): " + request.json.get('token') + "user['_id'] : " + str(user['_id']))
-    if str(user_id) != str(user['_id']):
-        logging.debug("token auth failed: " + str(request.json.get('token')))
-        if not pwd_context.verify(str(request.json.get('password')), str(user['password'])):
-            logging.debug("authentication user password is wrong: " + str(request.json.get('password')))
-            return False
-    logging.debug("authentication successful: " + request.json.get('username'))
-    return True
-
-
 @create_user_route.route("/createUser", methods=['POST'])
 def create_user():
     username = request.json.get('username')
     password = request.json.get('password')
+    role = request.json.get('role')
     user = mongo.db.users
     if username is None or password is None:
         return jsonify({'error': "argumentsMissing"}), 400
@@ -52,13 +33,15 @@ def create_user():
             "password": pwd_context.encrypt(password),
             "credits": 10,
             "neurons": 1,
-            "timestamp": timestamp
+            "timestamp": timestamp,
+            "role": role
         })
     return jsonify({'username': username}), 201
 
 
 @get_user_route.route("/getuser", methods=['POST'])
 @auth.login_required
+@requires_roles('user')
 def get_user():
     users = mongo.db.users
     request_data = request.get_json()
@@ -88,6 +71,7 @@ def update_user_status():
         return jsonify({'error': "user does not exist"}), 400
     user["credits"] = request_data["credits"]
     user["neurons"] = request_data["neurons"]
+    user["role"] = request_data["role"]
     user["timestamp"] = datetime.datetime.now().timestamp()
     mongo.db.users.save(user)
     return jsonify({'status': 'user updated'}), 200

@@ -53,6 +53,7 @@ export default {
   data() {
     return {
       userId: '',
+      token: '',
       showLogin: true,
       classification: {},
       show_classify: false,
@@ -72,7 +73,12 @@ export default {
       this.show_classify = false;
     },
     classify() {
-      axios.get(`${process.env.API_URL}/classify`)
+      const postdata = {
+        username: this.userId,
+        token: this.token,
+      };
+      this.$log.debug("postdata: " + postdata.token + "  " +postdata.username);
+      axios.post(`${process.env.API_URL}/classify`,postdata)
       .then((response) => {
         this.$log.debug(response);
         if (response.data === 'no results') {
@@ -96,6 +102,7 @@ export default {
     },
     checkCredentials(event) {
       this.userId = event.email;
+      this.token = event.token;
       this.$log.debug(`Email is: ${event.email}`);
       this.$log.debug(`token is: ${event.token}`);
       this.showLogin = false;

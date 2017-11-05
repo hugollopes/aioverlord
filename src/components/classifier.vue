@@ -21,7 +21,7 @@ import axios from 'axios';
 
 export default {
   name: 'classifier',
-  props: ['classification'],
+  props: ['classification','userId','token'],
   data() {
     return {
       classifed: false,
@@ -29,8 +29,11 @@ export default {
   },
   methods: {
     classify_choice(choice) {
-      const postdata = { file_id: this.classification.file_id,
+      const postdata = {
+        file_id: this.classification.file_id,
         labeled: choice,
+        username: this.userId,
+        token: this.token,
       };
       this.classifed = true;
       this.$log.debug(postdata);

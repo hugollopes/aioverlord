@@ -7,7 +7,7 @@ from bson.json_util import dumps
 from bson.objectid import ObjectId
 from flask import Blueprint
 from flask import request
-
+from ai_overlord_backend_app.security import auth, requires_roles
 from ai_overlord_backend_app.database import mongo
 
 # blueprint definition
@@ -16,7 +16,9 @@ create_classification_route = Blueprint('create_classification_route', __name__)
 save_classification_route = Blueprint('save_classification_route', __name__)
 
 
-@classify_route.route("/classify")
+@classify_route.route("/classify", methods=['POST'])
+@auth.login_required
+@requires_roles('user')
 def classify():
     # get classification
     # todo: randomize classification or set it as input
@@ -63,6 +65,8 @@ def new_classification():
 
 # todo:misses validation and authentication
 @save_classification_route.route("/saveclassification", methods=['POST'])
+@auth.login_required
+@requires_roles('user')
 def save_classification():
     request_data = request.get_json()
     logging.debug("request_data: " + dumps(request_data))
