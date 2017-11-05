@@ -21,7 +21,7 @@ import axios from 'axios';
 
 export default {
   name: 'classifier',
-  props: ['classification','userId','token'],
+  props: ['classification', 'userId', 'token'],
   data() {
     return {
       classifed: false,

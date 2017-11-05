@@ -37,14 +37,14 @@ export default {
     this.run(this.userId);
   },
   methods: {
-    run(userId,token) {
+    run(userId, token) {
       const self = this;
       if (userId !== '') {
         this.intervalid1 = setInterval(() => {
           self.$log.debug(process.env.API_URL);
           const postdata = { username: userId,
             password: '',
-            token: token,
+            token,
           };
           axios.post(`${process.env.API_URL}/getuser`, postdata)
         .then((response) => {

@@ -77,8 +77,8 @@ export default {
         username: this.userId,
         token: this.token,
       };
-      this.$log.debug("postdata: " + postdata.token + "  " +postdata.username);
-      axios.post(`${process.env.API_URL}/classify`,postdata)
+      this.$log.debug(`postdata: ${postdata.token}  ${postdata.username}`);
+      axios.post(`${process.env.API_URL}/classify`, postdata)
       .then((response) => {
         this.$log.debug(response);
         if (response.data === 'no results') {
@@ -97,8 +97,8 @@ export default {
         this.NeuralNetArea = 'neuralnet';
       }
     },
-    runTicker(userId,token) {
-      this.$refs.user.run(userId,token);
+    runTicker(userId, token) {
+      this.$refs.user.run(userId, token);
     },
     checkCredentials(event) {
       this.userId = event.email;
@@ -106,7 +106,7 @@ export default {
       this.$log.debug(`Email is: ${event.email}`);
       this.$log.debug(`token is: ${event.token}`);
       this.showLogin = false;
-      this.runTicker(this.userId,event.token);
+      this.runTicker(this.userId, event.token);
     },
   },
 };

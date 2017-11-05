@@ -117,7 +117,7 @@
         }
         const postdata = {
           username: email,
-          password: password,
+          password,
 
         };
         this.$log.debug(postdata);
@@ -130,9 +130,7 @@
               token,
             },
         );
-
-          });
-
+        });
       },
     },
   };
