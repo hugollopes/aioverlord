@@ -3,11 +3,52 @@ const axios  = require('axios');
 const { client } = require('nightwatch-cucumber');
 let creditsValue = 0;
 
+
+function openApplication(client) {
+  return client
+      .url(client.globals.devServerURL)
+      .waitForElementVisible('#app', 5000);
+    }
+
+function insertUser(client, user, password,role)
+  {
+    console.log(`loading into DB user ${user} with password ${password} and role ${role}`);
+
+    const postdata = {
+      username: user,
+      password: password,
+      role: role,
+    };
+    const updatedata = {
+      username: user,
+      password: password,
+      role: role,
+      credits: 0,
+      neurons: 1,
+    };
+    axios.post(client.globals.devAPIURL + '/createUser', postdata)
+    .then((response) => {
+      console.log('saved successfully');
+    })
+    .catch((error) => {
+      console.log("not saved with error code: " + error.response.data.error);
+      if (error.response.data.error === 'userAlreadyExists')
+      axios.post(client.globals.devAPIURL + '/updateUserStatus', updatedata)
+      .then((response) => {
+        console.log('updated successfully');
+      })
+    });
+    return client;
+  }
+
+  function setCookiesEmpty(client)
+  {
+      return client;
+  }
+
 function steps({ Given, Then, After }) {
   Given(/^I open application$/, () => {
-    return client
-        .url(client.globals.devServerURL)
-        .waitForElementVisible('#app', 5000);
+    return openApplication(client);
   });
   Given(/^I click button label data$/, () => {
     return client
@@ -71,33 +112,7 @@ function steps({ Given, Then, After }) {
     });
   });
   Given(/^user "(.*)" exists in server with password "(.*)" and role "(.*)"$/, (user, password,role) => {
-    console.log(`loading into DB user ${user} with password ${password} and role ${role}`);
-
-    const postdata = {
-      username: user,
-      password: password,
-      role: role,
-    };
-    const updatedata = {
-      username: user,
-      password: password,
-      role: role,
-      credits: 0,
-      neurons: 1,
-    };
-    axios.post(client.globals.devAPIURL + '/createUser', postdata)
-    .then((response) => {
-      console.log('saved successfully');
-    })
-    .catch((error) => {
-      console.log("not saved with error code: " + error.response.data.error);
-      if (error.response.data.error === 'userAlreadyExists')
-      axios.post(client.globals.devAPIURL + '/updateUserStatus', updatedata)
-      .then((response) => {
-        console.log('updated successfully');
-      })
-    });
-    return client;
+    return insertUser(client, user, password, role);
   });
   Then(/^login dialog is visible$/, () => {
     return client
@@ -146,6 +161,11 @@ function steps({ Given, Then, After }) {
   Then(/^Login is not visible$/, () => {
     return client
     .expect.element('#loginPanel').to.not.be.visible.after(100);
+  });
+  Given(/^I open aplication and login with user "(.*)" with password "(.*)" and role "(.*)"$/, (user, password, role) => {
+      openApplication(client);
+      insertUser(client, user, password, role);
+      return client;
   });
 }
 
