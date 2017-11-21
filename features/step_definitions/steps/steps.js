@@ -10,6 +10,34 @@ function openApplication(client) {
       .waitForElementVisible('#app', 5000);
     }
 
+function loginNotVisible(client){
+  return client
+  .expect.element('#loginPanel').to.not.be.visible.after(100);
+}
+
+function clickSignIn(client)
+{
+  return client
+  .waitForElementVisible('#loginButton', 1000)
+  .pause(1000)
+  .getAttribute('#loginButton', 'disabled', (result) => {
+    if (result.value === 'true') {
+      client.assert.ok(false);
+    } else {
+      client.assert.ok(true);
+    }
+  })
+  .click('button[id=loginButton]');
+}
+
+function userVisible(client, user)
+{
+  return client
+  .waitForElementVisible('#userId', 3000)
+  .pause(1000)
+  .assert.containsText('#userId', user);
+}
+
 function insertUser(client, user, password,role)
   {
     console.log(`loading into DB user ${user} with password ${password} and role ${role}`);
@@ -41,9 +69,35 @@ function insertUser(client, user, password,role)
     return client;
   }
 
+function fullfillLogin(client, user, password)
+  {
+  return client
+  .setValue('input[id=email]', user)
+  .setValue('input[id=password]', password);
+}
+
   function setCookiesEmpty(client)
   {
-      return client;
+    return client
+    .setCookie({
+      name: 'email',
+      value: '',
+      domain: 'localhost',
+      path: '/',
+    })
+    .setCookie({
+      name: 'password',
+      value: '',
+      domain: 'localhost',
+      path: '/',
+    });
+  }
+
+function visibleLogin(client)
+  {
+  return client
+  .waitForElementVisible('#loginPanel', 1000)
+  .assert.containsText('#loginPanel', 'Login');
   }
 
 function steps({ Given, Then, After }) {
@@ -97,51 +151,22 @@ function steps({ Given, Then, After }) {
     .waitForElementVisible('#credits', 1000);
   });
   Given(/^cookies are empty$/, () => {
-    return client
-    .setCookie({
-      name: 'email',
-      value: '',
-      domain: 'localhost',
-      path: '/',
-    })
-    .setCookie({
-      name: 'password',
-      value: '',
-      domain: 'localhost',
-      path: '/',
-    });
+    return setCookiesEmpty(client);
   });
   Given(/^user "(.*)" exists in server with password "(.*)" and role "(.*)"$/, (user, password,role) => {
     return insertUser(client, user, password, role);
   });
   Then(/^login dialog is visible$/, () => {
-    return client
-    .waitForElementVisible('#loginPanel', 1000)
-    .assert.containsText('#loginPanel', 'Login');
+    return visibleLogin(client);
   });
   Then(/^I fullfill with user "(.*)" with password "(.*)"$/, (user, password) => {
-    return client
-    .setValue('input[id=email]', user)
-    .setValue('input[id=password]', password);
+    return fullfillLogin(client, user, password);
   });
   Then(/^I click Sign In$/, () => {
-    return client
-    .waitForElementVisible('#loginButton', 1000)
-    .pause(1000)
-    .getAttribute('#loginButton', 'disabled', (result) => {
-      if (result.value === 'true') {
-        client.assert.ok(false);
-      } else {
-        client.assert.ok(true);
-      }
-    })
-    .click('button[id=loginButton]');
+    return clickSignIn(client);
   });
   Then(/^user is visible with "(.*)"$/, (user) => {
-    return client
-    .waitForElementVisible('#userId', 3000)
-    .pause(1000)
-    .assert.containsText('#userId', user);
+    return userVisible(client, user);
   });
   Then(/^user cookies are "(.*)" and with password "(.*)"$/, (user, password) => {
     return client
@@ -159,12 +184,17 @@ function steps({ Given, Then, After }) {
     });
   });
   Then(/^Login is not visible$/, () => {
-    return client
-    .expect.element('#loginPanel').to.not.be.visible.after(100);
+    return loginNotVisible(client);
   });
   Given(/^I open aplication and login with user "(.*)" with password "(.*)" and role "(.*)"$/, (user, password, role) => {
       openApplication(client);
       insertUser(client, user, password, role);
+      setCookiesEmpty(client);
+      visibleLogin(client);
+      fullfillLogin(client, user, password);
+      clickSignIn(client);
+      userVisible(client, user);
+      loginNotVisible(client);
       return client;
   });
 }
