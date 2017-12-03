@@ -21,7 +21,7 @@ RUN pip3 install --trusted-host pypi.python.org -r requirements.txt
 RUN /usr/bin/mongod --fork --config /etc/mongod.conf
 
 # Make port 80 available to the world outside this container
-EXPOSE 80
+EXPOSE 5000
 
 # Define environment variable
 #ENV NAME World
