@@ -30,8 +30,8 @@ $RECYCLE.BIN/
 .DS_Store
 .DS_Store
 .npm-debug.log*
-.aioverlordUI/node_modules/
-.aioverlordUI/dist/
+.node_modules/
+.dist/
 .aioverlordUI/npm-debug.log*
 .aioverlordUI/yarn-debug.log*
 .aioverlordUI/yarn-error.log*
