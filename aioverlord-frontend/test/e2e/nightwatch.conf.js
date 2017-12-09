@@ -20,11 +20,12 @@ module.exports = {
 
   selenium: {
     start_process: false,
-    server_path: "/home/hugo/PycharmProjects/AppProject/selenium-server-standalone-3.0.1.jar",
-    // server_path: require('selenium-server').path,
-    host: 'localhost',
+    //server_path: "/home/hugo/PycharmProjects/AppProject/selenium-server-standalone-3.0.1.jar",
+    server_path: require('selenium-server').path,
+    //host: 'localhost',
     port: 4444,
     cli_args: {
+      'host': 'localhost',
       'webdriver.chrome.driver': require('chromedriver').path
     }
   },
@@ -45,6 +46,9 @@ module.exports = {
         browserName: 'chrome',
         javascriptEnabled: true,
         acceptSslCerts: true,
+        "chromeOptions" : {
+       "args" : ["headless"]
+    }
       }
     },
 

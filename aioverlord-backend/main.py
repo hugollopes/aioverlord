@@ -2,10 +2,11 @@ import os
 import platform
 import sys
 from io import BytesIO
-from flask import Flask
-from flask_httpauth import HTTPBasicAuth
+
 from ai_overlord_backend_app.classification import *
 from ai_overlord_backend_app.user import *
+from flask import Flask
+from flask_httpauth import HTTPBasicAuth
 
 logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 
@@ -33,8 +34,7 @@ auth = HTTPBasicAuth()
 mongo.init_app(app)
 
 
-
-
+# debugging message
 @app.route('/')
 def dummy_root():
     logging.debug("server alive")
