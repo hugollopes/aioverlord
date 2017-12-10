@@ -95,4 +95,3 @@ module.exports = {
     server.close()
   }
 }
-console.log("process env:" + process.env.NODE_ENV + "process url api:" + process.env.API_URL)

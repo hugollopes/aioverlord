@@ -5,8 +5,7 @@ let creditsValue = 0;
 
 
 function openApplication(client) {
-console.log("flask server url:" + client.globals.devServerURL);
-console.log("web server url:" + client.globals.devAPIURL);
+
 
   return client
       .url(client.globals.devServerURL)
@@ -82,7 +81,7 @@ function fullfillLogin(client, user, password)
 
   function setCookiesEmpty(client)
   {
-    console.log("cookie host:" +  client.globals.devServerHost)
+  
     return client
     .setCookie({
       name: 'email',

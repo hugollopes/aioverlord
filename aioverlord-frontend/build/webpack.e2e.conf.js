@@ -37,4 +37,3 @@ module.exports = merge(baseWebpackConfig, {
   ]
 
 })
-console.log("process env:" + process.env.NODE_ENV + "process url api:" + process.env.API_URL)

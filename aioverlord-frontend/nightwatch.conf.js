@@ -1,22 +1,19 @@
 require('babel-register')
-var config = require('../../config')
-var nightwatchCucumber = require('nightwatch-cucumber')
-
-// Handles the runner, location of feature files and step definitions,
-// and closing of nightwatch
-var nightwatchCucumberConf = {
+var config = require('./config')
+ require('nightwatch-cucumber')
+  ({
     runner: 'nightwatch',
     featureFiles: 'features',
     stepDefinitions: 'step_definitions',
     closeSession: 'afterFeature'
-}
+  })
 
 // http://nightwatchjs.org/gettingstarted#settings-file
 module.exports = {
   //src_folders: ['test/e2e/specs'],
-  src_folders: [nightwatchCucumber(nightwatchCucumberConf)],
-  output_folder: 'test/e2e/reports',
-  custom_assertions_path: ['test/e2e/custom-assertions'],
+  //src_folders: [nightwatchCucumber(nightwatchCucumberConf)],
+  //output_folder: 'test/e2e/reports',
+  //custom_assertions_path: ['test/e2e/custom-assertions'],
 
   selenium: {
     start_process: false,
@@ -47,10 +44,10 @@ module.exports = {
         browserName: 'chrome',
         javascriptEnabled: true,
         acceptSslCerts: true,
-//        "chromeOptions" : {
-//       "args" : ["headless"],
+        "chromeOptions" : {
+       "args" : ["headless"],
 
-  // }
+   }
       }
     },
 

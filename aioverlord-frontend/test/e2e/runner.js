@@ -3,7 +3,7 @@ process.env.NODE_ENV = 'testing';
 var server = require('../../build/dev-server.js');
 
 server.ready.then(() => {
-  
+
   // 2. run the nightwatch test suite against it
   // to run in additional browsers:
   //    1. add an entry in test/e2e/nightwatch.conf.json under "test_settings"
@@ -13,21 +13,25 @@ server.ready.then(() => {
   // http://nightwatchjs.org/guide#settings-file
   var opts = process.argv.slice(2);
   if (opts.indexOf('--config') === -1) {
-    opts = opts.concat(['--config', 'test/e2e/nightwatch.conf.js']);
+    opts = opts.concat(['--config', './nightwatch.conf.js']);
   }
   if (opts.indexOf('--env') === -1) {
     opts = opts.concat(['--env', 'chrome']);
   }
 
   var spawn = require('cross-spawn');
+
   var runner = spawn('./node_modules/.bin/nightwatch', opts, { stdio: 'inherit' });
 
+  console.log("here");
   runner.on('exit', function (code) {
+    console.log("here2");
     server.close();
-    process.exit(code);
+   process.exit(code);
   });
 
   runner.on('error', function (err) {
+    console.log("here3");
     server.close();
     throw err;
   });
