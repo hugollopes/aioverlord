@@ -20,7 +20,8 @@ module.exports = merge(baseWebpackConfig, {
   devtool: '#cheap-module-eval-source-map',
   plugins: [
     new webpack.DefinePlugin({
-      'process.env': config.dev.env
+      'process.env.NODE_ENV': '"testing"',
+      'process.env.API_URL': '"http://flask:5000"',
     }),
     // https://github.com/glenjamin/webpack-hot-middleware#installation--usage
     new webpack.HotModuleReplacementPlugin(),

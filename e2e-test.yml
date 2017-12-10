@@ -7,6 +7,9 @@ services:
      - "8080:8080"
     links:
       - "flask:flask"
+    volumes:
+    # This will mount ., your app code, into the /app directory within the container
+      - ./aioverlord-frontend:/app
   flask:
     build: ./aioverlord-backend
     ports:

@@ -82,17 +82,18 @@ function fullfillLogin(client, user, password)
 
   function setCookiesEmpty(client)
   {
+    console.log("cookie host:" +  client.globals.devServerHost)
     return client
     .setCookie({
       name: 'email',
       value: '',
-      domain: 'localhost',
+      domain: client.globals.devServerHost,
       path: '/',
     })
     .setCookie({
       name: 'password',
       value: '',
-      domain: 'localhost',
+      domain: client.globals.devServerHost,
       path: '/',
     });
   }
@@ -177,13 +178,13 @@ function steps({ Given, Then, After }) {
     .setCookie({
       name: 'email',
       value: user,
-      domain: 'localhost',
+      domain: client.globals.devServerHost,
       path: '/',
     })
     .setCookie({
       name: 'password',
       value: password,
-      domain: 'localhost',
+      domain: client.globals.devServerHost,
       path: '/',
     });
   });

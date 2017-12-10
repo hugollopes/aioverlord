@@ -3,13 +3,18 @@ FROM node:carbon
 
 
 # Set the working directory to /app
+
+
+
 WORKDIR /app
 
 COPY package*.json ./
 
 RUN npm install
 
-COPY . .
+#use mulltilevel in production
+#COPY . .
+VOLUME /app
 
 # Make port 80 available to the world outside this container
 EXPOSE 8080

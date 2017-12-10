@@ -37,6 +37,7 @@ module.exports = {
       silent: true,
       globals: {
         devServerURL: 'http://web:' + (process.env.PORT || config.dev.port),
+        devServerHost: 'web',
         devAPIURL: 'http://flask:5000',  // should come from config
       }
     },
@@ -46,10 +47,10 @@ module.exports = {
         browserName: 'chrome',
         javascriptEnabled: true,
         acceptSslCerts: true,
-        "chromeOptions" : {
-       "args" : ["headless"],
+//        "chromeOptions" : {
+//       "args" : ["headless"],
 
-   }
+  // }
       }
     },
 

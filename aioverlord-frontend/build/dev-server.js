@@ -2,7 +2,9 @@ require('./check-versions')()
 
 var config = require('../config')
 if (!process.env.NODE_ENV) {
-  process.env.NODE_ENV = JSON.parse(config.dev.env.NODE_ENV)
+  process.env.NODE_ENV = JSON.parse(config.dev.env.NODE_ENV);
+
+
 }
 
 var opn = require('opn')
@@ -10,7 +12,13 @@ var path = require('path')
 var express = require('express')
 var webpack = require('webpack')
 var proxyMiddleware = require('http-proxy-middleware')
-var webpackConfig = require('./webpack.dev.conf')
+var webpackConfigstr = "";
+if(process.env.NODE_ENV === 'testing')
+  webpackConfigstr = './webpack.e2e.conf'
+else {
+  webpackConfigstr = './webpack.dev.conf';}
+console.log("webpackConfigstr" + webpackConfigstr)
+var webpackConfig = require(webpackConfigstr);
 
 // default port where dev server listens for incoming traffic
 var port = process.env.PORT || config.dev.port
@@ -54,7 +62,6 @@ app.use(require('connect-history-api-fallback')())
 
 // serve webpack bundle output
 app.use(devMiddleware)
-
 // enable hot-reload and state-preserving
 // compilation error display
 app.use(hotMiddleware)
@@ -88,3 +95,4 @@ module.exports = {
     server.close()
   }
 }
+console.log("process env:" + process.env.NODE_ENV + "process url api:" + process.env.API_URL)
