@@ -23,7 +23,7 @@ module.exports = {
     //server_path: "/home/hugo/PycharmProjects/AppProject/selenium-server-standalone-3.0.1.jar",
     server_path: require('selenium-server').path,
     //host: 'localhost',
-    port: 4444,
+    //port: 4444,
     cli_args: {
       'host': 'localhost',
       'webdriver.chrome.driver': require('chromedriver').path
@@ -33,11 +33,11 @@ module.exports = {
   test_settings: {
     default: {
       selenium_port: 4444,
-      selenium_host: 'localhost',
+      selenium_host: 'chromedriver',
       silent: true,
       globals: {
-        devServerURL: 'http://localhost:' + (process.env.PORT || config.dev.port),
-        devAPIURL: 'http://0.0.0.0:5000',  // should come from config
+        devServerURL: 'http://web:' + (process.env.PORT || config.dev.port),
+        devAPIURL: 'http://flask:5000',  // should come from config
       }
     },
 
@@ -47,8 +47,9 @@ module.exports = {
         javascriptEnabled: true,
         acceptSslCerts: true,
         "chromeOptions" : {
-       "args" : ["headless"]
-    }
+       "args" : ["headless"],
+
+   }
       }
     },
 

@@ -16,7 +16,7 @@ cwd = os.getcwd()
 app = Flask(__name__, static_url_path='')
 # configure DB
 app.config['MONGO_DBNAME'] = 'restdb'
-app.config['MONGO_URI'] = 'mongodb://localhost:27017/local'
+app.config['MONGO_URI'] = 'mongodb://db:27017/local'
 
 # blueprints
 app.register_blueprint(classify_route)
@@ -37,8 +37,14 @@ mongo.init_app(app)
 # debugging message
 @app.route('/')
 def dummy_root():
-    logging.debug("server alive")
-    return "server alive"
+    logging.debug("server alive2")
+    user = mongo.db.users
+    timestamp = int(datetime.datetime.now().timestamp())
+    user.insert({
+            "username": "test",
+            "email": "user"
+        })
+    return "server alive2"
 
 
 @app.route('/uploadpicture', methods=['POST'])

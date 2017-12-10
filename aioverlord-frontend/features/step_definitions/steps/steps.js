@@ -5,9 +5,13 @@ let creditsValue = 0;
 
 
 function openApplication(client) {
+console.log("flask server url:" + client.globals.devServerURL);
+console.log("web server url:" + client.globals.devAPIURL);
+
   return client
       .url(client.globals.devServerURL)
       .waitForElementVisible('#app', 5000);
+
     }
 
 function loginNotVisible(client){

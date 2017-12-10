@@ -1,11 +1,28 @@
 version: '3'
 services:
+  web:
+    build: ./aioverlord-frontend
+    command: ["npm", "run", "e2e"]
+    ports:
+     - "8080:8080"
+    links:
+      - "flask:flask"
   flask:
-    build: ./dockerfile-flask
+    build: ./aioverlord-backend
     ports:
      - "5000:5000"
+    links:
+      - "mongodb:db"
   mongodb:
     image: "mongo:3.5"
     ports:
       - "27017:27017"
 
+
+  chromedriver:
+    image: selenium/standalone-chrome-debug:3.8.1-aluminum
+    ports:
+      - "4444:4444"
+      - "5900:5900"
+    links:
+      - "flask:flask"
