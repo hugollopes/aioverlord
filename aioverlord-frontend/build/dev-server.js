@@ -17,7 +17,6 @@ if(process.env.NODE_ENV === 'testing')
   webpackConfigstr = './webpack.e2e.conf'
 else {
   webpackConfigstr = './webpack.dev.conf';}
-console.log("webpackConfigstr" + webpackConfigstr)
 var webpackConfig = require(webpackConfigstr);
 
 // default port where dev server listens for incoming traffic

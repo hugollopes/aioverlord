@@ -1,16 +1,18 @@
 import os
 import platform
 import sys
+import logging
 from io import BytesIO
-
 from ai_overlord_backend_app.classification import *
 from ai_overlord_backend_app.user import *
 from flask import Flask
 from flask_httpauth import HTTPBasicAuth
 
+
+
+
+
 logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
-
-
 cwd = os.getcwd()
 
 app = Flask(__name__, static_url_path='')

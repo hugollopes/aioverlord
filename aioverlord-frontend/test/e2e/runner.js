@@ -20,18 +20,15 @@ server.ready.then(() => {
   }
 
   var spawn = require('cross-spawn');
-
   var runner = spawn('./node_modules/.bin/nightwatch', opts, { stdio: 'inherit' });
 
-  console.log("here");
+
   runner.on('exit', function (code) {
-    console.log("here2");
     server.close();
    process.exit(code);
   });
 
   runner.on('error', function (err) {
-    console.log("here3");
     server.close();
     throw err;
   });
