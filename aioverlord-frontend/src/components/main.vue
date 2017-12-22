@@ -57,7 +57,7 @@ export default {
       showLogin: true,
       classification: {},
       show_classify: false,
-      NeuralNetArea: 'neuralnet'
+      NeuralNetArea: 'neuralnet',
     };
   },
   components: {
