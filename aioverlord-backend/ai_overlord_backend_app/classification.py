@@ -52,7 +52,7 @@ def classify():
         return "no results"
 
 
-@create_classification_route.route("/create_classification")
+@create_classification_route.route("/create_classification", methods=['POST'])
 def new_classification():
     result = mongo.db.classification.insert_one(
         {

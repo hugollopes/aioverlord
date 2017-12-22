@@ -1,4 +1,5 @@
 const axios  = require('axios');
+const fs = require('fs');
 
 const { client } = require('nightwatch-cucumber');
 let creditsValue = 0;
@@ -81,7 +82,7 @@ function fullfillLogin(client, user, password)
 
   function setCookiesEmpty(client)
   {
-  
+
     return client
     .setCookie({
       name: 'email',
@@ -201,6 +202,26 @@ function steps({ Given, Then, After }) {
       loginNotVisible(client);
       return client;
   });
+  Given(/^Picture "(.*)" exists in the database and a classification exists$/, (picture) => {
+    axios.post(`${client.globals.devAPIURL}/create_classification`).then(() => {
+      this.$log.debug('classification created successfully');
+    });
+    fs.readFile("features/step_definitions/steps/" + picture, (err, data)=>{
+    let base64Image = new Buffer(data, 'binary').toString('base64');
+    postdata = {
+      file_name: picture,
+      file_data: base64Image,
+    }; // set image and strip initial data
+    // post file base64 encoded.
+    axios.post(`${client.globals.devAPIURL}/uploadpicture`, postdata)
+    .then(() => {
+      this.$log.debug('saved successfully');
+    });
+    //this.$log.debug(postdata);
+    });
+    return client;
+  });
+
 }
 
 

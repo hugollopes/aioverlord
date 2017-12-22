@@ -1,4 +1,6 @@
-import sys, shlex
+import os
+import sys
+import shlex
 import logging
 import subprocess
 import requests
