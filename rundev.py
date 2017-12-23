@@ -21,5 +21,5 @@ url = 'http://localhost:5000/createUser'
 data = '{  "username": "user@aioverlord.com",  "password": "hackme",  "role": "user"}'
 response = requests.post(url, data=data, headers={"Content-Type": "application/json"})
 logging.info("response normal user creation: " + str(response))
-
+os.system("chromium-browser 'http://localhost:8080/#/'")
 logging.info("finishing launching dev environment")

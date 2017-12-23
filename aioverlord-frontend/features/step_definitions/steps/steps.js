@@ -134,6 +134,10 @@ function steps({ Given, Then, After }) {
       .waitForElementVisible('#neuronsLabel', 1000)
       .waitForElementVisible('#neurons', 1000);
   });
+  Then(/^network visible$/, () => {
+    return client
+      .waitForElementVisible('#networkcanvas', 1000)
+  });
   Then(/^credits visible$/, () => {
     return client
     .waitForElementVisible('#creditsLabel', 1000)
