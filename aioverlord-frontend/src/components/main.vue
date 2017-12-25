@@ -20,10 +20,9 @@
       </div>
     </div>
     <component v-bind:is="NeuralNetArea" v-show="!showLogin"></component>
-
     <div class="row">
       <div class="col-xs-12" v-show="!showLogin" id="buttonsDiv">
-        <button v-on:click="classify">topology</button>
+        <button v-on:click="ShowTopology" id="topologyButton">topology</button>
         <button v-on:click="classify">trainNN/nnconfig</button>
         <button v-on:click="classify">data sets</button>
         <button id="Downmenubutton" v-on:click="classify">label data</button>
@@ -43,6 +42,7 @@ import user from '@/components/user';
 import classifier from '@/components/classifier';
 import fileupload from '@/components/fileupload';
 import neuralnet from '@/components/neuralnet';
+import topology from '@/components/topology';
 import login from '@/components/login';
 import axios from 'axios';
 
@@ -56,7 +56,7 @@ export default {
       showLogin: true,
       classification: {},
       show_classify: false,
-      NeuralNetArea: 'neuralnet',
+      NeuralNetArea: 'neuralnet', // indicates  what component is visible in that area
     };
   },
   components: {
@@ -65,12 +65,16 @@ export default {
     fileupload,
     neuralnet,
     login,
+    topology,
   },
   methods: {
     changeShowClassify() {
       this.$log.debug('classification.show_classify');
       this.show_classify = false;
     },
+    ShowTopology() {
+      this.NeuralNetArea = "topology";
+      },
     classify() {
       const postdata = {
         username: this.userId,

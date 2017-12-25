@@ -176,11 +176,20 @@ function steps({ Given, Then, After }) {
   Then(/^login dialog is visible$/, () => {
     return visibleLogin(client);
   });
+  Then(/^topology is visible$/, () => {
+    return client
+    .waitForElementVisible('#topologydiv', 1000);
+  });
   Then(/^I fullfill with user "(.*)" with password "(.*)"$/, (user, password) => {
     return fullfillLogin(client, user, password);
   });
   Then(/^I click Sign In$/, () => {
     return clickSignIn(client);
+  });
+  Then(/^I click topology$/, () => {
+    return client
+    .waitForElementVisible('#topologyButton', 1000)
+    .click('button[id=topologyButton]');
   });
   Then(/^user is visible with "(.*)"$/, (user) => {
     return userVisible(client, user);
