@@ -39,7 +39,7 @@ os.environ["TESTFEATURE"] = ""
 time.sleep(60)
 for f in list_files:
     f["file"].flush()
-    f["file"] .close()
+    f["file"].close()
 
 logging.debug("merge log files")
 logfile = open("reports/e2etest.log", "w+")

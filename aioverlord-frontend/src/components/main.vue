@@ -83,7 +83,7 @@ export default {
         if (response.data === 'no results') {
           this.$log.debug('nothing to classify');
         } else {
-          this.classification = response.data; // todo: fix the string concat bellow
+          this.classification = response.data; 
           this.classification.image = `data:image/jpg;base64,${this.classification.image}`;
           this.show_classify = true;
         }

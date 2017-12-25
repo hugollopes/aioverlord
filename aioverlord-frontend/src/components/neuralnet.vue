@@ -1,7 +1,17 @@
 
 <template>
-  <div class="hello">
-    <canvas id="networkcanvas" ref="canvas" width="500" height="500"></canvas>
+  <div class="network">
+    <svg id = "networksvg" height="500" width="500">
+    <circle v-for="neuron in neurons"
+
+          v-bind:cx="neuron.coordinate_x"
+          v-bind:cy="neuron.coordinate_y" v-bind:id="neuron.id" r="4" stroke="black" stroke-width="3" fill="blue" />
+
+    <g v-for="synapse in synapses" fill="none" stroke="grey" stroke-width="1">
+      <path stroke-dasharray="5,5" v-bind:d="synapse.d" v-bind:id="synapse.id" />
+    </g>
+
+    </svg>
   </div>
 </template>
 
@@ -9,15 +19,11 @@
 export default {
   name: 'neuralnet',
   mounted() {
-    this.canvas = this.$refs.canvas;
-    this.context = this.canvas.getContext('2d');
     this.generate_network(2,5);
   },
   data() {
     return {
-      canvas: {},
-      context: {},
-      canvasHeight: 1000,  // not being used. fix!
+      svgHeight: 1000,  // not being used. fix!
       canvasWidth: 450,// not being used. fix!
       neurons: [],
       synapses: [],
@@ -29,19 +35,16 @@ export default {
       let neurons = new Array();
       for (var i = 0; i < num_layers; i++) {
           for (var j = 0; j < num_neurons; j++) {
-            let neuron_id= String(i)+"_"+String(j);
+            let neuronId= String(i)+"_"+String(j);
             //console.log(neuron_id);
             var neuron = {
-              id: neuron_id,
+              id: neuronId,
                layer:i,
                neuron:j,
                coordinate_x: 100+ i*this.neuron_distance,
                coordinate_y: 100+ j*this.neuron_distance,
              }
              neurons.push(neuron);
-             this.context.beginPath();
-             this.context.arc(neuron.coordinate_x, neuron.coordinate_y, 10, 0, 2 * Math.PI);
-             this.context.stroke();
           }
       }
       let synapses = new Array();
@@ -51,20 +54,19 @@ export default {
         for(var j= 0; j < neurons.length ; j++) {
 
           if((neurons[i].id !== neurons[j].id )&& (neurons[i].layer !== neurons[j].layer)){
-            var synapse_id = neurons[i].id + neurons[j].id;
-            synapses[synapse_id] = {
+            var synapse_id = "sys" + neurons[i].id + neurons[j].id;
+            var synapse = {
               x1 : neurons[i].coordinate_x,
               y1 : neurons[i].coordinate_y,
               x2 : neurons[j].coordinate_x,
               y2 : neurons[j].coordinate_y,
+              d: "M"+String(neurons[i].coordinate_x)+" "+
+              String(neurons[i].coordinate_y)+
+              " l"+ String(neurons[j].coordinate_x -neurons[i].coordinate_x) +" "+
+              String(neurons[j].coordinate_y -neurons[i].coordinate_y),
+              id: synapse_id,
             }
-            this.context.beginPath();
-            this.context.moveTo(synapses[synapse_id].x1, synapses[synapse_id].y1);
-            this.context.lineTo(synapses[synapse_id].x2, synapses[synapse_id].y2);
-            this.context.lineWidth = 1;
-            this.context.strokeStyle = '#00aaa';
-            this.context.lineCap = 'butt';
-            this.context.stroke();
+            synapses.push(synapse);
         }}
       }
       this.neurons= neurons;
