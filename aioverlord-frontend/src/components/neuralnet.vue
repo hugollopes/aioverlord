@@ -1,12 +1,11 @@
 
 <template>
   <div class="network">
-    <svg id = "networksvg" height="500" width="500">
+    <svg id = "networksvg" v-bind:height="this.svgHeight" v-bind:width="this.svgWidth">
     <circle v-for="neuron in neurons"
-
           v-bind:cx="neuron.coordinate_x"
-          v-bind:cy="neuron.coordinate_y" v-bind:id="neuron.id" r="4" stroke="black" stroke-width="3" fill="blue" />
-
+          v-bind:cy="neuron.coordinate_y" v-bind:id="neuron.id"
+          r="4" stroke="black" stroke-width="3" fill="blue" />
     <g v-for="synapse in synapses" fill="none" stroke="grey" stroke-width="1">
       <path stroke-dasharray="5,5" v-bind:d="synapse.d" v-bind:id="synapse.id" />
     </g>
@@ -23,8 +22,8 @@ export default {
   },
   data() {
     return {
-      svgHeight: 1000,  // not being used. fix!
-      canvasWidth: 450, // not being used. fix!
+      svgHeight: 550,
+      svgWidth: 450,
       neurons: [],
       synapses: [],
       neuron_distance: 100, // distance between neurons.

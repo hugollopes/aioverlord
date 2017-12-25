@@ -4,7 +4,7 @@ Feature: Main page
 
 
     Scenario: Verify main Page
-        Given I open application
+        Given I open aplication and login with user "test@testmail.com" with password "hackpass" and role "user"
         Then the title exists
         And neurons visible
         And credits visible

@@ -185,6 +185,14 @@ function steps({ Given, Then, After }) {
   Then(/^user is visible with "(.*)"$/, (user) => {
     return userVisible(client, user);
   });
+  Then(/^user name not visible$/, () => {
+    return client
+    .expect.element('#userId').to.not.be.visible.after(100);
+  });
+  Then(/^buttons not visible$/, () => {
+    return client
+    .expect.element('#buttonsDiv').to.not.be.visible.after(100);
+  });
   Then(/^user cookies are "(.*)" and with password "(.*)"$/, (user, password) => {
     return client
     .setCookie({

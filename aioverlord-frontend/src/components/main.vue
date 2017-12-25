@@ -9,20 +9,20 @@
       passwordPattern=".{2,8}"
       passwordMessage="Greater than 1 and less than 9"
     </login>
-    <user ref="user"  v-bind:userId="userId"></user>
+    <user ref="user"  v-bind:userId="userId" v-show="!showLogin"></user>
     <classifier v-show="show_classify"
     v-bind:classification="classification"
     v-on:changeShowClassify="changeShowClassify()"></classifier>
-    <div class="row">
+    <div class="row" v-show="!showLogin">
       <div class="col-12">
         <img src="../images/neural.jpg" class="rounded mx-auto d-block"
         alt="Responsive image" height="100">
       </div>
     </div>
-    <component v-bind:is="NeuralNetArea"></component>
+    <component v-bind:is="NeuralNetArea" v-show="!showLogin"></component>
 
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-xs-12" v-show="!showLogin" id="buttonsDiv">
         <button v-on:click="classify">topology</button>
         <button v-on:click="classify">trainNN/nnconfig</button>
         <button v-on:click="classify">data sets</button>
@@ -31,7 +31,7 @@
     </div>
     <div class="row">
 
-      <div class="col-xs-12">
+      <div class="col-xs-12" v-show="!showLogin">
         <h1>debug functions!!!</h1>
         <button id="debugFunctions"  v-on:click="fileupload">file upload</button>
       </div>

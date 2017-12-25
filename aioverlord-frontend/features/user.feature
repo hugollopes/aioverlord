@@ -23,3 +23,9 @@ Feature: User related functionality
         And I click Sign In
         Then user is visible with "test@testmail.com"
         And Login is not visible
+
+   Scenario: no login cannot use application
+        Given I open application
+        Then login dialog is visible
+        And user name not visible
+        And buttons not visible
