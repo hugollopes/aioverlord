@@ -19,59 +19,58 @@
 export default {
   name: 'neuralnet',
   mounted() {
-    this.generate_network(2,5);
+    this.generate_network(2, 5);
   },
   data() {
     return {
       svgHeight: 1000,  // not being used. fix!
-      canvasWidth: 450,// not being used. fix!
+      canvasWidth: 450, // not being used. fix!
       neurons: [],
       synapses: [],
       neuron_distance: 100, // distance between neurons.
     };
   },
   methods: {
-    generate_network(num_layers,num_neurons) {
-      let neurons = new Array();
-      for (var i = 0; i < num_layers; i++) {
-          for (var j = 0; j < num_neurons; j++) {
-            let neuronId= String(i)+"_"+String(j);
-            //console.log(neuron_id);
-            var neuron = {
-              id: neuronId,
-               layer:i,
-               neuron:j,
-               coordinate_x: 100+ i*this.neuron_distance,
-               coordinate_y: 100+ j*this.neuron_distance,
-             }
-             neurons.push(neuron);
-          }
+    generate_network(numLayers, numNeurons) {
+      const neurons = [];
+      for (let i = 0; i < numLayers; i += 1) {
+        for (let j = 0; j < numNeurons; j += 1) {
+          const neuronId = `neuron${String(i)}_${String(j)}`;
+            // console.log(neuron_id);
+          const neuron = {
+            id: neuronId,
+            layer: i,
+            neuron: j,
+            coordinate_x: 100 + (i * this.neuron_distance),
+            coordinate_y: 100 + (j * this.neuron_distance),
+          };
+          neurons.push(neuron);
+        }
       }
-      let synapses = new Array();
+      const synapses = [];
 
-      for(var i= 0; i < neurons.length ; i++){
-
-        for(var j= 0; j < neurons.length ; j++) {
-
-          if((neurons[i].id !== neurons[j].id )&& (neurons[i].layer !== neurons[j].layer)){
-            var synapse_id = "sys" + neurons[i].id + neurons[j].id;
-            var synapse = {
-              x1 : neurons[i].coordinate_x,
-              y1 : neurons[i].coordinate_y,
-              x2 : neurons[j].coordinate_x,
-              y2 : neurons[j].coordinate_y,
-              d: "M"+String(neurons[i].coordinate_x)+" "+
-              String(neurons[i].coordinate_y)+
-              " l"+ String(neurons[j].coordinate_x -neurons[i].coordinate_x) +" "+
-              String(neurons[j].coordinate_y -neurons[i].coordinate_y),
-              id: synapse_id,
-            }
+      for (let i = 0; i < neurons.length; i += 1) {
+        for (let j = 0; j < neurons.length; j += 1) {
+          if ((neurons[i].id !== neurons[j].id) && (neurons[i].layer !== neurons[j].layer)) {
+            const synapseId = `syn${neurons[i].id}${neurons[j].id}`;
+            const synapse = {
+              x1: neurons[i].coordinate_x,
+              y1: neurons[i].coordinate_y,
+              x2: neurons[j].coordinate_x,
+              y2: neurons[j].coordinate_y,
+              d: `M${String(neurons[i].coordinate_x)} ${
+              String(neurons[i].coordinate_y)
+              } l${String(neurons[j].coordinate_x - neurons[i].coordinate_x)} ${
+              String(neurons[j].coordinate_y - neurons[i].coordinate_y)}`,
+              id: synapseId,
+            };
             synapses.push(synapse);
-        }}
+          }
+        }
       }
-      this.neurons= neurons;
-      this.synapses= synapses;
-    }
+      this.neurons = neurons;
+      this.synapses = synapses;
+    },
   },
 };
 </script>

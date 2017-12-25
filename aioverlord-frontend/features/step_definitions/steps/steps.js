@@ -138,13 +138,13 @@ function steps({ Given, Then, After }) {
     return client
       .waitForElementVisible('#networksvg', 1000)
   });
-  Then(/^Network neurons visible$/, () => {
+  Then(/^network neurons visible$/, () => {
     return client
-      .waitForElementVisible('#1_0', 1000)
+      .waitForElementVisible('#neuron1_0', 1000)
   });
-  Then(/^Network synapses visible$/, () => {
+  Then(/^network synapses visible$/, () => {
     return client
-      .waitForElementVisible('#sys1_00_1', 1000)
+      .waitForElementVisible('#synneuron1_0neuron0_1', 1000)
   });
   Then(/^credits visible$/, () => {
     return client

@@ -9,3 +9,5 @@ Feature: Main page
         And neurons visible
         And credits visible
         And network visible
+        And network neurons visible
+        And network synapses visible
