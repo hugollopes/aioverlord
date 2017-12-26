@@ -42,7 +42,7 @@ function userVisible(client, user)
   .assert.containsText('#userId', user);
 }
 
-function insertUser(client, user, password,role)
+function insertUser(client, user, password,role,credits,neurons)
   {
     console.log(`loading into DB user ${user} with password ${password} and role ${role}`);
 
@@ -55,8 +55,8 @@ function insertUser(client, user, password,role)
       username: user,
       password: password,
       role: role,
-      credits: 0,
-      neurons: 1,
+      credits: credits,
+      neurons: neurons,
     };
     axios.post(client.globals.devAPIURL + '/createUser', postdata)
     .then((response) => {
@@ -171,7 +171,7 @@ function steps({ Given, Then, After }) {
     return setCookiesEmpty(client);
   });
   Given(/^user "(.*)" exists in server with password "(.*)" and role "(.*)"$/, (user, password,role) => {
-    return insertUser(client, user, password, role);
+    return insertUser(client, user, password, role,0,1);
   });
   Then(/^login dialog is visible$/, () => {
     return visibleLogin(client);
@@ -184,9 +184,19 @@ function steps({ Given, Then, After }) {
     return client
     .waitForElementVisible('#buyNeuronButton', 1000);
   });
+  Then(/^click buy neurons$/, () => {
+    return client
+    .waitForElementVisible('#buyNeuronButton', 1000)
+    .click('button[id=buyNeuronButton]')
+    .pause(100);
+  });
   Then(/^I fullfill with user "(.*)" with password "(.*)"$/, (user, password) => {
     return fullfillLogin(client, user, password);
   });
+  Then(/^user "(.*)" has "(.*)" neurons and "(.*)" credits$/, (user,neurons,credits) => {
+    return insertUser(client, user, '', 'user', Number(credits), Number(neurons));
+  });
+
   Then(/^I click Sign In$/, () => {
     return clickSignIn(client);
   });
@@ -198,6 +208,31 @@ function steps({ Given, Then, After }) {
   Then(/^user is visible with "(.*)"$/, (user) => {
     return userVisible(client, user);
   });
+  Then(/^number of user neurons is "(.*)"$/, (neurons) => {
+    return client
+    .waitForElementVisible('#neurons', 1000)
+    .pause(1000)
+    .getText('#neurons', (result) => {
+      client.assert.ok(Number(result.value) === Number(neurons));
+    });
+  });
+  Then(/^after "(.*)" seconds credits are more than "(.*)"$/, (seconds,credits) => {
+    return client
+    .waitForElementVisible('#credits', 1000)
+    .pause(seconds*1000)
+    .getText('#credits', (result) => {
+      client.assert.ok(Number(result.value) >= Number(credits));
+    })
+  });
+  Then(/^credits are less than "(.*)"$/, (credits) => {
+    return client
+    .waitForElementVisible('#credits', 1000)
+    .pause(1000)
+    .getText('#credits', (result) => {
+      client.assert.ok(Number(result.value) < Number(credits));
+    })
+  });
+
   Then(/^user name not visible$/, () => {
     return client
     .expect.element('#userId').to.not.be.visible.after(100);
@@ -226,7 +261,7 @@ function steps({ Given, Then, After }) {
   });
   Given(/^I open aplication and login with user "(.*)" with password "(.*)" and role "(.*)"$/, (user, password, role) => {
       openApplication(client);
-      insertUser(client, user, password, role);
+      insertUser(client, user, password, role,0,1);
       setCookiesEmpty(client);
       visibleLogin(client);
       fullfillLogin(client, user, password);

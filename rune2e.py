@@ -26,7 +26,6 @@ os.environ["FEATURECOMMAND"] = "--"
 for f in list_files:
     os.system("docker-compose -f e2e-test.yml -p test" + str(test_number) + " stop")
     os.system("docker-compose -f e2e-test.yml -p test" + str(test_number) + " rm -f")
-
     logging.info("launching test " + str(test_number) + " for feature: " + f["feature"])
     filepath = "./reports/e2eparallel" + str(test_number) + ".log"
     f["filepath"] = filepath

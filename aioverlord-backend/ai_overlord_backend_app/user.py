@@ -8,7 +8,7 @@ from flask import Blueprint, g
 from flask import request, jsonify, abort
 from passlib.apps import custom_app_context as pwd_context
 
-COST_PER_NEURON = 10
+COST_PER_NEURON = 100
 
 # blueprint definition
 get_user_route = Blueprint('get_user_route', __name__)
@@ -72,6 +72,7 @@ def buy_neuron():
     if int(cursor['credits']) < COST_PER_NEURON:
         logging.debug("not enough credits")
         return "not enough credits"
+    cursor["credits"] = cursor['credits'] - COST_PER_NEURON
     cursor["neurons"] = cursor['neurons'] + 1
     mongo.db.users.save(cursor)
     return "neuron purchased"

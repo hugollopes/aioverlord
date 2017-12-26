@@ -13,18 +13,18 @@ Feature: Topology
         And I click topology
         Then topology is visible
         And buy neurons is visible
-        And number of user neurons is "1"
-        And number of user credits is "10"
+        And user "test@testmail.com" has "1" neurons and "100" credits
         Then click buy neurons
         Then number of user neurons is "2"
-        And credits are less than "10"
+        And credits are less than "100"
         And after "10" seconds credits are more than "20"
 
     Scenario: no credits for neurons
         Given I open aplication and login with user "test@testmail.com" with password "hackpass" and role "user"
-        And User has "0" credits and "1" neurons
+        And user "test@testmail.com" has "1" neurons and "0" credits
         And I click topology
         Then topology is visible
         And buy neurons is visible
+        Then click buy neurons
         And number of user neurons is "1"
-        Then click buy neurons is disabled
+        #meaning could not buy them
