@@ -2,23 +2,33 @@
 <template>
   <div class="topology" id="topologydiv">
     topology
+    <button v-on:click="buyNeuron" id="buyNeuronButton">buy Neuron</button>
 
     </svg>
   </div>
 </template>
 
 <script>
+import { bus } from '../main';
+
 export default {
   name: 'topology',
   data() {
     return {
-      neurons: 100,
+      neurons: 0,
     };
   },
+  created() {
+    bus.$on('neuronsUpdated', (neurons) => {
+      this.neurons = neurons;
+    });
+  },
   methods: {
-    buy_neuron() {
-      console.log("buy neurons");
+    buyNeuron() {
+      bus.$emit('increaseNeuron');
     },
+
+
   },
 };
 </script>

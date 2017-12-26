@@ -16,6 +16,8 @@
 
 <script>
 import axios from 'axios';
+import { bus } from '../main';
+
 
 export default {
   name: 'user',
@@ -36,9 +38,30 @@ export default {
   mounted() {
     this.run(this.userId);
   },
+  created() {
+    bus.$on('increaseNeuron', () => {
+      // this.neurons +=1;
+      const postdata = {
+        username: this.userId,
+        token: this.token,
+      };
+      // this.$log.debug(`postdata: ${postdata.token}  ${postdata.username}`);
+      axios.post(`${process.env.API_URL}/buy_neuron`, postdata)
+      .then((response) => {
+        this.$log.debug(response);
+        if (response.data === 'not enough credits') {
+          this.$log.debug('not enough credits');
+        } else {
+          this.neurons += 1;
+          this.$log.debug('neuron purchased');
+        }
+      });
+    });
+  },
   methods: {
     run(userId, token) {
       const self = this;
+      this.token = token;
       if (userId !== '') {
         this.intervalid1 = setInterval(() => {
           self.$log.debug(process.env.API_URL);
@@ -49,7 +72,8 @@ export default {
           axios.post(`${process.env.API_URL}/getuser`, postdata)
         .then((response) => {
           self.credits = response.data.credits;
-          self.neurons = response.data.neurons;
+          this.neurons = response.data.neurons;
+          bus.$emit('neuronsUpdated', this.neurons);
         });
         }, 1000);
       }

@@ -10,7 +10,7 @@ from time import sleep
 logging.basicConfig(stream=sys.stderr, level=logging.INFO)
 logging.info("launching dev environment")
 os.system("docker-compose -f dev.yml -p dev build")
-p = subprocess.Popen(shlex.split("docker-compose -f dev.yml -p dev up  --force-recreate"))
+p = subprocess.Popen(shlex.split("docker-compose -f dev.yml -p dev up  --force-recreate --build"))
 sleep(10)  # wait for 10 second
 url = 'http://localhost:5000/createUser'
 data = '{  "username": "admin@aioverlord.com",  "password": "admin",  "role": "admin"}'

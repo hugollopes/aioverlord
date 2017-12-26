@@ -24,6 +24,16 @@ const options = {
   showConsoleColors: false,
 };
 
+export const store = {
+  debug: true,
+  state: {
+    neurons: 0,
+  },
+
+};
+
+export const bus = new Vue();
+
 Vue.use(VueLogger, options);
 Vue.config.productionTip = false;
 Vue.use(BootstrapVue);

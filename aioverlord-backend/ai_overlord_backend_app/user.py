@@ -8,11 +8,14 @@ from flask import Blueprint, g
 from flask import request, jsonify, abort
 from passlib.apps import custom_app_context as pwd_context
 
+COST_PER_NEURON = 10
+
 # blueprint definition
 get_user_route = Blueprint('get_user_route', __name__)
 update_user_route = Blueprint('update_user_route', __name__)
 create_user_route = Blueprint('create_user_route', __name__)
 get_token_route = Blueprint('get_token_route', __name__)
+buy_neuron_route = Blueprint('buy_neuron', __name__)
 
 
 @create_user_route.route("/createUser", methods=['POST'])
@@ -51,12 +54,28 @@ def get_user():
     timestamp = int(datetime.datetime.now().timestamp())
     # calculate saved ticks
     for x in range(timestamp - timestamp_db):
-        cursor['credits'] = cursor['credits'] + 1 + cursor['neurons'] * 1
+        cursor['credits'] = cursor['credits'] + cursor['neurons'] * 1
     logging.debug("ticks: " + str(range(timestamp - timestamp_db)))
     cursor["timestamp"] = datetime.datetime.now().timestamp()
     mongo.db.users.save(cursor)
     logging.debug("update_cursor: " + dumps(cursor))
     return dumps(cursor)
+
+
+@get_user_route.route("/buy_neuron", methods=['POST'])
+@auth.login_required
+@requires_roles('user')
+def buy_neuron():
+    users = mongo.db.users
+    request_data = request.get_json()
+    logging.debug("buy neuron request dump" + dumps(request_data))
+    cursor = users.find_one({"username": request_data["username"]})
+    if int(cursor['credits']) < COST_PER_NEURON:
+        logging.debug("not enough credits")
+        return "not enough credits"
+    cursor["neurons"] = cursor['neurons'] + 1
+    mongo.db.users.save(cursor)
+    return "neuron purchased"
 
 
 @update_user_route.route("/updateUserStatus", methods=['POST'])

@@ -28,6 +28,8 @@ app.register_blueprint(get_user_route)
 app.register_blueprint(update_user_route)
 app.register_blueprint(create_user_route)
 app.register_blueprint(get_token_route)
+app.register_blueprint(buy_neuron_route)
+
 
 auth = HTTPBasicAuth()
 
@@ -40,12 +42,6 @@ mongo.init_app(app)
 @app.route('/')
 def dummy_root():
     logging.debug("server alive2")
-    user = mongo.db.users
-    timestamp = int(datetime.datetime.now().timestamp())
-    user.insert({
-            "username": "test",
-            "email": "user"
-        })
     return "server alive2"
 
 

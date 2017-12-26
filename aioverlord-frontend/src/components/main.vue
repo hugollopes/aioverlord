@@ -9,7 +9,7 @@
       passwordPattern=".{2,8}"
       passwordMessage="Greater than 1 and less than 9"
     </login>
-    <user ref="user"  v-bind:userId="userId" v-show="!showLogin"></user>
+    <user ref="user"  v-bind:userId="userId"  v-show="!showLogin"></user>
     <classifier v-show="show_classify"
     v-bind:classification="classification"
     v-on:changeShowClassify="changeShowClassify()"></classifier>
@@ -73,8 +73,8 @@ export default {
       this.show_classify = false;
     },
     ShowTopology() {
-      this.NeuralNetArea = "topology";
-      },
+      this.NeuralNetArea = 'topology';
+    },
     classify() {
       const postdata = {
         username: this.userId,

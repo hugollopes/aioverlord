@@ -180,6 +180,10 @@ function steps({ Given, Then, After }) {
     return client
     .waitForElementVisible('#topologydiv', 1000);
   });
+  Then(/^buy neurons is visible$/, () => {
+    return client
+    .waitForElementVisible('#buyNeuronButton', 1000);
+  });
   Then(/^I fullfill with user "(.*)" with password "(.*)"$/, (user, password) => {
     return fullfillLogin(client, user, password);
   });
