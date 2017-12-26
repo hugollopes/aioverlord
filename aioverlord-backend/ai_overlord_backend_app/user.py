@@ -47,7 +47,7 @@ def create_user():
 def get_user():
     users = mongo.db.users
     request_data = request.get_json()
-    logging.debug("request dump" + dumps(request_data))
+    logging.debug("get user " + request_data["username"])
     cursor = users.find_one({"username": request_data["username"]})
     # calculate seconds between now and database.
     timestamp_db = int(cursor['timestamp'])
@@ -55,10 +55,9 @@ def get_user():
     # calculate saved ticks
     for x in range(timestamp - timestamp_db):
         cursor['credits'] = cursor['credits'] + cursor['neurons'] * 1
-    logging.debug("ticks: " + str(range(timestamp - timestamp_db)))
+    logging.debug("ticks: " + str(timestamp - timestamp_db))
     cursor["timestamp"] = datetime.datetime.now().timestamp()
     mongo.db.users.save(cursor)
-    logging.debug("update_cursor: " + dumps(cursor))
     return dumps(cursor)
 
 
@@ -68,7 +67,7 @@ def get_user():
 def buy_neuron():
     users = mongo.db.users
     request_data = request.get_json()
-    logging.debug("buy neuron request dump" + dumps(request_data))
+    logging.debug("buy neuron request dump")
     cursor = users.find_one({"username": request_data["username"]})
     if int(cursor['credits']) < COST_PER_NEURON:
         logging.debug("not enough credits")
@@ -97,7 +96,7 @@ def update_user_status():
 
 @get_token_route.route("/gettoken", methods=['POST'])
 @auth.login_required
-def update_user_status():
+def get_token():
     logging.debug("request dump" + dumps(request.get_json()))
     token = generate_auth_token(g.current_user_id, token_expire).decode('ascii')
     logging.debug("token: " + token)

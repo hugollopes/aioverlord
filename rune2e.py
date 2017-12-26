@@ -24,6 +24,9 @@ for f in only_files:
 test_number = 1
 os.environ["FEATURECOMMAND"] = "--"
 for f in list_files:
+    os.system("docker-compose -f e2e-test.yml -p test" + str(test_number) + " stop")
+    os.system("docker-compose -f e2e-test.yml -p test" + str(test_number) + " rm -f")
+
     logging.info("launching test " + str(test_number) + " for feature: " + f["feature"])
     filepath = "./reports/e2eparallel" + str(test_number) + ".log"
     f["filepath"] = filepath
@@ -36,7 +39,7 @@ for f in list_files:
 
 os.environ["FEATURECOMMAND"] = ""
 os.environ["TESTFEATURE"] = ""
-time.sleep(80)
+time.sleep(60)
 for f in list_files:
     f["file"].flush()
     f["file"].close()
@@ -54,3 +57,5 @@ for f in list_files:
 logfile.close()
 print(open("reports/e2etest.log").read())
 logging.info("E2E test ended")
+
+

@@ -18,7 +18,7 @@ secret_key = "this needs to change and not be in the code like this"  # todo: mu
 def generate_auth_token(id, expiration=50000):
     s = Serializer(secret_key, expires_in=expiration)
     token = s.dumps({'id': id})
-    logging.debug("token created: " + str(token) + "id: " + id)
+    logging.debug("token created")
     return token
 
 
@@ -63,7 +63,7 @@ def verify_password(username, password):  # don't work.  get variables from requ
     user_id = ''
     if request.json.get('token') is not None:
         user_id = verify_auth_token(request.json.get('token'))
-        logging.debug("user_id : " + str(user_id)  + "request.json.get('token'): " + request.json.get('token') + "user['_id'] : " + str(user['_id']))
+        #logging.debug("user_id : " + str(user_id)  + "request.json.get('token'): " + request.json.get('token') + "user['_id'] : " + str(user['_id']))
     if str(user_id) != str(user['_id']):
         logging.debug("token auth failed: " + str(request.json.get('token')))
         if not pwd_context.verify(str(request.json.get('password')), str(user['password'])):
