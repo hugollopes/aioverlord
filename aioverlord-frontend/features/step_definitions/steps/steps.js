@@ -184,11 +184,23 @@ function steps({ Given, Then, After }) {
     return client
     .waitForElementVisible('#buyNeuronButton', 1000);
   });
+  Then(/^buy neurons is disabled$/, () => {
+    return client
+    .expect.element('#buyNeuronButton').to.have.attribute('disabled').before(1000);
+  });
+  Then(/^buy neurons is enabled$/, () => {
+    return client
+    .expect.element('#buyNeuronButton').to.not.have.attribute('disabled').before(1000);
+  });
+
+  Then(/^network button is visible$/, () => {
+    return client
+    .waitForElementVisible('#showNetworkButton', 1000);
+  });
   Then(/^click buy neurons$/, () => {
     return client
     .waitForElementVisible('#buyNeuronButton', 1000)
-    .click('button[id=buyNeuronButton]')
-    .pause(100);
+    .click('button[id=buyNeuronButton]');
   });
   Then(/^I fullfill with user "(.*)" with password "(.*)"$/, (user, password) => {
     return fullfillLogin(client, user, password);
@@ -200,10 +212,16 @@ function steps({ Given, Then, After }) {
   Then(/^I click Sign In$/, () => {
     return clickSignIn(client);
   });
+
   Then(/^I click topology$/, () => {
     return client
     .waitForElementVisible('#topologyButton', 1000)
     .click('button[id=topologyButton]');
+  });
+  Then(/^I click network button$/, () => {
+    return client
+    .waitForElementVisible('#showNetworkButton', 1000)
+    .click('button[id=showNetworkButton]');
   });
   Then(/^user is visible with "(.*)"$/, (user) => {
     return userVisible(client, user);

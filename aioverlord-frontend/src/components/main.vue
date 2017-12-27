@@ -22,7 +22,9 @@
     <component v-bind:is="NeuralNetArea" v-show="!showLogin"></component>
     <div class="row">
       <div class="col-xs-12" v-show="!showLogin" id="buttonsDiv">
-        <button v-on:click="ShowTopology" id="topologyButton">topology</button>
+        <button v-on:click="ShowTopology" id="topologyButton" v-show="showTopologyButton">topology</button>
+        <button v-on:click="showNetwork" id="showNetworkButton" v-show="showNetworkButton">Network</button>
+
         <button v-on:click="classify">trainNN/nnconfig</button>
         <button v-on:click="classify">data sets</button>
         <button id="Downmenubutton" v-on:click="classify">label data</button>
@@ -56,6 +58,8 @@ export default {
       showLogin: true,
       classification: {},
       show_classify: false,
+      showTopologyButton: true,
+      showNetworkButton: false,
       NeuralNetArea: 'neuralnet', // indicates  what component is visible in that area
     };
   },
@@ -74,6 +78,13 @@ export default {
     },
     ShowTopology() {
       this.NeuralNetArea = 'topology';
+      this.showTopologyButton = false;
+      this.showNetworkButton = true;
+    },
+    showNetwork() {
+      this.NeuralNetArea = 'neuralnet';
+      this.showTopologyButton = true;
+      this.showNetworkButton = false;
     },
     classify() {
       const postdata = {

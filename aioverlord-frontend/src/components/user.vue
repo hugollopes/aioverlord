@@ -74,6 +74,7 @@ export default {
           self.credits = response.data.credits;
           this.neurons = response.data.neurons;
           bus.$emit('neuronsUpdated', this.neurons);
+          bus.$emit('creditsUpdated', this.credits);
         });
         }, 1000);
       }

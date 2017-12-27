@@ -32,7 +32,7 @@ def classify():
     picture_collection = mongo.db.pictures
     picture_cursor = picture_collection.find_one({"labeled": None})
     logging.debug("picture_cursor: " + dumps(picture_cursor))
-    if picture_cursor != None:
+    if picture_cursor is not None:
         # get picture base64 string
         fs = gridfs.GridFS(mongo.db)
         picture_file = fs.get(picture_cursor["file_id"])

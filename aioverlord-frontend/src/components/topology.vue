@@ -2,9 +2,7 @@
 <template>
   <div class="topology" id="topologydiv">
     topology
-    <button v-on:click="buyNeuron" id="buyNeuronButton">buy Neuron</button>
-
-    </svg>
+    <button  :disabled="buyNeuronDisabled" v-on:click="buyNeuron" id="buyNeuronButton">buy Neuron</button>
   </div>
 </template>
 
@@ -16,12 +14,24 @@ export default {
   data() {
     return {
       neurons: 0,
-    };
+      credits: 0,
+  }
+},
+  computed: {
+  buyNeuronDisabled: function() {
+    if(this.credits < 100)
+      {return true;}
+    else{ return false;};
+    },
   },
   created() {
     bus.$on('neuronsUpdated', (neurons) => {
       this.neurons = neurons;
     });
+    bus.$on('creditsUpdated', (credits) => {
+      this.credits = credits;
+    });
+
   },
   methods: {
     buyNeuron() {
