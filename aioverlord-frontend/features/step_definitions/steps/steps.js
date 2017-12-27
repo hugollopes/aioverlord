@@ -1,8 +1,6 @@
 const axios = require('axios');
 const fs = require('fs');
 const { debug } = require('debug')('my-namespace');
-
-
 const { client } = require('nightwatch-cucumber');
 
 let creditsValue = 0;
@@ -41,7 +39,7 @@ function userVisible(user) {
 }
 
 function insertUser(user, password, role, credits, neurons) {
-  console.log(`loading into DB user ${user} with password ${password} and role ${role}`);
+  debug(`loading into DB user ${user} with password ${password} and role ${role}`);
 
   const postdata = {
     username: user,
