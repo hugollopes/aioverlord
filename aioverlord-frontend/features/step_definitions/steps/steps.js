@@ -1,6 +1,5 @@
 const axios = require('axios');
 const fs = require('fs');
-const { debug } = require('debug')('my-namespace');
 const { client } = require('nightwatch-cucumber');
 
 let creditsValue = 0;
@@ -39,7 +38,7 @@ function userVisible(user) {
 }
 
 function insertUser(user, password, role, credits, neurons) {
-  debug(`loading into DB user ${user} with password ${password} and role ${role}`);
+  // this.$log.debug(`loading into DB user ${user} with password ${password} and role ${role}`);
 
   const postdata = {
     username: user,
@@ -54,19 +53,18 @@ function insertUser(user, password, role, credits, neurons) {
     neurons,
   };
   axios.post(`${client.globals.devAPIURL}/createUser`, postdata)
-    .then((response) => {
-      debug(`saved successfully${String(response)}`);
+    .then(() => {
+      // this.$log.debug(`saved successfully${String(response)}`);
     })
     .catch((error) => {
-      debug(`not saved with error code: ${error.response.data.error}`);
+      // this.$log.debug(`not saved with error code: ${error.response.data.error}`);
       if (error.response.data.error === 'userAlreadyExists') {
         axios.post(`${client.globals.devAPIURL}/updateUserStatus`, updatedata)
-      .then((response) => {
-        debug(`updated successfully${String(response)}`);
+      .then(() => {
+      //  this.$log.debug(`updated successfully${String(response)}`);
       });
       }
     });
-  return client;
 }
 
 function fullfillLogin(user, password) {
@@ -143,7 +141,7 @@ function steps({ Given, Then, After }) {
   Then(/^buy neurons is disabled$/, () => client
     .expect.element('#buyNeuronButton').to.have.attribute('disabled').before(1000));
   Then(/^buy neurons is enabled$/, () => client
-    .expect.element('#buyNeuronButton').to.not.have.attribute('disabled').before(1000));
+    .expect.element('#buyNeuronButton').to.not.have.attribute('disabled').before(3000));
 
   Then(/^network button is visible$/, () => client
     .waitForElementVisible('#showNetworkButton', 1000));
@@ -225,7 +223,6 @@ function steps({ Given, Then, After }) {
     .then(() => {
       this.$log.debug('saved successfully');
     });
-    // this.$log.debug(postdata);
     });
     return client;
   });
