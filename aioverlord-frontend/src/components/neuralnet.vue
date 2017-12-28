@@ -5,7 +5,7 @@
     <circle v-for="neuron in neurons"
           v-bind:cx="neuron.coordinate_x"
           v-bind:cy="neuron.coordinate_y" v-bind:id="neuron.id"
-          r="4" stroke="black" stroke-width="3" fill="blue" />
+          v-bind:r="neuron_circle_size" stroke="black" stroke-width="3" fill="blue" />
     <g v-for="synapse in synapses" fill="none" stroke="grey" stroke-width="1">
       <path stroke-dasharray="5,5" v-bind:d="synapse.d" v-bind:id="synapse.id" />
     </g>
@@ -27,6 +27,9 @@ export default {
       neurons: [],
       synapses: [],
       neuron_distance: 100, // distance between neurons.
+      neuron_circle_size: 6,
+      svg_padding: 10,
+
     };
   },
   methods: {
@@ -40,8 +43,10 @@ export default {
             id: neuronId,
             layer: i,
             neuron: j,
-            coordinate_x: 100 + (i * this.neuron_distance),
-            coordinate_y: 100 + (j * this.neuron_distance),
+            coordinate_x: this.svg_padding + this.neuron_circle_size
+              + this.neuron_distance + (i * this.neuron_distance),
+            coordinate_y: this.svg_padding + this.neuron_circle_size
+              + (j * this.neuron_distance),
           };
           neurons.push(neuron);
         }
@@ -69,6 +74,7 @@ export default {
       }
       this.neurons = neurons;
       this.synapses = synapses;
+      // todo: input neurons: this.inputNeurons = [{x1:0,y1:0},{x2:0,y2:this.neuron_distance}]
     },
   },
 };
@@ -76,5 +82,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+.network  {
+    padding: 2rem 1rem;
+}
 </style>

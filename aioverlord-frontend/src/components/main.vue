@@ -13,12 +13,6 @@
     <classifier v-show="show_classify"
     v-bind:classification="classification"
     v-on:changeShowClassify="changeShowClassify()"></classifier>
-    <div class="row" v-show="!showLogin">
-      <div class="col-12">
-        <img src="../images/neural.jpg" class="rounded mx-auto d-block"
-        alt="Responsive image" height="100">
-      </div>
-    </div>
     <component v-bind:is="NeuralNetArea" v-show="!showLogin"></component>
     <div class="row">
       <div class="col-xs-12" v-show="!showLogin" id="buttonsDiv">

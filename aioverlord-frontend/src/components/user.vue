@@ -5,10 +5,11 @@
       <div class="col-xs-12 panel" id="userId">{{userId}}</div>
     </div>
     <div class="row">
-      <div class="col-xs-3 panel" id="creditsLabel">Credits: </div>
-      <div class="col-xs-3 panel panel2" id="credits">{{credits}}</div>
-      <div class="col-xs-3 panel" id="neuronsLabel">Neurons:</div>
-      <div class="col-xs-3 panel panel2" id="neurons">{{neurons}}</div>
+      <div class="col-xs-1 panel" id="creditsLabel">Credits: </div>
+      <div class="col-xs-1 panel panel2" id="credits">{{credits}}</div>
+      <div class="col-xs-1 panel" id="neuronsLabel">Neurons:</div>
+      <div class="col-xs-1 panel panel2" id="neurons">{{neurons}}</div>
+        <div class="col-xs-8" id="filler"></div>
     </div>
     </div>
   </div>
