@@ -7,10 +7,9 @@ from ai_overlord_backend_app.classification import *
 from ai_overlord_backend_app.user import *
 from flask import Flask
 from flask_httpauth import HTTPBasicAuth
-
-
-
-
+import os
+import tensorflow as tf
+os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
 
 logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 cwd = os.getcwd()
@@ -41,8 +40,10 @@ mongo.init_app(app)
 # debugging message
 @app.route('/')
 def dummy_root():
-    logging.debug("server alive2")
-    return "server alive2"
+    hello = tf.constant('TensorFlow active')
+    sess = tf.Session()
+    logging.debug("flask server alive")
+    return "flask server alive ; " + str(sess.run(hello))
 
 
 @app.route('/uploadpicture', methods=['POST'])

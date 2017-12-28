@@ -12,6 +12,7 @@ ADD requirements.txt /app/requirements.txt
 
 # Install any needed packages specified in requirements.txt
 RUN pip3 install --trusted-host pypi.python.org -r requirements.txt
+RUN pip3 install tensorflow
 
 ADD ai_overlord_backend_app /app/ai_overlord_backend_app
 ADD main.py /app/main.py
