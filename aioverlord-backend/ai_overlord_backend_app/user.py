@@ -16,6 +16,7 @@ update_user_route = Blueprint('update_user_route', __name__)
 create_user_route = Blueprint('create_user_route', __name__)
 get_token_route = Blueprint('get_token_route', __name__)
 buy_neuron_route = Blueprint('buy_neuron', __name__)
+update_user_v2_route = Blueprint('updateUser', __name__)
 
 
 @create_user_route.route("/createUser", methods=['POST'])
@@ -91,6 +92,21 @@ def update_user_status():
     user["neurons"] = request_data["neurons"]
     user["role"] = request_data["role"]
     user["timestamp"] = datetime.datetime.now().timestamp()
+    mongo.db.users.save(user)
+    return jsonify({'status': 'user updated'}), 200
+
+
+@update_user_route.route("/updateUser", methods=['POST'])
+def update_user_v2():
+    request_data = request.get_json()
+    if request_data["username"] is None:
+        abort(400)  # missing arguments
+    user = mongo.db.users.find_one({"username": request_data["username"]})
+    if user is None:
+        return jsonify({'error': "user does not exist"}), 400
+    if request_data["topologies"] is not None:
+        user["topologies"] = request_data["topologies"]
+
     mongo.db.users.save(user)
     return jsonify({'status': 'user updated'}), 200
 
