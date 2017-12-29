@@ -106,7 +106,6 @@ def update_user_v2():
         return jsonify({'error': "user does not exist"}), 400
     if request_data["topologies"] is not None:
         user["topologies"] = request_data["topologies"]
-
     mongo.db.users.save(user)
     return jsonify({'status': 'user updated'}), 200
 
