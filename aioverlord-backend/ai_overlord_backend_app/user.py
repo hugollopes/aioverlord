@@ -101,13 +101,15 @@ def update_user_v2():
     request_data = request.get_json()
     if request_data["username"] is None:
         abort(400)  # missing arguments
+    fields_updated = []
     user = mongo.db.users.find_one({"username": request_data["username"]})
     if user is None:
         return jsonify({'error': "user does not exist"}), 400
-    if request_data["topologies"] is not None:
+    if 'topologies' in request_data:
         user["topologies"] = request_data["topologies"]
+        fields_updated.append("topologies")
     mongo.db.users.save(user)
-    return jsonify({'status': 'user updated'}), 200
+    return jsonify({'status': 'user fields updated:' + str(fields_updated)}), 200
 
 
 @get_token_route.route("/gettoken", methods=['POST'])
