@@ -41,11 +41,11 @@ def classify():
 
         # buildup json
         api_return = {
-          "name": classification_cursor["name"],
-          "labels": classification_cursor["labels"],
-          "image_name": picture_cursor["file_name"],
-          "file_id": str(picture_cursor["file_id"]),
-          "image": base64.standard_b64encode(picture_file.read()).decode("ascii")
+            "name": classification_cursor["name"],
+            "labels": classification_cursor["labels"],
+            "image_name": picture_cursor["file_name"],
+            "file_id": str(picture_cursor["file_id"]),
+            "image": base64.standard_b64encode(picture_file.read()).decode("ascii")
         }
         return dumps(api_return)
     else:
@@ -74,12 +74,12 @@ def save_classification():
     datetime_string = datetime.datetime.now().timestamp()
     cursor = pictures.update(
         {"file_id": ObjectId(request_data["file_id"])}, {
-              "$set": {
+            "$set": {
                 "file_id": ObjectId(request_data["file_id"]),
                 "labeled": request_data["labeled"],
                 "timestamp": datetime_string
-                }
             }
-        )
+        }
+    )
     logging.debug("update result: " + dumps(cursor))
     return dumps(cursor)

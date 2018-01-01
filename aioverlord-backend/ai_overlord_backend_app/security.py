@@ -11,7 +11,6 @@ from passlib.apps import custom_app_context as pwd_context
 auth = HTTPBasicAuth()
 token_expire = 50000
 
-
 secret_key = "this needs to change and not be in the code like this"  # todo: must be dependant of some outside conf.
 
 
@@ -48,7 +47,9 @@ def requires_roles(*roles):
             if get_current_user_role() not in roles:
                 return error_response()
             return f(*args, **kwargs)
+
         return wrapped
+
     return wrapper
 
 
@@ -63,7 +64,7 @@ def verify_password(username, password):  # don't work.  get variables from requ
     user_id = ''
     if request.json.get('token') is not None:
         user_id = verify_auth_token(request.json.get('token'))
-        #logging.debug("user_id : " + str(user_id)  + "request.json.get('token'): " + request.json.get('token') + "user['_id'] : " + str(user['_id']))
+        # logging.debug("user_id : " + str(user_id)  + "request.json.get('token'): " + request.json.get('token') + "user['_id'] : " + str(user['_id']))
     if str(user_id) != str(user['_id']):
         logging.debug("token auth failed: " + str(request.json.get('token')))
         if not pwd_context.verify(str(request.json.get('password')), str(user['password'])):

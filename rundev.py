@@ -6,7 +6,6 @@ import subprocess
 import requests
 from time import sleep
 
-
 # stop sessions
 os.system("docker stop dev_web_1")
 os.system("docker stop dev_flask_1")
@@ -14,8 +13,6 @@ os.system("docker stop dev_mongodb_1")
 os.system("docker rm dev_web_1")
 os.system("docker rm dev_flask_1")
 os.system("docker rm dev_mongodb_1")
-
-
 
 logging.basicConfig(stream=sys.stderr, level=logging.INFO)
 logging.info("launching dev environment")

@@ -10,7 +10,8 @@ from flask import Flask
 from flask_httpauth import HTTPBasicAuth
 import os
 import tensorflow as tf
-os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
+
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 cwd = os.getcwd()
@@ -32,9 +33,7 @@ app.register_blueprint(get_token_route)
 app.register_blueprint(buy_neuron_route)
 app.register_blueprint(buy_topology_route)
 
-
 auth = HTTPBasicAuth()
-
 
 mongo.init_app(app)
 
@@ -64,8 +63,8 @@ def upload_picture():
 
 @app.route("/savepicturetests")
 def savepicturetests():
-    image_dir = os.path.join(cwd,"static","images")
-    image_path = os.path.join(image_dir,"neural.jpg")
+    image_dir = os.path.join(cwd, "static", "images")
+    image_path = os.path.join(image_dir, "neural.jpg")
     pictures = mongo.db.pictures
     image = open(image_path, "rb")
     fs = gridfs.GridFS(mongo.db)
@@ -77,7 +76,7 @@ def savepicturetests():
 
 @app.route("/retrievepictests")
 def retrieve_pic_tests():
-    image_dir = os.path.join(cwd, "static", "images","unclassified")
+    image_dir = os.path.join(cwd, "static", "images", "unclassified")
     image_path = os.path.join(image_dir, "neural3.jpg")
     fs = gridfs.GridFS(mongo.db)
     image_file = fs.get_last_version("neural3.jpg")

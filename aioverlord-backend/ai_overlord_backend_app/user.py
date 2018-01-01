@@ -31,14 +31,14 @@ def create_user():
         return jsonify({'error': "userAlreadyExists"}), 400
     timestamp = int(datetime.datetime.now().timestamp())
     user.insert({
-            "username": username,
-            "email": username,
-            "password": pwd_context.encrypt(password),
-            "credits": 10,
-            "neurons": 1,
-            "timestamp": timestamp,
-            "role": role
-        })
+        "username": username,
+        "email": username,
+        "password": pwd_context.encrypt(password),
+        "credits": 10,
+        "neurons": 1,
+        "timestamp": timestamp,
+        "role": role
+    })
     return jsonify({'username': username}), 201
 
 
@@ -83,7 +83,7 @@ def buy_neuron():
 def update_user_status():
     request_data = request.get_json()
     if request_data["username"] is None or request_data["password"] is None \
-       or request_data["credits"] is None or request_data["neurons"] is None:
+            or request_data["credits"] is None or request_data["neurons"] is None:
         abort(400)  # missing arguments
     user = mongo.db.users.find_one({"username": request_data["username"]})
     if user is None:
@@ -119,6 +119,3 @@ def get_token():
     token = generate_auth_token(g.current_user_id, token_expire).decode('ascii')
     logging.debug("token: " + token)
     return jsonify({'token': token}), 200
-
-
-
