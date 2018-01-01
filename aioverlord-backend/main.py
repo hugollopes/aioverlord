@@ -5,6 +5,7 @@ import logging
 from io import BytesIO
 from ai_overlord_backend_app.classification import *
 from ai_overlord_backend_app.user import *
+from ai_overlord_backend_app.topologies import *
 from flask import Flask
 from flask_httpauth import HTTPBasicAuth
 import os
@@ -29,10 +30,10 @@ app.register_blueprint(update_user_v2_route)
 app.register_blueprint(create_user_route)
 app.register_blueprint(get_token_route)
 app.register_blueprint(buy_neuron_route)
+app.register_blueprint(buy_topology_route)
 
 
 auth = HTTPBasicAuth()
-
 
 
 mongo.init_app(app)
@@ -43,8 +44,9 @@ mongo.init_app(app)
 def dummy_root():
     hello = tf.constant('TensorFlow active')
     sess = tf.Session()
-    logging.debug("flask server alive")
-    return "flask server alive ; " + str(sess.run(hello))
+    alive_message = "flask server alive ; " + str(sess.run(hello))
+    logging.debug(alive_message)
+    return alive_message
 
 
 @app.route('/uploadpicture', methods=['POST'])
