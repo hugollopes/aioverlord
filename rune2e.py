@@ -7,7 +7,6 @@ import re
 from os import listdir
 from os.path import isfile, join
 
-
 logging.basicConfig(stream=sys.stderr, level=logging.INFO)
 logging.info("launching e2e parallel tests")
 os.system("rm reports/*.log")  # removing previous test files
@@ -56,5 +55,3 @@ for f in list_files:
 logfile.close()
 print(open("reports/e2etest.log").read())
 logging.info("E2E test ended")
-
-
