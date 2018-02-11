@@ -1,7 +1,7 @@
 
 <template>
   <div class="topology" id="topologydiv">
-    topology
+    topology: {{topologies}}
     <button  :disabled="buyNeuronDisabled" v-on:click="buyNeuron" id="buyNeuronButton">buy Neuron</button>
   </div>
 </template>
@@ -15,6 +15,7 @@ export default {
     return {
       neurons: 0,
       credits: 0,
+      topologies: [],
     };
   },
   computed: {
@@ -29,6 +30,9 @@ export default {
     });
     bus.$on('creditsUpdated', (credits) => {
       this.credits = credits;
+    });
+    bus.$on('topologiesUpdated', (topologies) => {
+      this.topologies = topologies;
     });
   },
   methods: {

@@ -34,6 +34,7 @@ export default {
       name: '',
       credits: 0,
       neurons: 0,
+      topologies: [],
     };
   },
   mounted() {
@@ -74,8 +75,10 @@ export default {
         .then((response) => {
           self.credits = response.data.credits;
           this.neurons = response.data.neurons;
+          this.topologies = response.data.topologies;
           bus.$emit('neuronsUpdated', this.neurons);
           bus.$emit('creditsUpdated', this.credits);
+          bus.$emit('topologiesUpdated', this.topologies);
         });
         }, 1000);
       }

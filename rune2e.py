@@ -37,7 +37,7 @@ for f in list_files:
 
 os.environ["FEATURECOMMAND"] = ""
 os.environ["TESTFEATURE"] = ""
-time.sleep(60)
+time.sleep(100)
 for f in list_files:
     f["file"].flush()
     f["file"].close()

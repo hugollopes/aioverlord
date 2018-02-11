@@ -1,14 +1,12 @@
 import datetime
 import logging
-
+from ai_overlord_backend_app.globals import *
 from ai_overlord_backend_app.database import mongo
 from ai_overlord_backend_app.security import auth, generate_auth_token, token_expire, requires_roles
 from bson.json_util import dumps
 from flask import Blueprint, g
 from flask import request, jsonify, abort
 from passlib.apps import custom_app_context as pwd_context
-
-COST_PER_NEURON = 100
 
 # blueprint definition
 get_user_route = Blueprint('get_user_route', __name__)
