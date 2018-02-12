@@ -26,12 +26,19 @@ def buy_topology():
     if int(cursor['credits']) < cost:
         logging.debug("not enough credits")
         return "not enough credits"
-    cursor["credits"] = cursor['credits'] - cost
     if 'topologies' not in dumps(cursor):
         cursor["topologies"] = []
         cursor["topologies"].append(topology)
     else:
-        cursor["topologies"].append(topology)
+        for user_topology in cursor["topologies"]:
+            if topology["id"] == user_topology["id"]:
+                user_has_topology = True
+        if not user_has_topology:
+            cursor["topologies"].append(topology)
+        else:
+            logging.debug("user already has topology")
+            return "user already has topology"
+    cursor["credits"] = cursor['credits'] - cost
     mongo.db.users.save(cursor)
     return "topology purchased"
 
