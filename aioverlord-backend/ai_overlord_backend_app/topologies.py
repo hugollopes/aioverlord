@@ -54,6 +54,7 @@ def available_topologies_func():
         return jsonify({'error': "argumentsMissing"}), 400
     cursor = users.find_one({"username": request_data["username"]})
     available_topologies = []
+    user_credits = cursor["credits"]
     if 'topologies' not in dumps(cursor):
         cursor["topologies"] = []
     for topology in TOPOLOGIES:
@@ -62,5 +63,7 @@ def available_topologies_func():
             if topology["id"] == user_topology["id"]:
                 user_has_topology = True
         if not user_has_topology:
-            available_topologies.append(topology)
+            topology_copy = dict(topology)
+            topology_copy["enabled"] = 'true' if user_credits >= topology["cost"] else 'false'
+            available_topologies.append(topology_copy)
     return jsonify({'availableTopologies': available_topologies})

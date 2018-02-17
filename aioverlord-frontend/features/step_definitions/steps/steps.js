@@ -11,6 +11,15 @@ function openApplication() {
       .waitForElementVisible('#app', 5000);
 }
 
+function getTopologyId(topology) {
+  if (topology === '2 hidden layers') {
+    return '1';
+  } else if (topology === '3 hidden layers') {
+    return '2';
+  }
+  return '';
+}
+
 function loginNotVisible() {
   client
   .expect.element('#loginPanel').to.not.be.visible.after(100);
@@ -136,13 +145,29 @@ function steps({ Given, Then, After }) {
   Then(/^login dialog is visible$/, () => visibleLogin());
   Then(/^topology is visible$/, () => client
     .waitForElementVisible('#topologydiv', 1000));
+  Then(/^buy "(.*)" topology is visible$/, (topology) => {
+    client
+      .waitForElementVisible(`#buyTopology${getTopologyId(topology)}`, 1000);
+  });
+  Then(/^click buy topology "(.*)"$/, topology => client
+    .waitForElementVisible(`#buyTopology${getTopologyId(topology)}`, 1000)
+    .click(`button[id=buyTopology${getTopologyId(topology)}]`));
+  Then(/^then topology "(.*)" belongs to user$/, topology => client
+      .waitForElementVisible(`#topologyOwned${getTopologyId(topology)}`, 1000));
+
+  Then(/^buy "(.*)" topology is disabled$/, topology => client
+    .expect.element(`#buyTopology${getTopologyId(topology)}`).to.have.attribute('disabled').before(1000));
+  Then(/^buy "(.*)" topology is enabled$/, topology => client
+  .pause(2000)
+    .expect.element(`#buyTopology${getTopologyId(topology)}`).to.not.have.attribute('disabled').before(3000));
+
+
   Then(/^buy neurons is visible$/, () => client
     .waitForElementVisible('#buyNeuronButton', 1000));
   Then(/^buy neurons is disabled$/, () => client
     .expect.element('#buyNeuronButton').to.have.attribute('disabled').before(1000));
   Then(/^buy neurons is enabled$/, () => client
     .expect.element('#buyNeuronButton').to.not.have.attribute('disabled').before(3000));
-
   Then(/^network button is visible$/, () => client
     .waitForElementVisible('#showNetworkButton', 1000));
   Then(/^click buy neurons$/, () => client
@@ -150,9 +175,7 @@ function steps({ Given, Then, After }) {
     .click('button[id=buyNeuronButton]'));
   Then(/^I fullfill with user "(.*)" with password "(.*)"$/, (user, password) => fullfillLogin(user, password));
   Then(/^user "(.*)" has "(.*)" neurons and "(.*)" credits$/, (user, neurons, credits) => insertUser(user, '', 'user', Number(credits), Number(neurons)));
-
   Then(/^I click Sign In$/, () => clickSignIn());
-
   Then(/^I click topology$/, () => client
     .waitForElementVisible('#topologyButton', 1000)
     .click('button[id=topologyButton]'));

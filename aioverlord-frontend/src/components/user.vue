@@ -104,12 +104,25 @@ export default {
           self.credits = response.data.credits;
           this.neurons = response.data.neurons;
           this.topologies = response.data.topologies;
+          this.checkEnables();
           bus.$emit('neuronsUpdated', this.neurons);
           bus.$emit('creditsUpdated', this.credits);
           bus.$emit('topologiesUpdated', this.topologies);
         });
         }, 1000);
       }
+    },
+    checkEnables() {
+      this.$log.debug(`checkEnables${this.availableTopologies.length}`);
+//        for (let index in this.availableTopologies)
+      for (let i = 0; i < this.availableTopologies.length; i += 1) {
+        if (this.credits < this.availableTopologies[i].cost) {
+          this.availableTopologies[i].enabledComputed = 'false';
+        } else {
+          this.availableTopologies[i].enabledComputed = 'true';
+        }
+      }
+      bus.$emit('availableTopologiesUpdated', this.availableTopologies);
     },
   },
 };

@@ -1,11 +1,18 @@
 
 <template>
   <div class="topology" id="topologydiv">
-    topology: {{topologies}}   availableTopologies : {{availableTopologies}}
     <button  :disabled="buyNeuronDisabled" v-on:click="buyNeuron" id="buyNeuronButton">buy Neuron</button>
+    <div class="container">
+    <div class="row" >
+      <div class="col-xs-2 panel2">  topologies bought:</div>
+    </div>
+    <div class="row" v-for="topology in topologies">
+      <div class="col-xs-2 panel" v-bind:Id="'topologyOwned' + topology.id">{{topology.name}}</div>
+    </div>
+    </div>
     <ul>
       <li v-for="topology in availableTopologies">
-        <button v-on:click="buyTopology(topology.id)"  v-bind:userId="'buyTopology' + topology.id">buy {{  topology.name   }}</button>
+        <button :disabled="topology.enabledComputed == 'false'" v-on:click="buyTopology(topology.id)"  v-bind:Id="'buyTopology' + topology.id">buy {{  topology.name   }} for {{  topology.cost   }}</button>
       </li>
     </ul>
   </div>
@@ -57,7 +64,19 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
+
+
 <style scoped>
+.panel  {
+
+  background-color: lightblue;
+      margin-bottom: 0px;
+}
+.panel2  {
+  background-color: pink;
+      margin-bottom: 0px;
+}
+
+
 
 </style>
