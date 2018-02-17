@@ -35,6 +35,7 @@ export default {
       credits: 0,
       neurons: 0,
       topologies: [],
+      availableTopologies: [],
     };
   },
   mounted() {
@@ -42,7 +43,6 @@ export default {
   },
   created() {
     bus.$on('increaseNeuron', () => {
-      // this.neurons +=1;
       const postdata = {
         username: this.userId,
         token: this.token,
@@ -57,6 +57,34 @@ export default {
           this.neurons += 1;
           this.$log.debug('neuron purchased');
         }
+      });
+    });
+    bus.$on('availableTopologies', () => {
+      const postdata = {
+        username: this.userId,
+        token: this.token,
+      };
+      this.$log.debug(`postdata availableTopologies: ${postdata.token}  ${postdata.username}`);
+      axios.post(`${process.env.API_URL}/availableTopologies`, postdata)
+      .then((response) => {
+        this.$log.debug(response);
+        this.availableTopologies = response.data.availableTopologies;
+        this.$log.debug('Topologies available');
+        bus.$emit('availableTopologiesUpdated', this.availableTopologies);
+      });
+    });
+    bus.$on('buyTopology', (topologyId) => {
+      const postdata = {
+        username: this.userId,
+        token: this.token,
+        topologyId,
+      };
+      this.$log.debug(`postdata buy topology: ${postdata.token}  ${postdata.username}`);
+      axios.post(`${process.env.API_URL}/buyTopology`, postdata)
+      .then((response) => {
+        this.$log.debug(response);
+        this.$log.debug(`Topology of id ${topologyId} bought`);
+        bus.$emit('availableTopologies');
       });
     });
   },

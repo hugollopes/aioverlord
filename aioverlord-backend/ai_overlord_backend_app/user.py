@@ -13,7 +13,7 @@ get_user_route = Blueprint('get_user_route', __name__)
 update_user_route = Blueprint('update_user_route', __name__)
 create_user_route = Blueprint('create_user_route', __name__)
 get_token_route = Blueprint('get_token_route', __name__)
-buy_neuron_route = Blueprint('buy_neuron', __name__)
+buy_neuron_route = Blueprint('buy_neuron_route', __name__)
 update_user_v2_route = Blueprint('updateUser', __name__)
 
 
@@ -60,7 +60,7 @@ def get_user():
     return dumps(cursor)
 
 
-@get_user_route.route("/buy_neuron", methods=['POST'])
+@buy_neuron_route.route("/buy_neuron", methods=['POST'])
 @auth.login_required
 @requires_roles('user')
 def buy_neuron():

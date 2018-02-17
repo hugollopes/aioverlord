@@ -1,8 +1,13 @@
 
 <template>
   <div class="topology" id="topologydiv">
-    topology: {{topologies}}
+    topology: {{topologies}}   availableTopologies : {{availableTopologies}}
     <button  :disabled="buyNeuronDisabled" v-on:click="buyNeuron" id="buyNeuronButton">buy Neuron</button>
+    <ul>
+      <li v-for="topology in availableTopologies">
+        <button v-on:click="buyTopology(topology.id)"  v-bind:userId="'buyTopology' + topology.id">buy {{  topology.name   }}</button>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -16,6 +21,7 @@ export default {
       neurons: 0,
       credits: 0,
       topologies: [],
+      availableTopologies: [],
     };
   },
   computed: {
@@ -34,12 +40,18 @@ export default {
     bus.$on('topologiesUpdated', (topologies) => {
       this.topologies = topologies;
     });
+    bus.$on('availableTopologiesUpdated', (availableTopologies) => {
+      this.availableTopologies = availableTopologies;
+    });
+    bus.$emit('availableTopologies');
   },
   methods: {
     buyNeuron() {
       bus.$emit('increaseNeuron');
     },
-
+    buyTopology(topologyId) {
+      bus.$emit('buyTopology', topologyId);
+    },
 
   },
 };

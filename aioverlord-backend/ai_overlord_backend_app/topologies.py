@@ -1,14 +1,13 @@
-import datetime
 import logging
 from ai_overlord_backend_app.globals import *
 from ai_overlord_backend_app.database import mongo
-from ai_overlord_backend_app.security import auth, generate_auth_token, token_expire, requires_roles
+from ai_overlord_backend_app.security import auth, requires_roles
 from bson.json_util import dumps
-from flask import Blueprint, g
-from flask import request, jsonify, abort
-from passlib.apps import custom_app_context as pwd_context
+from flask import Blueprint
+from flask import request, jsonify
 
-buy_topology_route = Blueprint('buyTopology', __name__)
+buy_topology_route = Blueprint('buy_topology_route', __name__)
+available_topologies_route = Blueprint('available_topologies_route', __name__)
 
 
 @buy_topology_route.route("/buyTopology", methods=['POST'])
@@ -30,6 +29,7 @@ def buy_topology():
         cursor["topologies"] = []
         cursor["topologies"].append(topology)
     else:
+        user_has_topology = False
         for user_topology in cursor["topologies"]:
             if topology["id"] == user_topology["id"]:
                 user_has_topology = True
@@ -43,7 +43,7 @@ def buy_topology():
     return "topology purchased"
 
 
-@buy_topology_route.route("/availableTopologies", methods=['POST'])
+@available_topologies_route.route("/availableTopologies", methods=['POST'])
 @auth.login_required
 @requires_roles('user')
 def available_topologies_func():
@@ -54,11 +54,13 @@ def available_topologies_func():
         return jsonify({'error': "argumentsMissing"}), 400
     cursor = users.find_one({"username": request_data["username"]})
     available_topologies = []
+    if 'topologies' not in dumps(cursor):
+        cursor["topologies"] = []
     for topology in TOPOLOGIES:
         user_has_topology = False
         for user_topology in cursor["topologies"]:
-            if topology["id"] == user_topology:
+            if topology["id"] == user_topology["id"]:
                 user_has_topology = True
         if not user_has_topology:
             available_topologies.append(topology)
-    return dumps(available_topologies)
+    return jsonify({'availableTopologies': available_topologies})

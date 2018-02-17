@@ -32,3 +32,21 @@ Feature: Topology
         And buy neurons is disabled
         Then click buy neurons
         And number of user neurons is "1"
+
+    Scenario: buy topology
+        Given I open aplication and login with user "test@testmail.com" with password "hackpass" and role "user"
+        And user "test@testmail.com" has "1" neurons and "100" credits
+        And I click topology
+        Then topology is visible
+        And buy "2 hidden layers" topology is enabled
+        And click buy topology "2 hidden layers"
+        Then then topology "2 hidden layers" belongs to and is visible to user
+
+    Scenario: no cash for topology
+        Given I open aplication and login with user "test@testmail.com" with password "hackpass" and role "user"
+        And user "test@testmail.com" has "1" neurons and "90" credits
+        And I click topology
+        Then topology is visible
+        And buy "3 hidden layers" topology is disabled
+        Then wait 10 seconds
+        Then buy "3 hidden layers" topology is enabled
