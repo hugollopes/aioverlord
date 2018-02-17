@@ -154,13 +154,10 @@ function steps({ Given, Then, After }) {
     .click(`button[id=buyTopology${getTopologyId(topology)}]`));
   Then(/^then topology "(.*)" belongs to user$/, topology => client
       .waitForElementVisible(`#topologyOwned${getTopologyId(topology)}`, 1000));
-
   Then(/^buy "(.*)" topology is disabled$/, topology => client
     .expect.element(`#buyTopology${getTopologyId(topology)}`).to.have.attribute('disabled').before(1000));
   Then(/^buy "(.*)" topology is enabled$/, topology => client
     .expect.element(`#buyTopology${getTopologyId(topology)}`).to.not.have.attribute('disabled').before(3000));
-
-
   Then(/^buy neurons is visible$/, () => client
     .waitForElementVisible('#buyNeuronButton', 1000));
   Then(/^buy neurons is disabled$/, () => client
