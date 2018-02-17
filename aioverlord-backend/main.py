@@ -1,7 +1,5 @@
-import os
 import platform
 import sys
-import logging
 from io import BytesIO
 from ai_overlord_backend_app.classification import *
 from ai_overlord_backend_app.user import *
@@ -33,7 +31,6 @@ app.register_blueprint(get_token_route)
 app.register_blueprint(buy_neuron_route)
 app.register_blueprint(buy_topology_route)
 app.register_blueprint(available_topologies_route)
-
 
 
 auth = HTTPBasicAuth()
