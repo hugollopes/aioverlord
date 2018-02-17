@@ -114,7 +114,6 @@ export default {
     },
     checkEnables() {
       this.$log.debug(`checkEnables${this.availableTopologies.length}`);
-//        for (let index in this.availableTopologies)
       for (let i = 0; i < this.availableTopologies.length; i += 1) {
         if (this.credits < this.availableTopologies[i].cost) {
           this.availableTopologies[i].enabledComputed = 'false';

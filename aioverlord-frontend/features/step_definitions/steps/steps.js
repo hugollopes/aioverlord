@@ -158,7 +158,6 @@ function steps({ Given, Then, After }) {
   Then(/^buy "(.*)" topology is disabled$/, topology => client
     .expect.element(`#buyTopology${getTopologyId(topology)}`).to.have.attribute('disabled').before(1000));
   Then(/^buy "(.*)" topology is enabled$/, topology => client
-  .pause(2000)
     .expect.element(`#buyTopology${getTopologyId(topology)}`).to.not.have.attribute('disabled').before(3000));
 
 
