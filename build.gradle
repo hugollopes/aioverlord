@@ -17,3 +17,9 @@ task copyReferenceData(type: Copy, group: "Custom", description: "Destributes re
     into "aioverlord-frontend/src/assets"
   }
 }
+
+task rundev(type:Exec,group: "Custom", description: "starts dev docker server") {
+   workingDir '.'
+
+   commandLine 'python3', 'rundev.py' ,'&'
+}
