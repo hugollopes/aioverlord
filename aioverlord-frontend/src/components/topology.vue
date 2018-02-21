@@ -20,6 +20,7 @@
 
 <script>
 import { bus } from '../main';
+import referenceData from '../assets/referenceData.json';
 
 export default {
   name: 'topology',
@@ -33,7 +34,7 @@ export default {
   },
   computed: {
     buyNeuronDisabled() {
-      if (this.credits < 100) { return true; }
+      if (this.credits < referenceData.costPerNeuron) { return true; }
       return false;
     },
   },
