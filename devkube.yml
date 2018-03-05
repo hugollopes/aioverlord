@@ -1,0 +1,43 @@
+apiVersion: v1
+ kind: Pod
+ metadata:
+   name: rss-site
+   labels:
+     app: web
+ spec:
+   containers:
+     - name: front-end
+       image: nginx
+       ports:
+         - containerPort: 80
+     - name: rss-reader
+       image: nickchase/rss-php-nginx:v1
+       ports:
+         - containerPort: 88
+
+
+
+
+
+version: '3'
+services:
+  web:
+    build: ./aioverlord-frontend
+    command: ["npm", "run", "dev"]
+    ports:
+     - "8080:8080"
+    links:
+      - "flask:flask"
+    volumes:
+        # This will mount ., your app code, into the /app directory within the container
+      - ./aioverlord-frontend:/app
+  flask:
+    build: ./aioverlord-backend
+    ports:
+     - "5000:5000"
+    links:
+      - "mongodb:db"
+  mongodb:
+    image: "mongo:3.5"
+    ports:
+      - "27017:27017"

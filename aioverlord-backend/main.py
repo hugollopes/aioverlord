@@ -43,7 +43,7 @@ mongo.init_app(app)
 def dummy_root():
     hello = tf.constant('TensorFlow active')
     sess = tf.Session()
-    alive_message = "flask server alive ; " + str(sess.run(hello))
+    alive_message = "flask server alive v3; " + str(sess.run(hello))
     logging.debug(alive_message)
     return alive_message
 
@@ -55,9 +55,9 @@ def upload_picture():
     image = BytesIO(base64.b64decode(request_data["file_data"]))
     fs = gridfs.GridFS(mongo.db)
     fs_id = fs.put(image.read(), filename=request_data["file_name"])
-    data = {"file_name": request_data["file_name"], "file_id": fs_id}
+    picture_data = {"file_name": request_data["file_name"], "file_id": fs_id}
     pictures = mongo.db.pictures
-    pictures.insert(data)
+    pictures.insert(picture_data)
     return "inserted"
 
 
