@@ -1,0 +1,10 @@
+{
+  "kind": "Namespace",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "e2e-xxxx",
+    "labels": {
+      "name": "e2e-xxxx"
+    }
+  }
+}

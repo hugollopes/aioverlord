@@ -1,7 +1,20 @@
 #!/usr/bin/env bash
 
+# to solve a dns related to ubunto issue with had to do this:
+# https://kubernetes.io/docs/tasks/administer-cluster/dns-debugging-resolution/
+# https://github.com/kubernetes/minikube/issues/2027 --- see down
+sudo sed -i -e 's/^#*.*DNSStubListener=.*$/DNSStubListener=no/' /etc/systemd/resolved.conf
+sudo sed -i -e 's/nameserver 127.0.1.1/nameserver 8.8.8.8/' /etc/resolv.conf
+systemctl is-active systemd-resolved >& /dev/null && sudo systemctl stop systemd-resolved
+systemctl is-enabled systemd-resolved >& /dev/null && sudo systemctl disable systemd-resolved
+
 sudo systemctl stop systemd-resolved
 sudo systemctl disable systemd-resolved
+
+sudo minikube stop
+sudo minikube delete
+
+
 
 sudo minikube start --vm-driver=none
 

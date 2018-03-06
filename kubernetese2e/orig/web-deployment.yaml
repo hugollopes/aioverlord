@@ -1,0 +1,39 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f dev.yml
+    kompose.version: 1.9.0 (093c756)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: web
+  name: web
+spec:
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: web
+    spec:
+      containers:
+      - args:
+        - npm
+        - run
+        - e2e
+        - --
+        - features/xxxx
+        image: docker.io/nathor/frontend:latest
+        name: web
+        ports:
+        - containerPort: 8080
+        resources: {}
+        volumeMounts:
+          - name: code
+            mountPath: /app
+      restartPolicy: Never
+      volumes:
+        - name: code
+          hostPath:
+            path: /home/hugo/PycharmProjects/AppProject/aioverlord-frontend
+status: {}
+
