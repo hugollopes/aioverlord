@@ -1,5 +1,5 @@
-apiVersion: batch/v1
-kind: Job
+apiVersion: extensions/v1beta1
+kind: Deployment
 metadata:
   annotations:
     kompose.cmd: kompose convert -f dev.yml
@@ -9,6 +9,9 @@ metadata:
     io.kompose.service: web
   name: web
 spec:
+  replicas: 1
+  strategy:
+    type: Recreate
   template:
     metadata:
       creationTimestamp: null
@@ -19,9 +22,7 @@ spec:
       - args:
         - npm
         - run
-        - e2e
-        - --
-        - features/xxxx
+        - dev
         image: docker.io/nathor/frontend:latest
         name: web
         ports:
@@ -30,10 +31,9 @@ spec:
         volumeMounts:
           - name: code
             mountPath: /app
-      restartPolicy: Never
+      restartPolicy: Always
       volumes:
         - name: code
           hostPath:
             path: /home/hugo/PycharmProjects/AppProject/aioverlord-frontend
 status: {}
-

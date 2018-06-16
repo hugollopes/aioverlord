@@ -1,0 +1,25 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f e2e-test.yml
+    kompose.version: 1.9.0 (093c756)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: chromedriver
+  name: chromedriver
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: chromedriver
+    spec:
+      containers:
+      - image: selenium/standalone-chrome-debug:3.8.1-aluminum
+        name: chromedriver
+        resources: {}
+      restartPolicy: Always
+status: {}

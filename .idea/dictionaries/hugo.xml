@@ -5,11 +5,14 @@
       <w>createuser</w>
       <w>dbname</w>
       <w>dont</w>
+      <w>enviroment</w>
       <w>eparallel</w>
       <w>etest</w>
       <w>featurecommand</w>
       <w>filepath</w>
       <w>hackme</w>
+      <w>nameserver</w>
+      <w>reinforment</w>
       <w>restdb</w>
       <w>retrievepictests</w>
       <w>saveclassification</w>

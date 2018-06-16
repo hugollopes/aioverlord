@@ -19,6 +19,9 @@ app = Flask(__name__, static_url_path='')
 app.config['MONGO_DBNAME'] = 'restdb'
 app.config['MONGO_URI'] = 'mongodb://db:27017/local'
 
+app.config['MONGO_DBNAME'] = 'restdb'
+app.config['MONGO_URI'] = 'mongodb://localhost:27017/local'
+
 # blueprints
 app.register_blueprint(classify_route)
 app.register_blueprint(create_classification_route)

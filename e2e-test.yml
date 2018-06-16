@@ -29,3 +29,8 @@ services:
   #    - "5900:5900"
     links:
       - "flask:flask"
+
+
+# selenium/standalone-chrome-debug:3.8.1-aluminum
+#$ docker run -d -p 4444:4444 -v /dev/shm:/dev/shm selenium/standalone-chrome:3.11.0-californium
+#docker run -d -p 4444:4444 -v /dev/shm:/dev/shm selenium/standalone-chrome-debug:3.8.1-aluminum

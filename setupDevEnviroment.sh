@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
+# script to initialize dev environment
 
-# to solve a dns related to ubunto issue with had to do this:
+# to solve a dns related to ubuntu issue with had to do this:
 # https://kubernetes.io/docs/tasks/administer-cluster/dns-debugging-resolution/
 # https://github.com/kubernetes/minikube/issues/2027 --- see down
 sudo sed -i -e 's/^#*.*DNSStubListener=.*$/DNSStubListener=no/' /etc/systemd/resolved.conf
@@ -22,15 +23,18 @@ kubectl create -f https://raw.githubusercontent.com/kubernetes/dashboard/master/
 
 kubectl proxy &
 
+# no credentials in code
 DOCKERHUB_USR=$(cat ~/secrets/GITHUB_USR.txt)
 DOCKERHUB_PWD=$(cat ~/secrets/GITHUB_PWD.txt)
 
 docker login -p "$DOCKERHUB_PWD" -u "$DOCKERHUB_USR"
 
 # might not be needed
-kubectl create -f ./aioverlord-frontend/webPersistentVolume.yaml
+#kubectl create -f ./aioverlord-frontend/webPersistentVolume.yaml
 
-bash terminals.sh
+#opening a lot of terminals
+cd /home/hugo/PycharmProjects/AppProject
+#bash terminals.sh
 
 
 #example build code... should be jenkins/grunt
