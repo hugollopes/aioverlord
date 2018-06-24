@@ -1,11 +1,12 @@
-const axios = require('axios');
 const fs = require('fs');
 const { client } = require('nightwatch-cucumber');
+const axios = require('axios');
 
 let creditsValue = 0;
 
 
 function openApplication() {
+  console.info("devserverURL" + client.globals.devServerURL);
   client
       .url(client.globals.devServerURL)
       .waitForElementVisible('#app', 5000);
@@ -47,7 +48,7 @@ function userVisible(user) {
 }
 
 function insertUser(user, password, role, credits, neurons) {
-  // this.$log.debug(`loading into DB user ${user} with password ${password} and role ${role}`);
+   console.info(`loading into DB user ${user} with password ${password} and role ${role}`);
 
   const postdata = {
     username: user,
@@ -61,6 +62,7 @@ function insertUser(user, password, role, credits, neurons) {
     credits,
     neurons,
   };
+    console.info(`api user is: ${client.globals.devAPIURL}`);
   axios.post(`${client.globals.devAPIURL}/createUser`, postdata)
     .then(() => {
       // this.$log.debug(`saved successfully${String(response)}`);
@@ -227,11 +229,38 @@ function steps({ Given, Then, After }) {
     loginNotVisible();
     return client;
   });
+
+
+// troubleshoot steps
+  Given(/^I open Google`s search page$/, () => {
+    return client
+      .url('http://google.com');
+  });
+
+  Given(/^I open DuckDuckGo search page$/, () => {
+    return client
+      .url('https://duckduckgo.com/');
+  });
+
+  Then(/^the title is "(.*?)"$/, (text) => {
+    return client.assert.title(text);
+  });
+
+  Then(/^the Google search form exists$/, () => {
+    return client.assert.visible('input[name="q"]');
+  });
+
+  Then(/^the DuckDuckGo search form exists$/, () => {
+    return client.assert.visible('input[name="q"]');
+  });
+//end troubleshoot steps
+
+
   Given(/^Picture "(.*)" exists in the database and a classification exists$/, (picture) => {
     axios.post(`${client.globals.devAPIURL}/create_classification`).then(() => {
       this.$log.debug('classification created successfully');
     });
-    fs.readFile(`features/step_definitions/steps/${picture}`, (err, data) => {
+    fs.readFile(`testdata/${picture}`, (err, data) => {
       const base64Image = new Buffer(data, 'binary').toString('base64');
       const postdata = {
         file_name: picture,

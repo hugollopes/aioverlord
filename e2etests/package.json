@@ -12,13 +12,14 @@
   "author": "Hugo Lopes <hugo.l.lopes@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "axios": "^0.16.2",
     "chromedriver": "^2.36.0",
     "cucumber": "^4.0.0",
     "cucumber-pretty": "^1.4.0",
     "geckodriver": "^1.10.0",
     "nightwatch": "^0.9.20",
     "nightwatch-cucumber": "^9.1.2",
-    "selenium-server": "^3.10.0",
-    "phantomjs-prebuilt": "^2.1.16"
+    "phantomjs-prebuilt": "^2.1.16",
+    "selenium-server": "^3.10.0"
   }
 }

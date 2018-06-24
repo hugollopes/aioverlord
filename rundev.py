@@ -7,6 +7,8 @@ import requests
 from time import sleep
 
 # stop sessions
+
+os.system("kubectl config set-context minikube --namespace=default")
 os.system("kubectl delete -f ./kubernetes/web-deployment.yaml")
 os.system("kubectl delete -f ./kubernetes/flask-deployment.yaml")
 os.system("kubectl delete -f ./kubernetes/mongodb-deployment.yaml")

@@ -20,14 +20,18 @@ module.exports = {
   },
   test_settings: {
     default: {
-      launch_url: 'http://localhost:8087',
+      //launch_url: 'http://localhost:8087',
       selenium_port: 4444,
       selenium_host: 'chromedriver',
+      globals: {
+        devServerURL: 'http://web:8080', //+ (process.env.PORT || config.dev.port),
+        devServerHost: 'web',
+        devAPIURL: 'http://flask:5000',  // should come from config
+      },
       desiredCapabilities: {
-        browserName: 'phantomjs',
+        browserName: 'chrome',
         javascriptEnabled: true,
         acceptSslCerts: true,
-        'phantomjs.binary.path': phantomjs.path
       }
     },
     chrome: {

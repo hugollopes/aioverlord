@@ -1,0 +1,30 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: e2etest
+spec:
+  template:
+    spec:
+      containers:
+      - name: e2etest
+        image: docker.io/nathor/e2etest:latest
+        args:
+         - npm
+         - run
+         - e2e
+         - --
+         - features/xxxx
+#         - --
+#         - features/debugFunctions.feature
+        ports:
+        - containerPort: 8080
+        resources: {}
+        volumeMounts:
+          - name: code
+            mountPath: /app
+      restartPolicy: Never
+      volumes:
+        - name: code
+          hostPath:
+            path: /home/hugo/PycharmProjects/AppProject/e2etests
+  backoffLimit: 4
