@@ -260,8 +260,13 @@ function steps({ Given, Then, After }) {
     axios.post(`${client.globals.devAPIURL}/create_classification`).then(() => {
       this.$log.debug('classification created successfully');
     });
-    fs.readFile(`testdata/${picture}`, (err, data) => {
+
+    fs.readFile(`/app/testdata/${picture}`, (err, data) => {
+      if (err) {
+        throw err;
+        }
       const base64Image = new Buffer(data, 'binary').toString('base64');
+      console.info(`pic. ${base64Image}`);
       const postdata = {
         file_name: picture,
         file_data: base64Image,
