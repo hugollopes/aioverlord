@@ -6,16 +6,16 @@ let creditsValue = 0;
 
 
 function openApplication() {
-  console.info("devserverURL" + client.globals.devServerURL);
+  console.info(`devserverURL${client.globals.devServerURL}`);
   client
-      .url(client.globals.devServerURL)
-      .waitForElementVisible('#app', 5000);
+    .url(client.globals.devServerURL)
+    .waitForElementVisible('#app', 5000);
 }
 
 function getTopologyId(topology) {
   if (topology === '2 hidden layers') {
     return '1';
-  } else if (topology === '3 hidden layers') {
+  } if (topology === '3 hidden layers') {
     return '2';
   }
   return '';
@@ -23,32 +23,32 @@ function getTopologyId(topology) {
 
 function loginNotVisible() {
   client
-  .expect.element('#loginPanel').to.not.be.visible.after(100);
+    .expect.element('#loginPanel').to.not.be.visible.after(100);
 }
 
 function clickSignIn() {
   client
-  .waitForElementVisible('#loginButton', 1000)
-  .pause(1000)
-  .getAttribute('#loginButton', 'disabled', (result) => {
-    if (result.value === 'true') {
-      client.assert.ok(false);
-    } else {
-      client.assert.ok(true);
-    }
-  })
-  .click('button[id=loginButton]');
+    .waitForElementVisible('#loginButton', 1000)
+    .pause(1000)
+    .getAttribute('#loginButton', 'disabled', (result) => {
+      if (result.value === 'true') {
+        client.assert.ok(false);
+      } else {
+        client.assert.ok(true);
+      }
+    })
+    .click('button[id=loginButton]');
 }
 
 function userVisible(user) {
   client
-  .waitForElementVisible('#userId', 3000)
-  .pause(1000)
-  .assert.containsText('#userId', user);
+    .waitForElementVisible('#userId', 3000)
+    .pause(1000)
+    .assert.containsText('#userId', user);
 }
 
 function insertUser(user, password, role, credits, neurons) {
-   console.info(`loading into DB user ${user} with password ${password} and role ${role}`);
+  console.info(`loading into DB user ${user} with password ${password} and role ${role}`);
 
   const postdata = {
     username: user,
@@ -62,7 +62,7 @@ function insertUser(user, password, role, credits, neurons) {
     credits,
     neurons,
   };
-    console.info(`api user is: ${client.globals.devAPIURL}`);
+  console.info(`api user is: ${client.globals.devAPIURL}`);
   axios.post(`${client.globals.devAPIURL}/createUser`, postdata)
     .then(() => {
       // this.$log.debug(`saved successfully${String(response)}`);
@@ -71,17 +71,17 @@ function insertUser(user, password, role, credits, neurons) {
       // this.$log.debug(`not saved with error code: ${error.response.data.error}`);
       if (error.response.data.error === 'userAlreadyExists') {
         axios.post(`${client.globals.devAPIURL}/updateUserStatus`, updatedata)
-      .then(() => {
-      //  this.$log.debug(`updated successfully${String(response)}`);
-      });
+          .then(() => {
+            //  this.$log.debug(`updated successfully${String(response)}`);
+          });
       }
     });
 }
 
 function fullfillLogin(user, password) {
   client
-  .setValue('input[id=email]', user)
-  .setValue('input[id=password]', password);
+    .setValue('input[id=email]', user)
+    .setValue('input[id=password]', password);
 }
 
 function setCookiesEmpty() {
@@ -102,45 +102,45 @@ function setCookiesEmpty() {
 
 function visibleLogin() {
   client
-  .waitForElementVisible('#loginPanel', 1000)
-  .assert.containsText('#loginPanel', 'Login');
+    .waitForElementVisible('#loginPanel', 1000)
+    .assert.containsText('#loginPanel', 'Login');
 }
 
 function steps({ Given, Then, After }) {
   Given(/^I open application$/, () => openApplication());
   Given(/^I click button label data$/, () => client
-        .click('button[id=Downmenubutton]')
-        .pause(4000));
+    .click('button[id=Downmenubutton]')
+    .pause(4000));
   Given(/^I click button file upload$/, () => client
-        .click('button[id=debugFunctions]'));
+    .click('button[id=debugFunctions]'));
   Then(/^the title exists$/, () => client.assert.containsText('#title', 'AI Overlord'));
   Then(/^I see is triangle$/, () => client
-      .assert.containsText('#classificationName', 'is_triangle'));
+    .assert.containsText('#classificationName', 'is_triangle'));
   Then(/^I see choose file button$/, () => client
-      .waitForElementVisible('#fileuploadarea', 1000));
+    .waitForElementVisible('#fileuploadarea', 1000));
   Then(/^neurons visible$/, () => client
-      .waitForElementVisible('#neuronsLabel', 1000)
-      .waitForElementVisible('#neurons', 1000));
+    .waitForElementVisible('#neuronsLabel', 1000)
+    .waitForElementVisible('#neurons', 1000));
   Then(/^network visible$/, () => client
-      .waitForElementVisible('#networksvg', 1000));
+    .waitForElementVisible('#networksvg', 1000));
   Then(/^network neurons visible$/, () => client
-      .waitForElementVisible('#neuron1_0', 1000));
+    .waitForElementVisible('#neuron1_0', 1000));
   Then(/^network synapses visible$/, () => client
-      .waitForElementVisible('#synneuron1_0neuron0_1', 1000));
+    .waitForElementVisible('#synneuron1_0neuron0_1', 1000));
   Then(/^credits visible$/, () => client
     .waitForElementVisible('#creditsLabel', 1000)
     .waitForElementVisible('#credits', 1000));
   After(() => client
     .end());
   Then(/^I see credits grow$/, () => client
-      .waitForElementVisible('#credits', 1100)
-      .getText('#credits', (result) => {
-        creditsValue = Number(result.value);
-      })
-      .pause(1000)
-      .getText('#credits', (result) => {
-        client.assert.ok(Number(result.value) > creditsValue);
-      })
+    .waitForElementVisible('#credits', 1100)
+    .getText('#credits', (result) => {
+      creditsValue = Number(result.value);
+    })
+    .pause(1000)
+    .getText('#credits', (result) => {
+      client.assert.ok(Number(result.value) > creditsValue);
+    })
     .waitForElementVisible('#credits', 1000));
   Given(/^cookies are empty$/, () => setCookiesEmpty());
   Given(/^user "(.*)" exists in server with password "(.*)" and role "(.*)"$/, (user, password, role) => insertUser(user, password, role, 0, 1));
@@ -155,7 +155,7 @@ function steps({ Given, Then, After }) {
     .waitForElementVisible(`#buyTopology${getTopologyId(topology)}`, 1000)
     .click(`button[id=buyTopology${getTopologyId(topology)}]`));
   Then(/^then topology "(.*)" belongs to user$/, topology => client
-      .waitForElementVisible(`#topologyOwned${getTopologyId(topology)}`, 1000));
+    .waitForElementVisible(`#topologyOwned${getTopologyId(topology)}`, 1000));
   Then(/^buy "(.*)" topology is disabled$/, topology => client
     .expect.element(`#buyTopology${getTopologyId(topology)}`).to.have.attribute('disabled').before(1000));
   Then(/^buy "(.*)" topology is enabled$/, topology => client
@@ -231,29 +231,19 @@ function steps({ Given, Then, After }) {
   });
 
 
-// troubleshoot steps
-  Given(/^I open Google`s search page$/, () => {
-    return client
-      .url('http://google.com');
-  });
+  // troubleshoot steps
+  Given(/^I open Google`s search page$/, () => client
+    .url('http://google.com'));
 
-  Given(/^I open DuckDuckGo search page$/, () => {
-    return client
-      .url('https://duckduckgo.com/');
-  });
+  Given(/^I open DuckDuckGo search page$/, () => client
+    .url('https://duckduckgo.com/'));
 
-  Then(/^the title is "(.*?)"$/, (text) => {
-    return client.assert.title(text);
-  });
+  Then(/^the title is "(.*?)"$/, text => client.assert.title(text));
 
-  Then(/^the Google search form exists$/, () => {
-    return client.assert.visible('input[name="q"]');
-  });
+  Then(/^the Google search form exists$/, () => client.assert.visible('input[name="q"]'));
 
-  Then(/^the DuckDuckGo search form exists$/, () => {
-    return client.assert.visible('input[name="q"]');
-  });
-//end troubleshoot steps
+  Then(/^the DuckDuckGo search form exists$/, () => client.assert.visible('input[name="q"]'));
+  // end troubleshoot steps
 
 
   Given(/^Picture "(.*)" exists in the database and a classification exists$/, (picture) => {
@@ -264,18 +254,18 @@ function steps({ Given, Then, After }) {
     fs.readFile(`/app/testdata/${picture}`, (err, data) => {
       if (err) {
         throw err;
-        }
-      const base64Image = new Buffer(data, 'binary').toString('base64');
+      }
+      const base64Image =  new Buffer(data, 'binary').toString('base64');
       console.info(`pic. ${base64Image}`);
       const postdata = {
         file_name: picture,
         file_data: base64Image,
       }; // set image and strip initial data
-    // post file base64 encoded.
+      // post file base64 encoded.
       axios.post(`${client.globals.devAPIURL}/uploadpicture`, postdata)
-    .then(() => {
-      this.$log.debug('saved successfully');
-    });
+        .then(() => {
+          this.$log.debug('saved successfully');
+        });
     });
     return client;
   });

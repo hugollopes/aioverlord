@@ -7,6 +7,7 @@
     "e2e": "nightwatch",
     "e2e:chrome": "nightwatch --features/e2e-test chrome",
     "e2e:firefox": "npm run nightwatch -- --env firefox",
+    "lint": "eslint --ext .js,.vue steps --fix",
     "debug": "node --inspect-brk node_modules/.bin/nightwatch --env chrome"
   },
   "author": "Hugo Lopes <hugo.l.lopes@gmail.com>",
@@ -16,10 +17,17 @@
     "chromedriver": "^2.36.0",
     "cucumber": "^4.0.0",
     "cucumber-pretty": "^1.4.0",
+    "eslint": "^5.0.1",
     "geckodriver": "^1.10.0",
     "nightwatch": "^0.9.20",
     "nightwatch-cucumber": "^9.1.2",
     "phantomjs-prebuilt": "^2.1.16",
     "selenium-server": "^3.10.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "^8.2.5",
+    "eslint-config-airbnb-base": "^13.0.0",
+    "eslint-plugin-html": "^4.0.5",
+    "eslint-plugin-import": "^2.13.0"
   }
 }
