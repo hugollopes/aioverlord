@@ -23,7 +23,7 @@ spec:
         - npm
         - run
         - dev
-        image: docker.io/nathor/frontend:latest
+        image: localhost:5000/frontend:latest
         name: web
         ports:
         - containerPort: 8080

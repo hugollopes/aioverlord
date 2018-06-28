@@ -17,14 +17,14 @@ os.system("kubectl delete -f ./kubernetes/mongodb-deployment.yaml")
 logging.basicConfig(stream=sys.stderr, level=logging.INFO)
 logging.info("launching dev environment")
 # building
-os.system("docker build  ./aioverlord-frontend/  -c-tacg nathor/frontend:latest")
-os.system("docker build  ./aioverlord-backend/  --tag nathor/backend:latest")
-os.system("docker build  ./e2etests/  --tag nathor/e2etest:latest")
+os.system("docker build  ./aioverlord-frontend/  --tag localhost:5000/frontend:latest")
+os.system("docker build  ./aioverlord-backend/  --tag localhost:5000/backend:latest")
+os.system("docker build  ./e2etests/  --tag localhost:5000/e2etest:latest")
 
 # pushing
-os.system("docker push nathor/frontend:latest")
-os.system("docker push nathor/backend:latest")
-os.system("docker push nathor/e2etest:latest")
+os.system("docker push localhost:5000/frontend:latest")
+os.system("docker push localhost:5000/backend:latest")
+os.system("docker push localhost:5000/e2etest:latest")
 
 # apply
 p = subprocess.Popen(shlex.split("kubectl apply -f kubernetes"))

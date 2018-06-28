@@ -7,7 +7,7 @@ spec:
     spec:
       containers:
       - name: e2etest
-        image: docker.io/nathor/e2etest:latest
+        image: localhost:5000/e2etest:latest
         args:
          - npm
          - run

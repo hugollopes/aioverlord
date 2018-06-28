@@ -18,7 +18,7 @@ spec:
         io.kompose.service: db
     spec:
       containers:
-      - image: docker.io/mongo:3.5
+      - image: localhost:5000/mongo:3.5
         name: db
         ports:
         - containerPort: 27017

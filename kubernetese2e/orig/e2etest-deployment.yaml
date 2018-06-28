@@ -22,7 +22,7 @@ spec:
     #    - e2e:chrome
     #    - --
     #    - features/xxxx
-        image: docker.io/nathor/e2etest:latest
+        image: localhost:5000/e2etest:latest
         name: e2etest
         ports:
         - containerPort: 8080
