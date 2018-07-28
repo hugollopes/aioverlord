@@ -1,8 +1,6 @@
 import logging
 import os
 import sys
-import subprocess
-import time
 import re
 from os import listdir
 from os.path import isfile, join
@@ -17,8 +15,10 @@ os.system("mkdir kubernetese2e/applyfolder")
 
 list_files = []
 my_path = "./e2etests/features"
-only_files = [f for f in listdir(my_path)  if re.match(r'' + sys.argv[1] + '', f) if isfile(join(my_path, f))]
-
+if len(sys.argv) > 1:
+    only_files = [f for f in listdir(my_path) if re.match(r'' + sys.argv[1] + '', f) if isfile(join(my_path, f))]
+else:
+    only_files = [f for f in listdir(my_path) if isfile(join(my_path, f))]
 
 for f in only_files:
     entry = dict()
@@ -45,12 +45,10 @@ for f in list_files:
 
     os.system("cp kubernetese2e/orig/e2etest-job.yaml kubernetese2e/applyfolder")
 
-    #os.system(
-    #    "sed -i -e 's/xxxx/" + f["feature"] + "/' kubernetese2e/applyfolder/e2etest-deployment.yaml")  # sed feature
+
     os.system(
         "sed -i -e 's/xxxx/" + f["feature"] + "/' kubernetese2e/applyfolder/e2etest-job.yaml")  # sed feature
     os.system("kubectl delete -f kubernetese2e/applyfolder/e2etest-job.yaml")
-    time.sleep(20)
     os.system("kubectl apply -f kubernetese2e/applyfolder/e2etest-job.yaml")
     logging.info("launching test " + str(test_number) + " for feature: " + f["feature"])
     filepath = "./reports/e2eparallel" + str(test_number) + ".log"
@@ -60,7 +58,12 @@ for f in list_files:
     f["file"].close()
     test_number = test_number + 1
 
-time.sleep(30)
+# wait for all jobs to end
+for f in list_files:
+    print("checking testing job : " + f["feature"] + " to finish")
+    os.system("until kubectl get jobs e2etest --namespace=" + f["feature_namespace"]
+              + "  -o jsonpath='{.status.conditions[?(@.type==""Complete"")].status}' | grep True ; do sleep 1 ; done > /dev/null")
+# get files
 for f in list_files:
     os.system("kubectl config set-context minikube --namespace=" + f["feature_namespace"])
     os.system("kubectl logs job/e2etest >> " + f["filepath"])

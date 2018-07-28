@@ -14,14 +14,19 @@ spec:
          - e2e
          - --
          - features/xxxx
-#         - --
-#         - features/debugFunctions.feature
         ports:
         - containerPort: 8080
         resources: {}
         volumeMounts:
           - name: code
             mountPath: /app
+      initContainers:
+      - name: flaskprobe
+        image: localhost:5000/aliveprobe:latest
+        command: ['sh', '-c','until (curl -s "http://flask:5000/" --max-time 1| grep "db connection active") ;
+                  do echo waiting for flask server; sleep 2; done;
+                  until (curl -s "http://web:8080/" --max-time 1 | grep "html") ;
+                  do echo waiting for web server; sleep 2; done;']
       restartPolicy: Never
       volumes:
         - name: code

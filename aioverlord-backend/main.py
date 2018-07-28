@@ -43,7 +43,16 @@ mongo.init_app(app)
 def dummy_root():
     hello = tf.constant('TensorFlow active')
     sess = tf.Session()
-    alive_message = "flask server alive v3; " + str(sess.run(hello))
+    alive_message = "flask server alive; " + str(sess.run(hello))
+    users = mongo.db.users
+    request_data = request.get_json()
+    logging.debug("buy neuron request dump")
+    try:
+        user = users.find_one({"username": "dummyuser"})
+        if user is None:
+            alive_message = alive_message + " ; db connection active"
+    except:
+        alive_message = "error connecting to DB"
     logging.debug(alive_message)
     return alive_message
 

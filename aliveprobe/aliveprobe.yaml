@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: aliveprobe
+spec:
+  containers:
+  - name: aliveprobe
+    image: localhost:5000/aliveprobe:latest
+    command:
+      - sleep
+      - "3600"
+    imagePullPolicy: IfNotPresent
+  restartPolicy: Always

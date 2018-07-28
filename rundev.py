@@ -20,11 +20,15 @@ logging.info("launching dev environment")
 os.system("docker build  ./aioverlord-frontend/  --tag localhost:5000/frontend:latest")
 os.system("docker build  ./aioverlord-backend/  --tag localhost:5000/backend:latest")
 os.system("docker build  ./e2etests/  --tag localhost:5000/e2etest:latest")
+os.system("docker build  ./aliveprobe/  --tag localhost:5000/aliveprobe:latest")
 
 # pushing
 os.system("docker push localhost:5000/frontend:latest")
 os.system("docker push localhost:5000/backend:latest")
 os.system("docker push localhost:5000/e2etest:latest")
+os.system("docker push localhost:5000/aliveprobe:latest")
+
+# log command: kubectl logs -f deployment/flask      
 
 # apply
 p = subprocess.Popen(shlex.split("kubectl apply -f kubernetes"))

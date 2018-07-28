@@ -31,6 +31,11 @@ spec:
         volumeMounts:
           - name: code
             mountPath: /app
+      initContainers:
+      - name: flaskprobe
+        image: localhost:5000/aliveprobe:latest
+        command: ['sh', '-c','until (curl -s "http://flask:5000/" --max-time 1 | grep "db connection active") ;
+                  do echo waiting for flask server; sleep 2; done;']
       restartPolicy: Always
       volumes:
         - name: code
