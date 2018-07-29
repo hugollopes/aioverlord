@@ -231,21 +231,6 @@ function steps({ Given, Then, After }) {
   });
 
 
-  // troubleshoot steps
-  Given(/^I open Google`s search page$/, () => client
-    .url('http://google.com'));
-
-  Given(/^I open DuckDuckGo search page$/, () => client
-    .url('https://duckduckgo.com/'));
-
-  Then(/^the title is "(.*?)"$/, text => client.assert.title(text));
-
-  Then(/^the Google search form exists$/, () => client.assert.visible('input[name="q"]'));
-
-  Then(/^the DuckDuckGo search form exists$/, () => client.assert.visible('input[name="q"]'));
-  // end troubleshoot steps
-
-
   Given(/^Picture "(.*)" exists in the database and a classification exists$/, (picture) => {
     axios.post(`${client.globals.devAPIURL}/create_classification`).then(() => {
       this.$log.debug('classification created successfully');
@@ -255,7 +240,7 @@ function steps({ Given, Then, After }) {
       if (err) {
         throw err;
       }
-      const base64Image =  new Buffer(data, 'binary').toString('base64');
+      const base64Image = new Buffer(data, 'binary').toString('base64');
       console.info(`pic. ${base64Image}`);
       const postdata = {
         file_name: picture,

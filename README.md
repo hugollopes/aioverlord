@@ -12,4 +12,21 @@ playground project for multiple technologies
 * nightjs/cucumber
 * mongodb
 
+# Requirements for dev env
+
+* Linux ubunto(scripts should workrk in other versions as well)
+* python3
+* k8 (minikube for dev env)
+* localhost docker registry in port 5000
+
+# Instalation/run
+
+* run: rundev.py for creating images and creating a k8 instance.
+* run: run2e2.py for running the test suit.
+
+
+
+
+
+
 
