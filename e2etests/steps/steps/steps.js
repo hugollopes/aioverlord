@@ -218,7 +218,7 @@ function steps({ Given, Then, After }) {
       path: '/',
     }));
   Then(/^Login is not visible$/, () => loginNotVisible());
-  Given(/^I open aplication and login with user "(.*)" with password "(.*)" and role "(.*)"$/, (user, password, role) => {
+  Given(/^I open application and login with user "(.*)" with password "(.*)" and role "(.*)"$/, (user, password, role) => {
     openApplication();
     insertUser(user, password, role, 0, 1);
     setCookiesEmpty();

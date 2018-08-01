@@ -18,7 +18,7 @@
       <div class="col-xs-12" v-show="!showLogin" id="buttonsDiv">
         <button v-on:click="ShowTopology" id="topologyButton" v-show="showTopologyButton">topology</button>
         <button v-on:click="showNetwork" id="showNetworkButton" v-show="showNetworkButton">Network</button>
-
+        <button v-on:click="ShowWorld" id="ShowWorldButton" v-show="ShowWorldButton">world</button>
         <button v-on:click="classify">trainNN/nnconfig</button>
         <button v-on:click="classify">data sets</button>
         <button id="Downmenubutton" v-on:click="classify">label data</button>
@@ -40,6 +40,7 @@ import fileupload from '@/components/fileupload';
 import neuralnet from '@/components/neuralnet';
 import topology from '@/components/topology';
 import login from '@/components/login';
+import world from '@/components/world';
 import axios from 'axios';
 
 
@@ -54,6 +55,7 @@ export default {
       show_classify: false,
       showTopologyButton: true,
       showNetworkButton: false,
+      ShowWorldButton: true,
       NeuralNetArea: 'neuralnet', // indicates  what component is visible in that area
     };
   },
@@ -64,6 +66,7 @@ export default {
     neuralnet,
     login,
     topology,
+    world,
   },
   methods: {
     changeShowClassify() {
@@ -74,6 +77,12 @@ export default {
       this.NeuralNetArea = 'topology';
       this.showTopologyButton = false;
       this.showNetworkButton = true;
+    },
+    ShowWorld() {
+      this.NeuralNetArea = 'world';
+      this.showTopologyButton = false;
+      this.showNetworkButton = true;
+      this.showWorldButton = false;
     },
     showNetwork() {
       this.NeuralNetArea = 'neuralnet';

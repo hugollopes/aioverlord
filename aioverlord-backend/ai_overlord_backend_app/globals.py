@@ -4,5 +4,6 @@ with open("./static/referenceData/referenceData.json", encoding='utf-8') as data
     data = json.loads(data_file.read())
 
 TOPOLOGIES = data["topologies"]
+AGENTS = data["agents"]
 
 COST_PER_NEURON = data["costPerNeuron"]

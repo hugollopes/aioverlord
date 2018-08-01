@@ -31,7 +31,8 @@ app.register_blueprint(get_token_route)
 app.register_blueprint(buy_neuron_route)
 app.register_blueprint(buy_topology_route)
 app.register_blueprint(available_topologies_route)
-
+app.register_blueprint(buy_agent_route)
+app.register_blueprint(available_agents_route)
 
 auth = HTTPBasicAuth()
 
