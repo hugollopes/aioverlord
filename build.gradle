@@ -14,7 +14,7 @@ task copyReferenceData(type: Copy, group: "Custom", description: "Destributes re
   }
   copy {
     from 'referenceData'
-    into "aioverlord-frontend/src/assets"
+    into "aioverlord-backend/static/referenceData"
   }
 }
 

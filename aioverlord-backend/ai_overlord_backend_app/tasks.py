@@ -16,7 +16,7 @@ available_tasks_route = Blueprint('available_tasks_route', __name__)
 def assign_agent():
     users = mongo.db.users
     request_data = request.get_json()
-    logging.debug("buy agent")
+    logging.debug("assign agent")
     if ('username' not in request_data) or ('agentId' not in request_data):
         return jsonify({'error': "argumentsMissing"}), 400
     agent = next(item for item in AGENTS if item["id"] == request_data["agentId"])
@@ -46,24 +46,23 @@ def assign_agent():
 @available_tasks_route.route("/availableTasks", methods=['POST'])
 @auth.login_required
 @requires_roles('user')
-def available_agent_func():
+def available_tasks_func():
     users = mongo.db.users
     request_data = request.get_json()
-    logging.debug("available agents")
+    logging.debug("available tasks")
     if 'username' not in request_data:
         return jsonify({'error': "argumentsMissing"}), 400
     cursor = users.find_one({"username": request_data["username"]})
-    available_agents = []
-    user_credits = cursor["credits"]
-    if 'agents' not in dumps(cursor):
-        cursor["agents"] = []
-    for agent in AGENTS:
-        user_has_agent = False
-        for user_agent in cursor["agents"]:
-            if agent["id"] == user_agent["id"]:
-                user_has_agent = True
-        if not user_has_agent:
-            agent_copy = dict(agent)
-            agent_copy["enabled"] = 'true' if user_credits >= agent["cost"] else 'false'
-            available_agents.append(agent_copy)
-    return jsonify({'availableAgents': available_agents})
+    available_tasks = []
+    if 'tasks' not in dumps(cursor):
+        cursor["tasks"] = []
+    for task in TASKS:
+        user_has_task = False
+        for user_task in cursor["tasks"]:
+            if task["id"] == user_task["id"]:
+                user_has_task = True
+        if not user_has_task:
+            task_copy = dict(task)
+            task_copy["enabled"] = 'true'
+            available_tasks.append(agent_copy)
+    return jsonify({'availableTasks': available_tasks})

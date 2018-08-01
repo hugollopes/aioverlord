@@ -36,6 +36,7 @@ export default {
       neurons: 0,
       topologies: [],
       availableTopologies: [],
+      availableAgents: [],
     };
   },
   mounted() {
@@ -71,6 +72,20 @@ export default {
         this.availableTopologies = response.data.availableTopologies;
         this.$log.debug('Topologies available');
         bus.$emit('availableTopologiesUpdated', this.availableTopologies);
+      });
+    });
+    bus.$on('availableAgents', () => {
+      const postdata = {
+        username: this.userId,
+        token: this.token,
+      };
+      this.$log.debug(`postdata availableAgents: ${postdata.token}  ${postdata.username}`);
+      axios.post(`${process.env.API_URL}/availableAgents`, postdata)
+      .then((response) => {
+        this.$log.debug(response);
+        this.availableAgents = response.data.availableAgents;
+        this.$log.debug('Agents available');
+        bus.$emit('availableAgentsUpdated', this.availableAgents);
       });
     });
     bus.$on('buyTopology', (topologyId) => {

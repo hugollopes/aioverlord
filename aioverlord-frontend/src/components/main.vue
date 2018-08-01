@@ -80,7 +80,7 @@ export default {
     },
     ShowWorld() {
       this.NeuralNetArea = 'world';
-      this.showTopologyButton = false;
+      this.showTopologyButton = true;
       this.showNetworkButton = true;
       this.showWorldButton = false;
     },

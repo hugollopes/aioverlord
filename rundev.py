@@ -6,6 +6,7 @@ import subprocess
 import requests
 from time import sleep
 
+os.system("kubectl config set-context minikube --namespace=default")
 # stop sessions
 
 os.system("kubectl config set-context minikube --namespace=default")

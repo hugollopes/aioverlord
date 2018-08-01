@@ -3,10 +3,10 @@
 
   <div class="world" id="worlddiv">
 
-    <div class="row" v-for="agent in agents">
-      <div class="col-xs-3 panel" v-bind:Id="'availableagent' + agent.id">
+    <div class="row" v-for="agent in availableAgents">
+      <div class="col-xs-3 panel" v-bind:Id="'availableAgent' + agent.id">
         {{agent.name}}
-        <button  v-on:click="buyAgent(agent.id)"  v-bind:Id="'buyAgent' + agent.id">buy {{  agent.name   }} for 10</button>
+        <button  v-on:click="assignAgent(agent.id)"  v-bind:Id="'buyAgent' + agent.id">buy {{  agent.name   }} for 10</button>
       s</div>
     </div>
   </div>
@@ -23,7 +23,7 @@ export default {
       neurons: 0,
       credits: 0,
       agents: [{name: "weak agent",id: "4545"},{name: "medium agent",id: "453345"},{name: "strong agent",id: "453345444"}],
-      availableTopologies: [],
+      availableAgents: [],
     };
   },
   created() {
@@ -33,11 +33,17 @@ export default {
     bus.$on('creditsUpdated', (credits) => {
       this.credits = credits;
     });
+    bus.$on('availableAgentsUpdated', (availableAgents) => {
+      this.availableAgents = availableAgents;
+    });
+    bus.$emit('availableAgents');
   },
   methods: {
-    buyAgent() {
-  this.$log.debug(`buying agent...`);
-        bus.$emit('buyAgent', topologyId);
+    assignAgent(agentId) {
+        this.$log.debug(`buying agent...`);
+        bus.$emit('buyAgent', agentId);
+
+        bus.$emit('availableAgents');
     },
 
   },
