@@ -5,7 +5,7 @@
 @rem
 @rem ##########################################################################
 
-@rem Set local scope for the variables with windows NT shellds
+@rem Set local scope for the variables with windows NT shelld
 if "%OS%"=="Windows_NT" setlocal
 
 set DIRNAME=%~dp0
