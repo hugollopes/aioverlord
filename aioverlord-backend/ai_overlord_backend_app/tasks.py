@@ -13,7 +13,7 @@ available_tasks_route = Blueprint('available_tasks_route', __name__)
 @assign_agent_route.route("/assignAgent", methods=['POST'])
 @auth.login_required
 @requires_roles('user')
-def buy_agent():
+def assign_agent():
     users = mongo.db.users
     request_data = request.get_json()
     logging.debug("buy agent")

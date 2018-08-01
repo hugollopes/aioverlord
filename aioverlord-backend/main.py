@@ -4,6 +4,8 @@ from io import BytesIO
 from ai_overlord_backend_app.classification import *
 from ai_overlord_backend_app.user import *
 from ai_overlord_backend_app.topologies import *
+from ai_overlord_backend_app.agents import *
+from ai_overlord_backend_app.tasks import *
 from flask import Flask
 from flask_httpauth import HTTPBasicAuth
 import os
@@ -33,6 +35,9 @@ app.register_blueprint(buy_topology_route)
 app.register_blueprint(available_topologies_route)
 app.register_blueprint(buy_agent_route)
 app.register_blueprint(available_agents_route)
+app.register_blueprint(assign_agent_route)
+app.register_blueprint(available_tasks_route)
+
 
 auth = HTTPBasicAuth()
 

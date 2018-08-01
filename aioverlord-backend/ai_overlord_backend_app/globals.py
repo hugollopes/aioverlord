@@ -5,5 +5,5 @@ with open("./static/referenceData/referenceData.json", encoding='utf-8') as data
 
 TOPOLOGIES = data["topologies"]
 AGENTS = data["agents"]
-
 COST_PER_NEURON = data["costPerNeuron"]
+TASKS = data["tasks"]
