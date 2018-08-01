@@ -6,8 +6,11 @@
     <div class="row" v-for="agent in availableAgents">
       <div class="col-xs-3 panel" v-bind:Id="'availableAgent' + agent.id">
         {{agent.name}}
-        <button  v-on:click="assignAgent(agent.id)"  v-bind:Id="'buyAgent' + agent.id">buy {{  agent.name   }} for 10</button>
-      s</div>
+        <button  v-on:click="buyAgent(agent.id)"  v-bind:Id="'buyAgent' + agent.id">buy {{  agent.name   }} for 10</button>
+      </div>
+    </div>
+    <div class="row" v-for="agent in agents">
+      <div class="col-xs-2 panel" v-bind:Id="'agentsOwned' + agent.id">{{agent.name}}</div>
     </div>
   </div>
 </template>
@@ -22,7 +25,7 @@ export default {
     return {
       neurons: 0,
       credits: 0,
-      agents: [{name: "weak agent",id: "4545"},{name: "medium agent",id: "453345"},{name: "strong agent",id: "453345444"}],
+      agents: [],
       availableAgents: [],
     };
   },
@@ -30,8 +33,12 @@ export default {
     bus.$on('neuronsUpdated', (neurons) => {
       this.neurons = neurons;
     });
+
     bus.$on('creditsUpdated', (credits) => {
       this.credits = credits;
+    });
+    bus.$on('agentsUpdated', (agents) => {
+      this.agents = agents;
     });
     bus.$on('availableAgentsUpdated', (availableAgents) => {
       this.availableAgents = availableAgents;
@@ -39,10 +46,9 @@ export default {
     bus.$emit('availableAgents');
   },
   methods: {
-    assignAgent(agentId) {
+    buyAgent(agentId) {
         this.$log.debug(`buying agent...`);
         bus.$emit('buyAgent', agentId);
-
         bus.$emit('availableAgents');
     },
 

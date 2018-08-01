@@ -64,5 +64,5 @@ def available_tasks_func():
         if not user_has_task:
             task_copy = dict(task)
             task_copy["enabled"] = 'true'
-            available_tasks.append(agent_copy)
+            available_tasks.append(task_copy)
     return jsonify({'availableTasks': available_tasks})

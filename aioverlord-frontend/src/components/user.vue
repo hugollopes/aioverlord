@@ -35,6 +35,8 @@ export default {
       credits: 0,
       neurons: 0,
       topologies: [],
+      agents: [],
+      tasks: [],
       availableTopologies: [],
       availableAgents: [],
     };
@@ -102,6 +104,20 @@ export default {
         bus.$emit('availableTopologies');
       });
     });
+    bus.$on('buyAgent', (agentId) => {
+      const postdata = {
+        username: this.userId,
+        token: this.token,
+        agentId,
+      };
+      this.$log.debug(`postdata buy agent: ${postdata.token}  ${postdata.username}`);
+      axios.post(`${process.env.API_URL}/buyAgent`, postdata)
+      .then((response) => {
+        this.$log.debug(response);
+        this.$log.debug(`Agent of id ${agentId} bought`);
+        bus.$emit('availableAgents');
+      });
+    });
   },
   methods: {
     run(userId, token) {
@@ -119,10 +135,13 @@ export default {
           self.credits = response.data.credits;
           this.neurons = response.data.neurons;
           this.topologies = response.data.topologies;
+          this.agents = response.data.agents;
+          this.tasks = response.data.tasks;
           this.checkEnables();
           bus.$emit('neuronsUpdated', this.neurons);
           bus.$emit('creditsUpdated', this.credits);
           bus.$emit('topologiesUpdated', this.topologies);
+          bus.$emit('agentsUpdated', this.agents);
         });
         }, 1000);
       }
