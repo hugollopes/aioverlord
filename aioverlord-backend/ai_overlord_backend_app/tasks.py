@@ -17,30 +17,28 @@ def assign_agent():
     users = mongo.db.users
     request_data = request.get_json()
     logging.debug("assign agent")
-    if ('username' not in request_data) or ('agentId' not in request_data):
+    if ('username' not in request_data) or ('agentId' not in request_data) or ('taskId' not in request_data):
         return jsonify({'error': "argumentsMissing"}), 400
-    agent = next(item for item in AGENTS if item["id"] == request_data["agentId"])
-    cost = agent["cost"]
+    #agent = next(item for item in AGENTS if item["id"] == request_data["agentId"])
+    #task = next(item for item in TASKS if item["id"] == request_data["taskId"])
     cursor = users.find_one({"username": request_data["username"]})
-    if int(cursor['credits']) < cost:
-        logging.debug("not enough credits")
-        return "not enough credits"
     if 'agents' not in dumps(cursor):
-        cursor["agents"] = []
-        cursor["agents"].append(agent)
-    else:
-        user_has_agent = False
-        for user_agent in cursor["agents"]:
-            if user_agent["id"] == user_agent["id"]:
-                user_has_agent = True
-        if not user_has_agent:
-            cursor["agents"].append(agent)
-        else:
-            logging.debug("user already has agent")
-            return "user already has agent"
-    cursor["credits"] = cursor['credits'] - cost
+        return "user has no agent"
+    if 'tasks' not in dumps(cursor):
+        return "user has no task"
+    agent_assigned = False
+    for user_agent in cursor["agents"]:
+        if user_agent["id"] == request_data["agentId"] and user_agent["status"] == "unassigned":
+            for user_task in cursor["tasks"]:
+                if user_task["id"] == request_data["taskId"] and user_task["status"] == "unassigned":
+                    user_task["status"] = "assigned"
+                    user_task["agentId"] = request_data["agentId"]
+                    user_agent["status"] = "assigned"
+                    agent_assigned = True
+    if not agent_assigned:
+        return "could not assign agent"
     mongo.db.users.save(cursor)
-    return "agent purchased"
+    return "agent assigned"
 
 
 @available_tasks_route.route("/availableTasks", methods=['POST'])

@@ -2,7 +2,7 @@
   "topologies": [
     {
       "id": 1,
-      "name": "2 hidden layers3333",
+      "name": "2 hidden layers",
       "cost": 10
     },
     {
@@ -32,7 +32,7 @@
     },
     {
       "id": 2,
-      "name": "new task",
+      "name": "complex task",
       "reward": 2
     }
   ]

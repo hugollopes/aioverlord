@@ -28,6 +28,9 @@ def create_user():
     if user.find_one({"username": username}) is not None:
         return jsonify({'error': "userAlreadyExists"}), 400
     timestamp = int(datetime.datetime.now().timestamp())
+    for task in TASKS:
+        task["status"] = "unassigned"
+
     user.insert({
         "username": username,
         "email": username,
@@ -35,7 +38,8 @@ def create_user():
         "credits": 10,
         "neurons": 1,
         "timestamp": timestamp,
-        "role": role
+        "role": role,
+        "tasks": TASKS,
     })
     return jsonify({'username': username}), 201
 

@@ -27,14 +27,18 @@ def buy_agent():
         return "not enough credits"
     if 'agents' not in dumps(cursor):
         cursor["agents"] = []
-        cursor["agents"].append(agent)
+        agent_copy = dict(agent)
+        agent_copy["status"] = "unassigned"
+        cursor["agents"].append(agent_copy)
     else:
         user_has_agent = False
         for user_agent in cursor["agents"]:
-            if user_agent["id"] == user_agent["id"]:
+            if agent["id"] == user_agent["id"]:
                 user_has_agent = True
         if not user_has_agent:
-            cursor["agents"].append(agent)
+            agent_copy = dict(agent)
+            agent_copy["status"] = "unassigned"
+            cursor["agents"].append(agent_copy)
         else:
             logging.debug("user already has agent")
             return "user already has agent"

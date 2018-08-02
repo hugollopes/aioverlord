@@ -4,10 +4,16 @@ import sys
 import re
 from os import listdir
 from os.path import isfile, join
+from time import sleep
 
 print("number of arguments: " + str(len(sys.argv)))
+open_vnc = False
 if len(sys.argv) > 1:
     print("feature argument: " + sys.argv[1])
+    if (len(sys.argv) > 2):
+        if (sys.argv[2] == "vnc"):
+            open_vnc = True
+
 logging.basicConfig(stream=sys.stderr, level=logging.INFO)
 logging.info("launching e2e parallel tests")
 os.system("rm reports/*.log")  # removing previous test files
@@ -45,7 +51,6 @@ for f in list_files:
 
     os.system("cp kubernetese2e/orig/e2etest-job.yaml kubernetese2e/applyfolder")
 
-
     os.system(
         "sed -i -e 's/xxxx/" + f["feature"] + "/' kubernetese2e/applyfolder/e2etest-job.yaml")  # sed feature
     os.system("kubectl delete -f kubernetese2e/applyfolder/e2etest-job.yaml")
@@ -57,6 +62,13 @@ for f in list_files:
     f["file"] = logfile
     f["file"].close()
     test_number = test_number + 1
+
+if open_vnc:
+    os.system(
+        "TEST=""$(kubectl get pods -o go-template --template '{{range .items}}{{.metadata.name}}{{" + '"' + r"\n" + '"' +
+        "}}{{end}}' | grep ^chrome)"";echo ${TEST};kubectl port-forward --pod=${TEST}  5901:5900 &")
+    sleep(3)
+    os.system("vinagre 0.0.0.0:5901 &")
 
 # wait for all jobs to end
 for f in list_files:

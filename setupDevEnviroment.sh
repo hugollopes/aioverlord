@@ -4,6 +4,8 @@
 # to solve a dns related to ubuntu issue with had to do this:
 # https://kubernetes.io/docs/tasks/administer-cluster/dns-debugging-resolution/
 # https://github.com/kubernetes/minikube/issues/2027 --- see down
+sudo sysctl net.ipv4.tcp_fin_timeout=30
+sudo sysctl net.ipv4.ip_local_port_range="15000 61000"
 sudo sed -i -e 's/^#*.*DNSStubListener=.*$/DNSStubListener=no/' /etc/systemd/resolved.conf
 sudo sed -i -e 's/nameserver 127.0.1.1/nameserver 8.8.8.8/' /etc/resolv.conf
 systemctl is-active systemd-resolved >& /dev/null && sudo systemctl stop systemd-resolved

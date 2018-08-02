@@ -118,6 +118,21 @@ export default {
         bus.$emit('availableAgents');
       });
     });
+    bus.$on('assignAgent', (agentId,taskId) => {
+      const postdata = {
+        username: this.userId,
+        token: this.token,
+        agentId,
+        taskId,
+      };
+      this.$log.debug(`postdata buy agent: ${postdata.token}  ${postdata.username}`);
+      axios.post(`${process.env.API_URL}/assignAgent`, postdata)
+      .then((response) => {
+        this.$log.debug(response);
+        this.$log.debug(`Agent of id ${agentId} assigned to task of id ${taskId}`);
+        bus.$emit('availableAgents');
+      });
+    });
   },
   methods: {
     run(userId, token) {
@@ -142,6 +157,7 @@ export default {
           bus.$emit('creditsUpdated', this.credits);
           bus.$emit('topologiesUpdated', this.topologies);
           bus.$emit('agentsUpdated', this.agents);
+          bus.$emit('tasksUpdated', this.tasks);
         });
         }, 1000);
       }

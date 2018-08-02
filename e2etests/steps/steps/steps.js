@@ -154,6 +154,18 @@ function steps({ Given, Then, After }) {
   Then(/^click buy topology "(.*)"$/, topology => client
     .waitForElementVisible(`#buyTopology${getTopologyId(topology)}`, 1000)
     .click(`button[id=buyTopology${getTopologyId(topology)}]`));
+
+  Then(/^user buys agent$/, () => client
+    .waitForElementVisible('#buyAgent2', 3000)
+    .click('#buyAgent2')
+    .waitForElementVisible('#agentsOwned2', 2000));
+  Then(/^user assigns agent$/, () => client
+    .waitForElementVisible('#assignAgent2t2', 1000)
+    .click('#assignAgent2t2')
+    .pause(3000)
+    .assert.containsText('#agentsOwned2', 'strong agent with status assigned'));
+
+
   Then(/^then topology "(.*)" belongs to user$/, topology => client
     .waitForElementVisible(`#topologyOwned${getTopologyId(topology)}`, 1000));
   Then(/^buy "(.*)" topology is disabled$/, topology => client
@@ -177,6 +189,10 @@ function steps({ Given, Then, After }) {
   Then(/^I click topology$/, () => client
     .waitForElementVisible('#topologyButton', 1000)
     .click('button[id=topologyButton]'));
+  Then(/user accesses world$/, () => client
+    .waitForElementVisible('#ShowWorldButton', 1000)
+    .click('#ShowWorldButton')
+    .waitForElementVisible('#worlddiv', 2000));
   Then(/^I click network button$/, () => client
     .waitForElementVisible('#showNetworkButton', 1000)
     .click('button[id=showNetworkButton]'));
