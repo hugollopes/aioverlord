@@ -64,7 +64,7 @@ for f in list_files:
     test_number = test_number + 1
 
 if open_vnc:
-    os.system(
+    os.system("kubectl config set-context minikube --namespace=" + "e2e-" + sys.argv[1] + "-feature" + ";" +
         "TEST=""$(kubectl get pods -o go-template --template '{{range .items}}{{.metadata.name}}{{" + '"' + r"\n" + '"' +
         "}}{{end}}' | grep ^chrome)"";echo ${TEST};kubectl port-forward --pod=${TEST}  5901:5900 &")
     sleep(3)
@@ -93,4 +93,6 @@ for f in list_files:
 logfile.close()
 os.system("kubectl config set-context minikube --namespace=default")
 print(open("reports/e2etest.log").read())
+os.system("pkill kubectl")
+os.system("pkill vinagre")
 logging.info("E2E test ended")
