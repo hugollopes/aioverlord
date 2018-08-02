@@ -24,6 +24,11 @@ playground project for multiple technologies
 * run: rundev.py for creating images and creating a k8 instance.
 * run: run2e2.py for running the test suit.
 
+# Debug
+
+* for checkin a feature test in vnc, run: python3 rune2e.py world vnc
+
+
 
 
 
