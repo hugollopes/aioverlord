@@ -24,21 +24,18 @@ function getTopologyId(topology) {
 }
 
 function loginNotVisible() {
-  client
-    .expect.element('#loginPanel').to.not.be.visible.before(NORMALWAIT);
+  client.expect.element('#loginPanel').to.not.be.visible.before(NORMALWAIT);
 }
 
 function clickSignIn() {
-  client
-    .waitForElementVisible('#loginButton', NORMALWAIT)
-    .expect.element('#loginButton').to.not.have.attribute('disabled').before(NORMALWAIT);
+  client.expect.element('#loginButton').to.be.visible.before(NORMALWAIT);
+  client.expect.element('#loginButton').to.not.have.attribute('disabled').before(NORMALWAIT);
   client.click('#loginButton');
 }
 
 function userVisible(user) {
-  client
-    .waitForElementVisible('#userId', NORMALWAIT)
-    .expect.element('#userId').text.to.contain(user).before(NORMALWAIT);
+  client.expect.element('#userId').to.be.visible.before(NORMALWAIT);
+  client.expect.element('#userId').text.to.contain(user).before(NORMALWAIT);
 }
 
 function insertUser(user, password, role, credits, neurons) {
