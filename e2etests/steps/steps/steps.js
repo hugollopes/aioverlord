@@ -102,7 +102,7 @@ function steps({ Given, Then, After }) {
     .click('#Downmenubutton')
     .pause(4000));
   Given(/^I click button file upload$/, () => client
-    .click('button[id=debugFunctions]'));
+    .click('#debugFunctions'));
   Then(/^the title exists$/, () => client.assert.containsText('#title', 'AI Overlord'));
   Then(/^I see is triangle$/, () => client
     .assert.containsText('#classificationName', 'is_triangle'));
@@ -148,11 +148,11 @@ function steps({ Given, Then, After }) {
     .waitForElementVisible('#buyAgent2', 3000)
     .click('#buyAgent2')
     .waitForElementVisible('#agentsOwned2', 2000));
-  Then(/^user assigns agent$/, () => client
-    .waitForElementVisible('#assignAgent2t2', 1000)
-    .click('#assignAgent2t2')
-    .pause(3000)
-    .assert.containsText('#agentsOwned2', 'strong agent with status assigned'));
+  Then(/^user assigns agent$/, () => {
+    client.expect.element('#assignAgent2t2').to.be.visible.before(NORMALWAIT);
+    client.click('#assignAgent2t2');
+    client.expect.element('#agentsOwned2').text.to.contain('strong agent with status assigned').before(NORMALWAIT);
+  });
 
 
   Then(/^then topology "(.*)" belongs to user$/, topology => client
