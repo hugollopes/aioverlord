@@ -99,11 +99,11 @@ for f in list_files:
 logfile.close()
 
 if open_vnc:  # kill vnc and portforwarding
-    os.system("pkill kubectl")
-    os.system("pkill vinagre")
+    os.system("pkill kubectl > /dev/null &")
+    os.system("pkill vinagre > /dev/null &")
     os.system("kubectl proxy > /dev/null &")
 
 os.system("kubectl config set-context minikube --namespace=default > /dev/null &")
 print(open("reports/e2etest.log").read())
-test_end_time = test_start_time - datetime.datetime.now().timestamp()
-logging.info("E2E test ended" + str(test_end_time))
+test_end_time = datetime.datetime.now().timestamp() - test_start_time
+logging.info("E2E test ended" + str(test_end_time) + " seconds")

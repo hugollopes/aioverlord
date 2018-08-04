@@ -25,12 +25,12 @@ function getTopologyId(topology) {
 
 function loginNotVisible() {
   client
-    .expect.element('#loginPanel').to.not.be.visible.after(100);
+    .expect.element('#loginPanel').to.not.be.visible.before(NORMALWAIT);
 }
 
 function clickSignIn() {
   client
-    .waitForElementVisible('#loginButton', 1000)
+    .waitForElementVisible('#loginButton', NORMALWAIT)
     .pause(1000)
     .getAttribute('#loginButton', 'disabled', (result) => {
       if (result.value === 'true') {
@@ -39,7 +39,7 @@ function clickSignIn() {
         client.assert.ok(true);
       }
     })
-    .click('button[id=loginButton]');
+    .click('#loginButton'); //.click('button[id=loginButton]');
 }
 
 function userVisible(user) {
@@ -103,8 +103,8 @@ function setCookiesEmpty() {
 
 function visibleLogin() {
   client
-    .waitForElementVisible('#loginPanel', 1000)
-    .assert.containsText('#loginPanel', 'Login');
+    .waitForElementVisible('#loginPanel', NORMALWAIT)
+    .expect.element('#loginPanel').text.to.contain('Login').before(NORMALWAIT);
 }
 
 function steps({ Given, Then, After }) {
@@ -118,16 +118,16 @@ function steps({ Given, Then, After }) {
   Then(/^I see is triangle$/, () => client
     .assert.containsText('#classificationName', 'is_triangle'));
   Then(/^I see choose file button$/, () => client
-    .waitForElementVisible('#fileuploadarea', 1000));
+    .waitForElementVisible('#fileuploadarea', NORMALWAIT));
   Then(/^neurons visible$/, () => client
-    .waitForElementVisible('#neuronsLabel', 1000)
-    .waitForElementVisible('#neurons', 1000));
+    .waitForElementVisible('#neuronsLabel', NORMALWAIT)
+    .waitForElementVisible('#neurons', NORMALWAIT));
   Then(/^network visible$/, () => client
-    .waitForElementVisible('#networksvg', 1000));
+    .waitForElementVisible('#networksvg', NORMALWAIT));
   Then(/^network neurons visible$/, () => client
-    .waitForElementVisible('#neuron1_0', 1000));
+    .waitForElementVisible('#neuron1_0', NORMALWAIT));
   Then(/^network synapses visible$/, () => client
-    .waitForElementVisible('#synneuron1_0neuron0_1', 1000));
+    .waitForElementVisible('#synneuron1_0neuron0_1', NORMALWAIT));
   Then(/^credits visible$/, () => client
     .waitForElementVisible('#creditsLabel', 1000)
     .waitForElementVisible('#credits', 1000));
