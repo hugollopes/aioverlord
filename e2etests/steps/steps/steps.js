@@ -1,6 +1,8 @@
 const fs = require('fs');
 const { client } = require('nightwatch-cucumber');
 const axios = require('axios');
+const NORMALWAIT = 5000;
+const LARGEWAIT = 20000;
 
 let creditsValue = 0;
 
@@ -42,9 +44,8 @@ function clickSignIn() {
 
 function userVisible(user) {
   client
-    .waitForElementVisible('#userId', 3000)
-    .pause(1000)
-    .assert.containsText('#userId', user);
+    .waitForElementVisible('#userId', NORMALWAIT)
+    .expect.element('#userId').text.to.contain(user).before(NORMALWAIT);
 }
 
 function insertUser(user, password, role, credits, neurons) {

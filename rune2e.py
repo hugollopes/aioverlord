@@ -2,10 +2,12 @@ import logging
 import os
 import sys
 import re
+import datetime
 from os import listdir
 from os.path import isfile, join
 from time import sleep
 
+test_start_time = datetime.datetime.now().timestamp()
 print("number of arguments: " + str(len(sys.argv)))
 open_vnc = False
 if len(sys.argv) > 1:
@@ -26,10 +28,13 @@ if len(sys.argv) > 1:
 else:
     only_files = [f for f in listdir(my_path) if isfile(join(my_path, f))]
 
+feature_namespace = ""
 for f in only_files:
     entry = dict()
     entry["feature"] = f
     entry["feature_namespace"] = "e2e-" + f.replace(".", "-").lower()
+    if len(sys.argv) > 1:
+        feature_namespace = entry["feature_namespace"]
     list_files.append(entry)
 
 test_number = 1
@@ -39,21 +44,21 @@ for f in list_files:
     os.system("sed -i -e 's/e2e-xxxx/" + f[
         "feature_namespace"] + "/' kubernetese2e/applynamespace/namespace.json")  # sednamespace
     os.system("kubectl apply -f kubernetese2e/applynamespace/namespace.json")
-    os.system("kubectl config set-context minikube --namespace=" + f["feature_namespace"])
+    os.system("kubectl config set-context minikube --namespace=" + f["feature_namespace"] + " > /dev/null")
     os.system("rm kubernetese2e/applyfolder/*")  # removing previous templates
     os.system("cp -a kubernetese2e/orig/. kubernetese2e/applyfolder")
     os.system("rm kubernetese2e/applyfolder/e2etest-deployment.yaml")  # removing previous templates
     os.system("rm kubernetese2e/applyfolder/e2etest-service.yaml")  # removing previous templates
     os.system("rm kubernetese2e/applyfolder/e2etest-job.yaml")  # removing previous templates
 
-    os.system("kubectl delete -f kubernetese2e/applyfolder")
+    os.system("kubectl delete -f kubernetese2e/applyfolder  > /dev/null")
     os.system("kubectl apply -f kubernetese2e/applyfolder")
 
     os.system("cp kubernetese2e/orig/e2etest-job.yaml kubernetese2e/applyfolder")
 
     os.system(
         "sed -i -e 's/xxxx/" + f["feature"] + "/' kubernetese2e/applyfolder/e2etest-job.yaml")  # sed feature
-    os.system("kubectl delete -f kubernetese2e/applyfolder/e2etest-job.yaml")
+    os.system("kubectl delete -f kubernetese2e/applyfolder/e2etest-job.yaml  > /dev/null")
     os.system("kubectl apply -f kubernetese2e/applyfolder/e2etest-job.yaml")
     logging.info("launching test " + str(test_number) + " for feature: " + f["feature"])
     filepath = "./reports/e2eparallel" + str(test_number) + ".log"
@@ -64,9 +69,10 @@ for f in list_files:
     test_number = test_number + 1
 
 if open_vnc:
-    os.system("kubectl config set-context minikube --namespace=" + "e2e-" + sys.argv[1] + "-feature" + ";" +
-        "TEST=""$(kubectl get pods -o go-template --template '{{range .items}}{{.metadata.name}}{{" + '"' + r"\n" + '"' +
-        "}}{{end}}' | grep ^chrome)"";echo ${TEST};kubectl port-forward --pod=${TEST}  5901:5900 &")
+    sleep(3)
+    os.system("kubectl config set-context minikube --namespace=" + feature_namespace + ";" +
+              "TEST=""$(kubectl get pods -o go-template --template '{{range .items}}{{.metadata.name}}{{" + '"' + r"\n" + '"' +
+              "}}{{end}}' | grep ^chrome)"";echo ${TEST};kubectl port-forward --pod=${TEST}  5901:5900 &")
     sleep(3)
     os.system("vinagre 0.0.0.0:5901 &")
 
@@ -91,8 +97,13 @@ for f in list_files:
             logfile.write(line)
     file.close()
 logfile.close()
-os.system("kubectl config set-context minikube --namespace=default")
+
+if open_vnc:  # kill vnc and portforwarding
+    os.system("pkill kubectl")
+    os.system("pkill vinagre")
+    os.system("kubectl proxy > /dev/null &")
+
+os.system("kubectl config set-context minikube --namespace=default > /dev/null &")
 print(open("reports/e2etest.log").read())
-os.system("pkill kubectl")
-os.system("pkill vinagre")
-logging.info("E2E test ended")
+test_end_time = test_start_time - datetime.datetime.now().timestamp()
+logging.info("E2E test ended" + str(test_end_time))

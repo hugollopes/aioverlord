@@ -32,4 +32,4 @@ spec:
         - name: code
           hostPath:
             path: /home/hugo/PycharmProjects/AppProject/e2etests
-  backoffLimit: 4
+  backoffLimit: 0
