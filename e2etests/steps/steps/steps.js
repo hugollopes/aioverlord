@@ -92,9 +92,8 @@ function setCookiesEmpty() {
 }
 
 function visibleLogin() {
-  client
-    .waitForElementVisible('#loginPanel', NORMALWAIT)
-    .expect.element('#loginPanel').text.to.contain('Login').before(NORMALWAIT);
+  client.expect.element('#loginPanel').to.be.visible.before(NORMALWAIT);
+  client.expect.element('#loginPanel').text.to.contain('Login').before(NORMALWAIT);
 }
 
 function steps({ Given, Then, After }) {
@@ -107,8 +106,7 @@ function steps({ Given, Then, After }) {
   Then(/^the title exists$/, () => client.assert.containsText('#title', 'AI Overlord'));
   Then(/^I see is triangle$/, () => client
     .assert.containsText('#classificationName', 'is_triangle'));
-  Then(/^I see choose file button$/, () => client
-    .waitForElementVisible('#fileuploadarea', NORMALWAIT));
+  Then(/^I see choose file button$/, () => client.expect.element('#fileuploadarea').to.be.visible.before(NORMALWAIT));
   Then(/^neurons visible$/, () => client
     .waitForElementVisible('#neuronsLabel', NORMALWAIT)
     .waitForElementVisible('#neurons', NORMALWAIT));
