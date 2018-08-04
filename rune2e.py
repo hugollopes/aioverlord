@@ -106,4 +106,4 @@ if open_vnc:  # kill vnc and portforwarding
 os.system("kubectl config set-context minikube --namespace=default > /dev/null &")
 print(open("reports/e2etest.log").read())
 test_end_time = datetime.datetime.now().timestamp() - test_start_time
-logging.info("E2E test ended" + str(test_end_time) + " seconds")
+logging.info("E2E test ended " + str(int(test_end_time)) + " seconds")

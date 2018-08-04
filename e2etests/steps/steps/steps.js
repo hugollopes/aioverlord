@@ -31,15 +31,8 @@ function loginNotVisible() {
 function clickSignIn() {
   client
     .waitForElementVisible('#loginButton', NORMALWAIT)
-    .pause(1000)
-    .getAttribute('#loginButton', 'disabled', (result) => {
-      if (result.value === 'true') {
-        client.assert.ok(false);
-      } else {
-        client.assert.ok(true);
-      }
-    })
-    .click('#loginButton'); //.click('button[id=loginButton]');
+    .expect.element('#loginButton').to.not.have.attribute('disabled').before(NORMALWAIT);
+  client.click('#loginButton');
 }
 
 function userVisible(user) {
@@ -81,8 +74,8 @@ function insertUser(user, password, role, credits, neurons) {
 
 function fullfillLogin(user, password) {
   client
-    .setValue('input[id=email]', user)
-    .setValue('input[id=password]', password);
+    .setValue('#email', user)
+    .setValue('#password', password);
 }
 
 function setCookiesEmpty() {
@@ -110,7 +103,7 @@ function visibleLogin() {
 function steps({ Given, Then, After }) {
   Given(/^I open application$/, () => openApplication());
   Given(/^I click button label data$/, () => client
-    .click('button[id=Downmenubutton]')
+    .click('#Downmenubutton')
     .pause(4000));
   Given(/^I click button file upload$/, () => client
     .click('button[id=debugFunctions]'));
@@ -129,8 +122,8 @@ function steps({ Given, Then, After }) {
   Then(/^network synapses visible$/, () => client
     .waitForElementVisible('#synneuron1_0neuron0_1', NORMALWAIT));
   Then(/^credits visible$/, () => client
-    .waitForElementVisible('#creditsLabel', 1000)
-    .waitForElementVisible('#credits', 1000));
+    .waitForElementVisible('#creditsLabel', NORMALWAIT)
+    .waitForElementVisible('#credits', NORMALWAIT));
   After(() => client
     .end());
   Then(/^I see credits grow$/, () => client
