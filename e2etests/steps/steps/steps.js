@@ -99,28 +99,22 @@ function visibleLogin() {
 function steps({ Given, Then, After }) {
   Given(/^I open application$/, () => openApplication());
   Given(/^I click button label data$/, () => client
-    .click('#Downmenubutton')
-    .pause(4000));
+    .click('#Downmenubutton'));
   Given(/^I click button file upload$/, () => client
     .click('#debugFunctions'));
   Then(/^the title exists$/, () => client.assert.containsText('#title', 'AI Overlord'));
-  Then(/^I see is triangle$/, () => client
-    .assert.containsText('#classificationName', 'is_triangle'));
+  Then(/^I see is triangle$/, () => client.expect.element('#classificationName').text.to.contain('is_triangle').before(NORMALWAIT));
   Then(/^I see choose file button$/, () => client.expect.element('#fileuploadarea').to.be.visible.before(NORMALWAIT));
-  Then(/^neurons visible$/, () => client
-    .waitForElementVisible('#neuronsLabel', NORMALWAIT)
-    .waitForElementVisible('#neurons', NORMALWAIT));
-  Then(/^network visible$/, () => client
-    .waitForElementVisible('#networksvg', NORMALWAIT));
-  Then(/^network neurons visible$/, () => client
-    .waitForElementVisible('#neuron1_0', NORMALWAIT));
-  Then(/^network synapses visible$/, () => client
-    .waitForElementVisible('#synneuron1_0neuron0_1', NORMALWAIT));
+  Then(/^neurons visible$/, () => {
+    client.expect.element('#neuronsLabel').to.be.visible.before(NORMALWAIT);
+    client.expect.element('#neurons').to.be.visible.before(NORMALWAIT);
+  });
+  Then(/^network visible$/, () => client.expect.element('#networksvg').to.be.visible.before(NORMALWAIT));
+  Then(/^network neurons visible$/, () => client.expect.element('#neuron1_0').to.be.visible.before(NORMALWAIT));
+  Then(/^network synapses visible$/, () => client.expect.element('#synneuron1_0neuron0_1').to.be.visible.before(NORMALWAIT));
   Then(/^credits visible$/, () => client
     .waitForElementVisible('#creditsLabel', NORMALWAIT)
     .waitForElementVisible('#credits', NORMALWAIT));
-  After(() => client
-    .end());
   Then(/^I see credits grow$/, () => client
     .waitForElementVisible('#credits', 1100)
     .getText('#credits', (result) => {
@@ -134,27 +128,24 @@ function steps({ Given, Then, After }) {
   Given(/^cookies are empty$/, () => setCookiesEmpty());
   Given(/^user "(.*)" exists in server with password "(.*)" and role "(.*)"$/, (user, password, role) => insertUser(user, password, role, 0, 1));
   Then(/^login dialog is visible$/, () => visibleLogin());
-  Then(/^topology is visible$/, () => client
-    .waitForElementVisible('#topologydiv', 1000));
+  Then(/^topology is visible$/, () => client.expect.element('#topologydiv').to.be.visible.before(NORMALWAIT));
   Then(/^buy "(.*)" topology is visible$/, (topology) => {
-    client
-      .waitForElementVisible(`#buyTopology${getTopologyId(topology)}`, 1000);
+    client.expect.element(`#buyTopology${getTopologyId(topology)}`).to.be.visible.before(NORMALWAIT);
   });
   Then(/^click buy topology "(.*)"$/, topology => client
     .waitForElementVisible(`#buyTopology${getTopologyId(topology)}`, 1000)
-    .click(`button[id=buyTopology${getTopologyId(topology)}]`));
+    .click(`#buyTopology${getTopologyId(topology)}`));
 
-  Then(/^user buys agent$/, () => client
-    .waitForElementVisible('#buyAgent2', 3000)
-    .click('#buyAgent2')
-    .waitForElementVisible('#agentsOwned2', 2000));
+  Then(/^user buys agent$/, () => {
+    client.expect.element('#buyAgent2').to.be.visible.before(NORMALWAIT);
+    client.click('#buyAgent2');
+    client.expect.element('#agentsOwned2').to.be.visible.before(NORMALWAIT);
+  });
   Then(/^user assigns agent$/, () => {
     client.expect.element('#assignAgent2t2').to.be.visible.before(NORMALWAIT);
     client.click('#assignAgent2t2');
     client.expect.element('#agentsOwned2').text.to.contain('strong agent with status assigned').before(NORMALWAIT);
   });
-
-
   Then(/^then topology "(.*)" belongs to user$/, topology => client
     .waitForElementVisible(`#topologyOwned${getTopologyId(topology)}`, 1000));
   Then(/^buy "(.*)" topology is disabled$/, topology => client
@@ -164,34 +155,33 @@ function steps({ Given, Then, After }) {
   Then(/^buy neurons is visible$/, () => client
     .waitForElementVisible('#buyNeuronButton', 1000));
   Then(/^buy neurons is disabled$/, () => client
-    .expect.element('#buyNeuronButton').to.have.attribute('disabled').before(1000));
+    .expect.element('#buyNeuronButton').to.have.attribute('disabled').before(NORMALWAIT));
   Then(/^buy neurons is enabled$/, () => client
-    .expect.element('#buyNeuronButton').to.not.have.attribute('disabled').before(3000));
-  Then(/^network button is visible$/, () => client
-    .waitForElementVisible('#showNetworkButton', 1000));
+    .expect.element('#buyNeuronButton').to.not.have.attribute('disabled').before(NORMALWAIT));
+  Then(/^network button is visible$/, () => client.expect.element('#showNetworkButton').to.be.visible.before(NORMALWAIT));
   Then(/^click buy neurons$/, () => client
     .waitForElementVisible('#buyNeuronButton', 1000)
-    .click('button[id=buyNeuronButton]'));
+    .click('#buyNeuronButton'));
   Then(/^I fullfill with user "(.*)" with password "(.*)"$/, (user, password) => fullfillLogin(user, password));
   Then(/^user "(.*)" has "(.*)" neurons and "(.*)" credits$/, (user, neurons, credits) => insertUser(user, '', 'user', Number(credits), Number(neurons)));
   Then(/^I click Sign In$/, () => clickSignIn());
-  Then(/^I click topology$/, () => client
-    .waitForElementVisible('#topologyButton', 1000)
-    .click('button[id=topologyButton]'));
-  Then(/user accesses world$/, () => client
-    .waitForElementVisible('#ShowWorldButton', 1000)
-    .click('#ShowWorldButton')
-    .waitForElementVisible('#worlddiv', 2000));
+  Then(/^I click topology$/, () => {
+    client.expect.element('#topologyButton').to.be.visible.before(NORMALWAIT);
+    client.click('#topologyButton');
+  });
+  Then(/user accesses world$/, () => {
+    client.expect.element('#ShowWorldButton').to.be.visible.before(NORMALWAIT);
+    client.click('#ShowWorldButton');
+    client.expect.element('#worlddiv').to.be.visible.before(NORMALWAIT);
+  });
   Then(/^I click network button$/, () => client
     .waitForElementVisible('#showNetworkButton', 1000)
-    .click('button[id=showNetworkButton]'));
+    .click('#showNetworkButton'));
   Then(/^user is visible with "(.*)"$/, user => userVisible(user));
-  Then(/^number of user neurons is "(.*)"$/, neurons => client
-    .waitForElementVisible('#neurons', 1000)
-    .pause(1000)
-    .getText('#neurons', (result) => {
-      client.assert.ok(Number(result.value) === Number(neurons));
-    }));
+  Then(/^number of user neurons is "(.*)"$/, (neurons) => {
+    client.waitForElementVisible('#neurons', 1000);
+    client.expect.element('#neurons').text.to.equal(neurons).before(NORMALWAIT);
+  });
   Then(/^after "(.*)" seconds credits are more than "(.*)"$/, (seconds, credits) => client
     .waitForElementVisible('#credits', 1000)
     .pause(seconds * 1000)
@@ -232,7 +222,6 @@ function steps({ Given, Then, After }) {
     clickSignIn();
     userVisible(user);
     loginNotVisible();
-    return client;
   });
 
 
@@ -259,6 +248,8 @@ function steps({ Given, Then, After }) {
     });
     return client;
   });
+  After(() => client
+    .end());
 }
 
 
