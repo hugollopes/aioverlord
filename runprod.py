@@ -7,6 +7,7 @@ from time import sleep
 import sys
 
 #misses the changing of the IP of flask... flask must be deployed before.
+# some system to update aioverlord-frontend/build/webpack.prod.conf.js must be devised
 #misses the copy here before the build
 #os.system("docker build  ./nginx/  --tag localhost:5001/nginx:latest")
 #os.system("docker push localhost:5001/nginx:latest")
