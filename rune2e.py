@@ -19,7 +19,7 @@ if len(sys.argv) > 1:
 logging.basicConfig(stream=sys.stderr, level=logging.INFO)
 logging.info("launching e2e parallel tests")
 os.system("rm reports/*.log")  # removing previous test files
-os.system("mkdir kubernetese2e/applyfolder")
+os.system("mkdir kubernetes/kubernetese2e/applyfolder")
 
 list_files = []
 my_path = "./e2etests/features"
@@ -40,26 +40,26 @@ for f in only_files:
 test_number = 1
 
 for f in list_files:
-    os.system("cp -a kubernetese2e/orignamespace/. kubernetese2e/applynamespace")
+    os.system("cp -a kubernetes/kubernetese2e/orignamespace/. kubernetes/kubernetese2e/applynamespace")
     os.system("sed -i -e 's/e2e-xxxx/" + f[
-        "feature_namespace"] + "/' kubernetese2e/applynamespace/namespace.json")  # sednamespace
-    os.system("kubectl apply -f kubernetese2e/applynamespace/namespace.json")
+        "feature_namespace"] + "/' kubernetes/kubernetese2e/applynamespace/namespace.json")  # sednamespace
+    os.system("kubectl apply -f kubernetes/kubernetese2e/applynamespace/namespace.json")
     os.system("kubectl config set-context minikube --namespace=" + f["feature_namespace"] + " > /dev/null")
-    os.system("rm kubernetese2e/applyfolder/*")  # removing previous templates
-    os.system("cp -a kubernetese2e/orig/. kubernetese2e/applyfolder")
-    os.system("rm kubernetese2e/applyfolder/e2etest-deployment.yaml")  # removing previous templates
-    os.system("rm kubernetese2e/applyfolder/e2etest-service.yaml")  # removing previous templates
-    os.system("rm kubernetese2e/applyfolder/e2etest-job.yaml")  # removing previous templates
+    os.system("rm kubernetes/kubernetese2e/applyfolder/*")  # removing previous templates
+    os.system("cp -a kubernetes/kubernetese2e/orig/. kubernetes/kubernetese2e/applyfolder")
+    os.system("rm kubernetes/kubernetese2e/applyfolder/e2etest-deployment.yaml")  # removing previous templates
+    os.system("rm kubernetes/kubernetese2e/applyfolder/e2etest-service.yaml")  # removing previous templates
+    os.system("rm kubernetes/kubernetese2e/applyfolder/e2etest-job.yaml")  # removing previous templates
 
-    os.system("kubectl delete -f kubernetese2e/applyfolder  > /dev/null")
-    os.system("kubectl apply -f kubernetese2e/applyfolder")
+    os.system("kubectl delete -f kubernetes/kubernetese2e/applyfolder  > /dev/null")
+    os.system("kubectl apply -f kubernetes/kubernetese2e/applyfolder")
 
-    os.system("cp kubernetese2e/orig/e2etest-job.yaml kubernetese2e/applyfolder")
+    os.system("cp kubernetes/kubernetese2e/orig/e2etest-job.yaml kubernetes/kubernetese2e/applyfolder")
 
     os.system(
-        "sed -i -e 's/xxxx/" + f["feature"] + "/' kubernetese2e/applyfolder/e2etest-job.yaml")  # sed feature
-    os.system("kubectl delete -f kubernetese2e/applyfolder/e2etest-job.yaml  > /dev/null")
-    os.system("kubectl apply -f kubernetese2e/applyfolder/e2etest-job.yaml")
+        "sed -i -e 's/xxxx/" + f["feature"] + "/' kubernetes/kubernetese2e/applyfolder/e2etest-job.yaml")  # sed feature
+    os.system("kubectl delete -f kubernetes/kubernetese2e/applyfolder/e2etest-job.yaml  > /dev/null")
+    os.system("kubectl apply -f kubernetes/kubernetese2e/applyfolder/e2etest-job.yaml")
     logging.info("launching test " + str(test_number) + " for feature: " + f["feature"])
     filepath = "./reports/e2eparallel" + str(test_number) + ".log"
     f["filepath"] = filepath
