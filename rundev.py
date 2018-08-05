@@ -10,9 +10,9 @@ os.system("kubectl config set-context minikube --namespace=default")
 # stop sessions
 
 os.system("kubectl config set-context minikube --namespace=default")
-os.system("kubectl delete -f ./kubernetes/web-deployment.yaml")
-os.system("kubectl delete -f ./kubernetes/flask-deployment.yaml")
-os.system("kubectl delete -f ./kubernetes/mongodb-deployment.yaml")
+os.system("kubectl delete -f ./kubernetes/kubernetesdev/web-deployment.yaml")
+os.system("kubectl delete -f ./kubernetes/kubernetesdev/flask-deployment.yaml")
+os.system("kubectl delete -f ./kubernetes/kubernetesdev/mongodb-deployment.yaml")
 
 
 logging.basicConfig(stream=sys.stderr, level=logging.INFO)
@@ -30,16 +30,16 @@ os.system("docker push localhost:5001/backend:latest")
 os.system("docker push localhost:5001/e2etest:latest")
 os.system("docker push localhost:5001/aliveprobe:latest")
 
-# log command: kubectl logs -f deployment/flask      
 
 # apply
-p = subprocess.Popen(shlex.split("kubectl apply -f kubernetes/kubernetesdev"))
+os.system("kubectl apply -f kubernetes/devnamespace.json")
+os.system("kubectl apply -f kubernetes/kubernetesdev")
 
 # seed data
 sleep(10)  # wait for 10 second
 ip_port = os.popen('echo "'+"$(kubectl get ep/flask -o jsonpath='{.subsets[0].addresses[0].ip}'):$(kubectl get ep/flask -o jsonpath='{.subsets[0].ports[0].port}')" + '"').read().rstrip()
 # url = 'http://' + ip_port + '/createUser'
-url = "http://localhost:8001/api/v1/namespaces/default/services/flask/proxy/createUser"
+url = "http://localhost:8001/api/v1/namespaces/dev/services/flask/proxy/createUser"
 print("url:" + url)
 data = '{  "username": "admin@aioverlord.com",  "password": "admin",  "role": "admin"}'
 response = requests.post(url, data=data, headers={"Content-Type": "application/json"})
@@ -48,5 +48,5 @@ data = '{  "username": "user@aioverlord.com",  "password": "hackme",  "role": "u
 response = requests.post(url, data=data, headers={"Content-Type": "application/json"})
 logging.info("response normal user creation: " + str(response))
 # web_url =os.popen('echo "'+ "$(kubectl get ep/web -o jsonpath='{.subsets[0].addresses[0].ip}'):$(kubectl get ep/web -o jsonpath='{.subsets[0].ports[0].port}')" + '"').read()
-os.system("chromium-browser 'http://localhost:8001/api/v1/namespaces/default/services/web/proxy/#/'")
+os.system("chromium-browser 'http://localhost:8001/api/v1/namespaces/dev/services/web/proxy/#/'")
 logging.info("finishing launching dev environment")

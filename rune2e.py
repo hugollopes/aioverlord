@@ -47,8 +47,8 @@ for f in list_files:
     os.system("kubectl config set-context minikube --namespace=" + f["feature_namespace"] + " > /dev/null")
     os.system("rm kubernetes/kubernetese2e/applyfolder/*")  # removing previous templates
     os.system("cp -a kubernetes/kubernetese2e/orig/. kubernetes/kubernetese2e/applyfolder")
-    os.system("rm kubernetes/kubernetese2e/applyfolder/e2etest-deployment.yaml")  # removing previous templates
-    os.system("rm kubernetes/kubernetese2e/applyfolder/e2etest-service.yaml")  # removing previous templates
+    #os.system("rm kubernetes/kubernetese2e/applyfolder/e2etest-deployment.yaml")  # removing previous templates
+    #os.system("rm kubernetes/kubernetese2e/applyfolder/e2etest-service.yaml")  # removing previous templates
     os.system("rm kubernetes/kubernetese2e/applyfolder/e2etest-job.yaml")  # removing previous templates
 
     os.system("kubectl delete -f kubernetes/kubernetese2e/applyfolder  > /dev/null")
