@@ -7,7 +7,7 @@ spec:
     spec:
       containers:
       - name: e2etest
-        image: localhost:5000/e2etest:latest
+        image: localhost:5001/e2etest:latest
         args:
          - npm
          - run
@@ -22,7 +22,7 @@ spec:
             mountPath: /app
       initContainers:
       - name: flaskprobe
-        image: localhost:5000/aliveprobe:latest
+        image: localhost:5001/aliveprobe:latest
         command: ['sh', '-c','until (curl -s "http://flask:5000/" --max-time 1| grep "db connection active") ;
                   do echo waiting for flask server; sleep 2; done;
                   until (curl -s "http://web:8080/" --max-time 1 | grep "html") ;

@@ -18,16 +18,19 @@ os.system("kubectl delete -f ./kubernetes/mongodb-deployment.yaml")
 logging.basicConfig(stream=sys.stderr, level=logging.INFO)
 logging.info("launching dev environment")
 # building
-os.system("docker build  ./aioverlord-frontend/  --tag localhost:5000/frontend:latest")
-os.system("docker build  ./aioverlord-backend/  --tag localhost:5000/backend:latest")
-os.system("docker build  ./e2etests/  --tag localhost:5000/e2etest:latest")
-os.system("docker build  ./aliveprobe/  --tag localhost:5000/aliveprobe:latest")
+os.system("docker build  ./aioverlord-frontend/  --tag localhost:5001/frontend:latest")
+os.system("docker build  ./aioverlord-backend/  --tag localhost:5001/backend:latest")
+os.system("docker build  ./e2etests/  --tag localhost:5001/e2etest:latest")
+os.system("docker build  ./aliveprobe/  --tag localhost:5001/aliveprobe:latest")
+os.system("docker build  ./nginx/  --tag localhost:5001/nginx:latest")
 
 # pushing
-os.system("docker push localhost:5000/frontend:latest")
-os.system("docker push localhost:5000/backend:latest")
-os.system("docker push localhost:5000/e2etest:latest")
-os.system("docker push localhost:5000/aliveprobe:latest")
+os.system("docker push localhost:5001/frontend:latest")
+os.system("docker push localhost:5001/mongo:3.5")
+os.system("docker push localhost:5001/backend:latest")
+os.system("docker push localhost:5001/e2etest:latest")
+os.system("docker push localhost:5001/aliveprobe:latest")
+os.system("docker push localhost:5001/nginx:latest")
 
 # log command: kubectl logs -f deployment/flask      
 

@@ -18,8 +18,8 @@ spec:
         io.kompose.service: chromedriver
     spec:
       containers:
-    #  - image: localhost:5000/selenium/standalone-chrome-debug:3.8.1-aluminum
-      - image: docker.io/selenium/standalone-chrome
+      - image: localhost:5001/selenium/standalone-chrome-debug:3.8.1-aluminum
+    #  - image: docker.io/selenium/standalone-chrome
         name: chromedriver
         ports:
           - containerPort: 5900

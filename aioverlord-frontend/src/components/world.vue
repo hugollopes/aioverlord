@@ -25,7 +25,6 @@
 
 <script>
 import { bus } from '../main';
-import referenceData from '../assets/referenceData.json';
 
 export default {
   name: 'world',
@@ -33,7 +32,6 @@ export default {
     return {
       neurons: 0,
       credits: 0,
-      agents: [],
       availableAgents: [],
       agents: [],
       tasks: [],
@@ -60,14 +58,14 @@ export default {
   },
   methods: {
     buyAgent(agentId) {
-        this.$log.debug(`buying agent...`);
-        bus.$emit('buyAgent', agentId);
-        bus.$emit('availableAgents');
+      this.$log.debug('buying agent...');
+      bus.$emit('buyAgent', agentId);
+      bus.$emit('availableAgents');
     },
-    assignAgent(agentId,taskId) {
-        this.$log.debug(`assign agent...`);
-        bus.$emit('assignAgent', agentId,taskId);
-        //bus.$emit('availableAgents');
+    assignAgent(agentId, taskId) {
+      this.$log.debug('assign agent...');
+      bus.$emit('assignAgent', agentId, taskId);
+        // bus.$emit('availableAgents');
     },
 
   },

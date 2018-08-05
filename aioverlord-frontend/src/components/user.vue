@@ -118,7 +118,7 @@ export default {
         bus.$emit('availableAgents');
       });
     });
-    bus.$on('assignAgent', (agentId,taskId) => {
+    bus.$on('assignAgent', (agentId, taskId) => {
       const postdata = {
         username: this.userId,
         token: this.token,

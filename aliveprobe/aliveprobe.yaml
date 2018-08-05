@@ -5,7 +5,7 @@ metadata:
 spec:
   containers:
   - name: aliveprobe
-    image: localhost:5000/aliveprobe:latest
+    image: localhost:5001/aliveprobe:latest
     command:
       - sleep
       - "3600"

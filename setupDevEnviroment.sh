@@ -30,9 +30,9 @@ DOCKERHUB_USR=$(cat ~/secrets/GITHUB_USR.txt)
 DOCKERHUB_PWD=$(cat ~/secrets/GITHUB_PWD.txt)
 
 docker login -p "$DOCKERHUB_PWD" -u "$DOCKERHUB_USR"
+#restarting registry if needed
+docker run -d -p 5000:5000 --restart=always --name registry registry:2
 
-# might not be needed
-#kubectl create -f ./aioverlord-frontend/webPersistentVolume.yaml
 
 #opening a lot of terminals
 cd /home/hugo/PycharmProjects/AppProject
