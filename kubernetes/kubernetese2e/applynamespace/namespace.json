@@ -2,9 +2,9 @@
   "kind": "Namespace",
   "apiVersion": "v1",
   "metadata": {
-    "name": "e2e-world-feature",
+    "name": "e2e-topology-feature",
     "labels": {
-      "name": "e2e-world-feature"
+      "name": "e2e-topology-feature"
     }
   }
 }

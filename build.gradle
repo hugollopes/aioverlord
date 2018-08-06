@@ -16,17 +16,33 @@ task buildnginx( group: "Custom", description: "buildnginx"){
 }
 
 
-task buildprod (group: "Custom", description: "build prod web image") {
-
+task buildprod (group: "Custom", description: "build prod") {
       tasks.findByName('buildnginx').mustRunAfter 'buildprodweb'
       dependsOn 'buildprodweb'
       dependsOn 'nginx:buildnginx'
+      dependsOn 'aliveprobe:build'
+      dependsOn 'aioverlord-backend:build'
+      dependsOn 'database:build'
 
+}
+
+task builddev (group: "Custom") {
+      dependsOn 'aioverlord-frontend:build'
+      dependsOn 'aioverlord-backend:build'
+      dependsOn 'aliveprobe:build'
+      dependsOn 'database:build'
+}
+
+task builde2e (group: "Custom") {
+      dependsOn 'aioverlord-frontend:build'
+      dependsOn 'aioverlord-backend:build'
+      dependsOn 'aliveprobe:build'
+      dependsOn 'e2etests:build'
+      dependsOn 'database:build'
 }
 
 task createprodnamespace (type: Exec,group: "Custom", description: "build and deploy prod"){
       //dependsOn 'buildprod'
-        ignoreExitValue true
       commandLine "kubectl", "apply","-f","kubernetes/kubernetesprod"
 
 
@@ -35,30 +51,111 @@ task createprodnamespace (type: Exec,group: "Custom", description: "build and de
 task builddeployprod (type: Exec,group: "Custom", description: "build and deploy prod"){
       //dependsOn 'buildprod'
       dependsOn 'createprodnamespace'
-      commandLine "kubectl", "apply","-f","kubernetes/kubernetesprod/namespace.json"
+      commandLine "kubectl", "apply","-f","kubernetes/kubernetesprod/namespace.json","--request-timeout=5m"
 
 
 }
 
-task cleanupdev(type: Exec, group: "Custom", description: "cleans up all pods"){
-  ignoreExitValue true
-  commandLine "kubectl", "delete","-f","./kubernetes/kubernetesdev"
+task cleandev(type: Exec, group: "Custom", description: "cleans up all pods"){
+  commandLine "kubectl", "delete","-f","./kubernetes/kubernetesdev", "--ignore-not-found"
 }
-task cleanupprod(type: Exec, group: "Custom", description: "cleans up all pods"){
-  commandLine "kubectl", "delete","-f","./kubernetes/kubernetesprod"
+task cleanprod(type: Exec, group: "Custom", description: "cleans up all pods"){
+  commandLine "kubectl", "delete","-f","./kubernetes/kubernetesprod", "--ignore-not-found"
 }
 
-task cleanup(type: Exec, group: "Custom", description: "cleans up all pods"){
-  ignoreExitValue true
-  dependsOn 'cleanupprod'
-  dependsOn 'cleanupdev'
-  commandLine "kubectl", "delete","namespaces","e2e-world-feature"
-  commandLine "kubectl", "delete","namespaces","e2e-topology-feature"
-  commandLine "kubectl", "delete","namespaces","e2e-labeldata-feature"
-  commandLine "kubectl", "delete","namespaces","e2e-debugfunctions-feature"
-  commandLine "kubectl", "delete","namespaces","e2e-mainpage-feature"
-  commandLine "kubectl", "delete","namespaces","e2e-user-feature"
+
+task cleane2e(type: Exec, group: "Custom", description: "cleans up e2e"){
+  commandLine "kubectl", "delete","namespaces","e2e-topology-feature", "--ignore-not-found"
+  doLast {
+   exec {
+    commandLine "kubectl", "delete","namespaces","e2e-world-feature", "--ignore-not-found"
+   }
+   exec {
+      commandLine "kubectl", "delete","namespaces","e2e-labeldata-feature", "--ignore-not-found"
+   }
+   exec {
+  commandLine "kubectl", "delete","namespaces","e2e-debugfunctions-feature", "--ignore-not-found"
+   }
+   exec {
+  commandLine "kubectl", "delete","namespaces","e2e-mainpage-feature", "--ignore-not-found"
+   }
+   exec {
+    commandLine "kubectl", "delete","namespaces","e2e-world-feature", "--ignore-not-found"
+   }
+   exec {
+  commandLine "kubectl", "delete","namespaces","e2e-user-feature", "--ignore-not-found"
+   }
+  }
+  }
 
 
 
+task clean(group: "Custom", description: "cleans up all pods"){
+  def env = ""
+  if ( project.hasProperty("env"))
+    {env = "$env"}
+
+  switch ( env) {
+    case "prod":
+        dependsOn 'cleanprod'
+        break
+    case "dev":
+        dependsOn 'cleandev'
+        break
+    case "e2e":
+        dependsOn 'cleane2e'
+        break
+    default:
+         dependsOn 'cleanprod'
+         dependsOn 'cleane2e'
+         dependsOn 'cleandev'
+       }
+  }
+
+task cleandevpartial(type: Exec, group: "Custom", description: "cleans up all pods"){
+  commandLine "echo", "deleting"
+  doLast {
+  exec { commandLine "kubectl", "delete","-f","./kubernetes/kubernetesdev/flask-deployment.yaml", "--ignore-not-found" }
+  exec { commandLine "kubectl", "delete","-f","./kubernetes/kubernetesdev/web-deployment.yaml", "--ignore-not-found" }
+  exec { commandLine "kubectl", "delete","-f","./kubernetes/kubernetesdev//mongodb-deployment.yaml", "--ignore-not-found" }
+  }
+}
+
+task deploydev(type: Exec, group: "Custom", description: "cleans up all pods"){
+  commandLine "echo", "deleting"
+  doLast {
+  exec { commandLine "kubectl", "apply","-f","./kubernetes/kubernetesdev/namespace.json" }
+  exec { commandLine "kubectl", "apply","-f","./kubernetes/kubernetesdev" }
+  }
+}
+
+  task rundev(type: Exec, group: "Custom", description: "starts dev server"){
+    tasks.findByName('deploydev').mustRunAfter 'cleandevpartial'
+    dependsOn 'cleandevpartial'
+    dependsOn 'deploydev'
+    commandLine "python3", "rundev.py"
+  }
+
+  task rune2e(type: Exec, group: "Custom", description: "runs e2e tests"){
+    commandLine "python3", "rune2e.py"
+    //needs a return to include in build
+  }
+
+
+
+task build() {
+  def env = ""
+  if ( project.hasProperty("env"))
+    {env = "$env"}
+  switch ( env ) {
+    case "prod":
+        dependsOn 'buildprod'
+        break
+    case "dev":
+        dependsOn 'builddev'
+        break
+    default:
+         //dependsOn 'builddev'
+         dependsOn 'buildprod'
+       }
 }

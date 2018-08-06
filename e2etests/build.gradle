@@ -5,7 +5,6 @@
  * Learn how to create Gradle builds at https://guides.gradle.org/creating-new-gradle-builds/
  */
  plugins {
-  id "com.moowork.node" version "1.2.0"
   id 'com.bmuschko.docker-remote-api' version '3.5.0'
 }
 
@@ -16,38 +15,15 @@ import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
 
 task buildImage(type: DockerBuildImage) {
     inputDir = file('.')
-    tag = 'localhost:5001/frontend:latest'
+    tag = 'localhost:5001/e2etest:latest'
 }
 
 task pushImage(type: Exec, group: "Custom"){
   dependsOn 'buildImage'
-  commandLine "docker", "push","localhost:5001/frontend:latest"
+  commandLine "docker", "push","localhost:5001/e2etest:latest"
 }
 
 task build() {
-  //both dev and e2e
+  //both dev and e2e and prod
   dependsOn 'pushImage'
-}
-
-
-task copyreferencedata(type: Exec, group: "Custom", description: "Distributes reference data"){
-  commandLine "cp", "-r" , "../referenceData/.", "./src/assets"
-}
-
-task lint( type: NpmTask  ) {
-    dependsOn 'copyreferencedata'
-    args = ['run', 'lint']
-
-}
-
-task webnpmbuild( type: NpmTask  ) {
-    dependsOn 'copyreferencedata'
-    dependsOn 'lint'
-    args = ['run', 'build']
-
-}
-
-task buildprodweb() {
-dependsOn 'copyreferencedata'
-  dependsOn 'webnpmbuild'
 }

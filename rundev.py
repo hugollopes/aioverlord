@@ -6,34 +6,18 @@ import subprocess
 import requests
 from time import sleep
 
-os.system("kubectl config set-context minikube --namespace=default")
-# stop sessions
 
-os.system("kubectl config set-context minikube --namespace=default")
-os.system("kubectl delete -f ./kubernetes/kubernetesdev/web-deployment.yaml")
-os.system("kubectl delete -f ./kubernetes/kubernetesdev/flask-deployment.yaml")
-os.system("kubectl delete -f ./kubernetes/kubernetesdev/mongodb-deployment.yaml")
+
+
+
 
 
 logging.basicConfig(stream=sys.stderr, level=logging.INFO)
-logging.info("launching dev environment")
-# building
-os.system("docker build  ./aioverlord-frontend/  --tag localhost:5001/frontend:latest")
-os.system("docker build  ./aioverlord-backend/  --tag localhost:5001/backend:latest")
-os.system("docker build  ./e2etests/  --tag localhost:5001/e2etest:latest")
-os.system("docker build  ./aliveprobe/  --tag localhost:5001/aliveprobe:latest")
-
-# pushing
-os.system("docker push localhost:5001/frontend:latest")
-os.system("docker push localhost:5001/mongo:3.5")
-os.system("docker push localhost:5001/backend:latest")
-os.system("docker push localhost:5001/e2etest:latest")
-os.system("docker push localhost:5001/aliveprobe:latest")
-
+logging.info("populating dev enviroment")
 
 # apply
-os.system("kubectl apply -f kubernetes/devnamespace.json")
-os.system("kubectl apply -f kubernetes/kubernetesdev")
+#os.system("kubectl apply -f kubernetes/devnamespace.json")
+#os.system("kubectl apply -f kubernetes/kubernetesdev")
 
 # seed data
 sleep(10)  # wait for 10 second
