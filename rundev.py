@@ -1,8 +1,6 @@
 import os
 import sys
-import shlex
 import logging
-import subprocess
 import requests
 from time import sleep
 
@@ -14,10 +12,6 @@ from time import sleep
 
 logging.basicConfig(stream=sys.stderr, level=logging.INFO)
 logging.info("populating dev enviroment")
-
-# apply
-#os.system("kubectl apply -f kubernetes/devnamespace.json")
-#os.system("kubectl apply -f kubernetes/kubernetesdev")
 
 # seed data
 sleep(10)  # wait for 10 second
