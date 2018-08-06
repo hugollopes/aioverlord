@@ -1,12 +1,9 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  annotations:
-    kompose.cmd: kompose convert -f dev.yml
-    kompose.version: 1.9.0 (093c756)
-  creationTimestamp: null
+  namespace: prod
   labels:
-    io.kompose.service: web
+    service: web
   name: web
 spec:
   replicas: 1
@@ -14,24 +11,21 @@ spec:
     type: Recreate
   template:
     metadata:
-      creationTimestamp: null
       labels:
-        io.kompose.service: web
+        service: web
     spec:
       containers:
-      #- args:
-       # - npm
-        #- run
-        #- dev
       - image: localhost:5001/nginx:latest
         name: web
         ports:
         - containerPort: 80
-        resources: {}
       initContainers:
       - name: flaskprobe
         image: localhost:5001/aliveprobe:latest
         command: ['sh', '-c','until (curl -s "http://flask:5000/" --max-time 1 | grep "db connection active") ;
                   do echo waiting for flask server; sleep 2; done;']
       restartPolicy: Always
-status: {}
+
+
+
+

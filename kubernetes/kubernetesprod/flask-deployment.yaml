@@ -1,28 +1,20 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  annotations:
-    kompose.cmd: kompose convert -f dev.yml
-    kompose.version: 1.9.0 (093c756)
-  creationTimestamp: null
+  namespace: prod
   labels:
-    io.kompose.service: flask
+    service: flask
   name: flask
 spec:
   replicas: 1
-  strategy: {}
   template:
     metadata:
-      creationTimestamp: null
       labels:
-        io.kompose.service: flask
+        service: flask
     spec:
       containers:
       - image: localhost:5001/backend:latest
-        imagePullPolicy: IfNotPresent
         name: flask
         ports:
         - containerPort: 5000
-        resources: {}
       restartPolicy: Always
-status: {}

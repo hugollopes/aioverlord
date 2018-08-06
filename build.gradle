@@ -20,8 +20,44 @@ task buildprod (group: "Custom", description: "build prod web image") {
 
       tasks.findByName('buildnginx').mustRunAfter 'buildprodweb'
       dependsOn 'buildprodweb'
-      dependsOn 'buildnginx'
+      dependsOn 'nginx:buildnginx'
 
+}
+
+task createprodnamespace (type: Exec,group: "Custom", description: "build and deploy prod"){
+      //dependsOn 'buildprod'
+        ignoreExitValue true
+      commandLine "kubectl", "apply","-f","kubernetes/kubernetesprod"
+
+
+}
+
+task builddeployprod (type: Exec,group: "Custom", description: "build and deploy prod"){
+      //dependsOn 'buildprod'
+      dependsOn 'createprodnamespace'
+      commandLine "kubectl", "apply","-f","kubernetes/kubernetesprod/namespace.json"
+
+
+}
+
+task cleanupdev(type: Exec, group: "Custom", description: "cleans up all pods"){
+  ignoreExitValue true
+  commandLine "kubectl", "delete","-f","./kubernetes/kubernetesdev"
+}
+task cleanupprod(type: Exec, group: "Custom", description: "cleans up all pods"){
+  commandLine "kubectl", "delete","-f","./kubernetes/kubernetesprod"
+}
+
+task cleanup(type: Exec, group: "Custom", description: "cleans up all pods"){
+  ignoreExitValue true
+  dependsOn 'cleanupprod'
+  dependsOn 'cleanupdev'
+  commandLine "kubectl", "delete","namespaces","e2e-world-feature"
+  commandLine "kubectl", "delete","namespaces","e2e-topology-feature"
+  commandLine "kubectl", "delete","namespaces","e2e-labeldata-feature"
+  commandLine "kubectl", "delete","namespaces","e2e-debugfunctions-feature"
+  commandLine "kubectl", "delete","namespaces","e2e-mainpage-feature"
+  commandLine "kubectl", "delete","namespaces","e2e-user-feature"
 
 
 
