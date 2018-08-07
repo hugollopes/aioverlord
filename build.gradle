@@ -16,8 +16,24 @@ task buildnginx( group: "Custom", description: "buildnginx"){
 }
 
 
+task createprodnamespaceandflasksvc (type: Exec,group: "Custom", description: "build and deploy prod"){
+      //dependsOn 'buildprod'
+      dependsOn 'createprodnamespace'
+      commandLine "kubectl", "apply","-f","kubernetes/kubernetesprod/flask-service.yaml","--request-timeout=5m"
+}
+
+task populateflaskIP (type: Exec,group: "Custom", description: "build and deploy prod"){
+      dependsOn 'createprodnamespaceandflasksvc'
+      commandLine "python3", "./scripts/populateprodIP.py"
+
+
+}
+
+
 task buildprod (group: "Custom", description: "build prod") {
+      tasks.findByName('buildprodweb').mustRunAfter 'populateflaskIP'
       tasks.findByName('buildnginx').mustRunAfter 'buildprodweb'
+      dependsOn 'populateflaskIP'
       dependsOn 'buildprodweb'
       dependsOn 'nginx:buildnginx'
       dependsOn 'aliveprobe:build'
@@ -43,15 +59,20 @@ task builde2e (group: "Custom") {
 
 task createprodnamespace (type: Exec,group: "Custom", description: "build and deploy prod"){
       //dependsOn 'buildprod'
-      commandLine "kubectl", "apply","-f","kubernetes/kubernetesprod"
+      commandLine "kubectl", "apply","-f","kubernetes/kubernetesprod/namespace.json"
 
 
 }
 
+task runprod (type: Exec,group: "Custom", description: "build and deploy prod"){
+      dependsOn 'builddeployprod'
+      commandLine "python3", "runprod.py"
+}
+
 task builddeployprod (type: Exec,group: "Custom", description: "build and deploy prod"){
-      //dependsOn 'buildprod'
+      dependsOn 'buildprod'
       dependsOn 'createprodnamespace'
-      commandLine "kubectl", "apply","-f","kubernetes/kubernetesprod/namespace.json","--request-timeout=5m"
+      commandLine "kubectl", "apply","-f","kubernetes/kubernetesprod","--request-timeout=5m"
 
 
 }
@@ -78,9 +99,6 @@ task cleane2e(type: Exec, group: "Custom", description: "cleans up e2e"){
    }
    exec {
   commandLine "kubectl", "delete","namespaces","e2e-mainpage-feature", "--ignore-not-found"
-   }
-   exec {
-    commandLine "kubectl", "delete","namespaces","e2e-world-feature", "--ignore-not-found"
    }
    exec {
   commandLine "kubectl", "delete","namespaces","e2e-user-feature", "--ignore-not-found"

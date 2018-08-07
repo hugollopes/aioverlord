@@ -5,6 +5,7 @@
  * Learn how to create Gradle builds at https://guides.gradle.org/creating-new-gradle-builds/
  */
  plugins {
+   id "com.moowork.node" version "1.2.0"
   id 'com.bmuschko.docker-remote-api' version '3.5.0'
 }
 
@@ -12,8 +13,13 @@ import com.bmuschko.gradle.docker.tasks.image.Dockerfile
 import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
 
+task lint( type: NpmTask  ) {
+    args = ['run', 'lint']
+
+}
 
 task buildImage(type: DockerBuildImage) {
+  dependsOn 'lint'
     inputDir = file('.')
     tag = 'localhost:5001/e2etest:latest'
 }

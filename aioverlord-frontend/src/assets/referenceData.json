@@ -35,5 +35,7 @@
       "name": "complex task",
       "reward": 2
     }
-  ]
+  ],
+  "prodflaskDNS" : "10.102.47.107",
+  "prodwebDNS" : "10.102.47.107"
 }

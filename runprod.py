@@ -6,14 +6,10 @@ import requests
 from time import sleep
 import sys
 
-#misses the changing of the IP of flask... flask must be deployed before.
-# some system to update aioverlord-frontend/build/webpack.prod.conf.js must be devised
-#misses the copy here before the build
-#os.system("docker build  ./nginx/  --tag localhost:5001/nginx:latest")
-#os.system("docker push localhost:5001/nginx:latest")
-
-
-url = "http://10.97.89.39:5000/createUser"
+sleep(5)
+clusterflaskIP = os.popen("kubectl get services/flask --namespace=prod -o go-template='{{(index .spec.clusterIP)}}'").read()
+clusterwebIP = os.popen("kubectl get services/web --namespace=prod -o go-template='{{(index .spec.clusterIP)}}'").read()
+url = "http://" +clusterflaskIP +":5000/createUser"
 print("url:" + url)
 data = '{  "username": "admin@aioverlord.com",  "password": "admin",  "role": "admin"}'
 response = requests.post(url, data=data, headers={"Content-Type": "application/json"})
@@ -21,3 +17,7 @@ logging.info("response admin user creation: " + str(response))
 data = '{  "username": "user@aioverlord.com",  "password": "hackme",  "role": "user"}'
 response = requests.post(url, data=data, headers={"Content-Type": "application/json"})
 logging.info("response normal user creation: " + str(response))
+
+os.system("chromium-browser 'http://" +clusterwebIP +"/static/index.html'")
+
+

@@ -1,3 +1,4 @@
+var prodIPs = require( '../src/assets/prodIPs.json')
 var path = require('path')
 var utils = require('./utils')
 var webpack = require('webpack')
@@ -9,6 +10,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 var env = config.build.env
+
 
 var webpackConfig = merge(baseWebpackConfig, {
   module: {
@@ -27,7 +29,7 @@ var webpackConfig = merge(baseWebpackConfig, {
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': '"production"',
-        'process.env.API_URL': '"http://10.97.89.39:5000"',
+        'process.env.API_URL': '"http://' + prodIPs.prodflaskDNS + ':5000"',
       }),
 
     new webpack.optimize.UglifyJsPlugin({

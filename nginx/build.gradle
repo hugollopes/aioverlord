@@ -20,9 +20,18 @@
  task copywebbuild(type: Exec, group: "Custom", description: "Distributes reference data"){
    //def dirName = "static"
    //delete dirName //delete bofore copy
-   commandLine "rm", "static","-rf"
-   commandLine "cp", "-r" , "../aioverlord-frontend/dist/static/.", "./static"
-   commandLine "cp", "../aioverlord-frontend/dist/index.html", "./static"
+    commandLine "rm", "static","-rf"
+   doLast {
+    exec {
+     commandLine "cp", "-r" , "../aioverlord-frontend/dist/static/.", "./static/"
+    }
+    exec {
+       commandLine "cp", "../aioverlord-frontend/dist/index.html", "./static/"
+    }
+   }
+
+
+
 
 }
 

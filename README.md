@@ -21,7 +21,8 @@ playground project for multiple technologies
 
 # Instalation/run
 
-* run: rundev.py for creating images and creating a k8 instance.
+* run: "gradle build"  to build all the artifacts
+* run: "gradle rundev"  for a dev instance.
 * run: run2e2.py for running the test suit.
 
 # Debug

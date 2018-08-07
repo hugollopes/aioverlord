@@ -251,8 +251,8 @@ function steps({ Given, Then, After }) {
     });
     return client;
   });
-    After(() => client
-      .end());
+  After(() => client
+    .end());
 }
 
 
