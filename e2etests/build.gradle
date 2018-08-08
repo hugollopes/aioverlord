@@ -13,7 +13,13 @@ import com.bmuschko.gradle.docker.tasks.image.Dockerfile
 import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
 
+
+task npminstall( type: NpmTask  ) {
+    args = ['install']
+
+}
 task lint( type: NpmTask  ) {
+    dependsOn 'npminstall'
     args = ['run', 'lint']
 
 }
