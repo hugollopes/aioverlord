@@ -1,3 +1,4 @@
 {
-    "git.autofetch": false
+    "git.autofetch": false,
+    "python.linting.pylintEnabled": false
   }
