@@ -38,7 +38,7 @@ $RECYCLE.BIN/
 .aioverlordUI/npm-debug.log*
 .aioverlordUI/yarn-debug.log*
 .aioverlordUI/yarn-error.log*
-
+gradle/
 
 # Thumbnails
 ._*
@@ -57,3 +57,4 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+.gradle/4.5.1/fileChanges/last-build.bin

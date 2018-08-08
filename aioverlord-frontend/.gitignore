@@ -47,6 +47,7 @@ $RECYCLE.BIN/
 .TemporaryItems
 .Trashes
 .VolumeIcon.icns
+package-lock.json
 
 # Directories potentially created on remote AFP share
 node_modules/
@@ -55,3 +56,4 @@ node_modules/
 Network Trash Folder
 Temporary Items
 .apdisk
+gradle/
