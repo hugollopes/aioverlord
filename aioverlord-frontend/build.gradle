@@ -33,10 +33,15 @@ task build() {
 task copyreferencedata(type: Exec, group: "Custom", description: "Distributes reference data"){
   commandLine "cp", "-r" , "../referenceData/.", "./src/assets"
 }
+task npminstall( type: NpmTask  ) {
+    args = ['install']
+
+}
 
 task lint( type: NpmTask  ) {
+    dependsOn 'npminstall'
     dependsOn 'copyreferencedata'
-    args = ['run', 'lint']
+    args = ['run','lint']
 
 }
 
