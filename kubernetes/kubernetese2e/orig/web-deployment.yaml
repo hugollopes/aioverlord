@@ -34,4 +34,4 @@ spec:
       volumes:
         - name: code
           hostPath:
-            path: /home/hugo/PycharmProjects/AppProject/aioverlord-frontend
+            path: /home/hugo/Projects/aioverlord/aioverlord-frontend
