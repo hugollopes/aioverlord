@@ -21,7 +21,7 @@ playground project for multiple technologies
 
 # Instalation/run
 
-* in /kubernetes/kubernetesdev/web-deployment.yaml   ,replace the volume path with the abolute path in your work env., eg "/home/hugo/Projects/aioverlord/aioverlord-frontend" . this enables the changing web code without docker deploy. task to delocalize is pending
+* in /kubernetes/kubernetesdev/web-deployment.yaml  and /kubernetes/kubernetese2e/orig/web-deployment.yaml  ,replace the volume path with the abolute path in your work env., eg "/home/hugo/Projects/aioverlord/aioverlord-frontend" . this enables the changing web code without docker deploy. task to delocalize is pending
 * run: "gradle build"  to build all the artifacts
 * run: "gradle rundev"  for a dev instance.
 * run: run2e2.py for running the test suit.
