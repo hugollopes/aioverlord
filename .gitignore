@@ -69,3 +69,9 @@ kubernetes/kubernetese2e/applyfolder/
 .gradle/
 .gradle/
 .gradle/4.5.1/taskHistory/taskHistory.lock
+.vscode/settings.json
+aioverlord-frontend/dist/
+nginx/static/
+aioverlord-frontend/src/assets/prodIPs.json
+referenceData/prodIPs.json
+nginx/static/index.html
