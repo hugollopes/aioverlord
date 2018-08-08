@@ -59,3 +59,7 @@ Temporary Items
 .apdisk
 .gradle/4.5.1/fileChanges/last-build.bin
 kubernetes/kubernetese2e/applyfolder/
+.gradle/4.5.1/taskHistory/taskHistory.bin
+.gradle/4.5.1/taskHistory/taskHistory.lock
+
+.gradle/4.5.1/taskHistory/taskHistory.lock
