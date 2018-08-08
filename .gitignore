@@ -63,3 +63,7 @@ kubernetes/kubernetese2e/applyfolder/
 .gradle/4.5.1/taskHistory/taskHistory.lock
 
 .gradle/4.5.1/taskHistory/taskHistory.lock
+.gradle/4.5.1/fileHashes/fileHashes.lock
+.gradle/4.5.1/taskHistory/taskHistory.lock
+.gradle/buildOutputCleanup/buildOutputCleanup.lock
+gradle/
