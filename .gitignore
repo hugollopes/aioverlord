@@ -75,3 +75,5 @@ nginx/static/
 aioverlord-frontend/src/assets/prodIPs.json
 referenceData/prodIPs.json
 nginx/static/index.html
+.gradle/4.5.1/fileHashes/fileHashes.lock
+.gradle/buildOutputCleanup/buildOutputCleanup.lock
