@@ -60,6 +60,7 @@ for f in list_files:
         "sed -i -e 's/xxxx/" + f["feature"] + "/' kubernetes/kubernetese2e/applyfolder/e2etest-job.yaml")  # sed feature
     os.system("kubectl delete -f kubernetes/kubernetese2e/applyfolder/e2etest-job.yaml  > /dev/null")
     os.system("kubectl apply -f kubernetes/kubernetese2e/applyfolder/e2etest-job.yaml")
+    os.system("mkdir reports")
     logging.info("launching test " + str(test_number) + " for feature: " + f["feature"])
     filepath = "./reports/e2eparallel" + str(test_number) + ".log"
     f["filepath"] = filepath
