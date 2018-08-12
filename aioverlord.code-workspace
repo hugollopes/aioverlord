@@ -5,6 +5,7 @@
 		}
 	],
 	"settings": {
-		"git.autofetch": false
+		"git.autofetch": false,
+		"git.ignoreLimitWarning": true
 	}
 }
