@@ -1,8 +1,0 @@
-{
-  "dependencies": {
-    "react": "^16.4.2",
-    "react-art": "^16.4.2",
-    "react-dom": "^16.4.2",
-    "react-native-web": "^0.8.9"
-  }
-}
