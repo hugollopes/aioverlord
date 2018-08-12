@@ -1,0 +1,1 @@
+Object.defineProperty(exports,"__esModule",{value:true});function emptyFunction(){}var BackHandler={exitApp:emptyFunction,addEventListener:function addEventListener(){return{remove:emptyFunction};},removeEventListener:emptyFunction};exports.default=BackHandler;
