@@ -14,9 +14,9 @@ playground project for multiple technologies
 
 # Requirements for dev env
 
-* Linux ubunto(scripts should workrk in other versions as well)
+* Linux ubunto(scripts should work in other versions as well)
 * python3
-* k8 (minikube for dev env)
+* k8 (minikube for dev env) with docker
 * localhost docker registry in port 5000
 
 # Instalation/run
