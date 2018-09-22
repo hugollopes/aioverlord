@@ -1,4 +1,4 @@
-task buildImage(type: exec) {
+task buildImage(type: Exec) {
     commandLine "docker", "build", ".", "--tag", "localhost:5001/backend:latest"
 }
 
