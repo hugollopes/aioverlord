@@ -4,18 +4,9 @@
  * This is a general purpose Gradle build.
  * Learn how to create Gradle builds at https://guides.gradle.org/creating-new-gradle-builds/
  */
- plugins {
-  id 'com.bmuschko.docker-remote-api' version '3.5.0'
-}
 
-import com.bmuschko.gradle.docker.tasks.image.Dockerfile
-import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
-import com.bmuschko.gradle.docker.tasks.image.DockerPushImage
-
-
-task buildImage(type: DockerBuildImage) {
-    inputDir = file('.')
-    tag = 'localhost:5001/aliveprobe:latest'
+task buildImage(type: Exec) {
+    commandLine "docker", "build", ".", "--tag", "localhost:5001/aliveprobe:latest"
 }
 
 task pushImage(type: Exec, group: "Custom"){
