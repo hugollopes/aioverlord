@@ -40,11 +40,6 @@ sudo kubectl create -f https://raw.githubusercontent.com/kubernetes/dashboard/ma
 sudo kubectl proxy &
 disown
 
-# no credentials in code
-DOCKERHUB_USR=$(cat ~/secrets/GITHUB_USR.txt)
-DOCKERHUB_PWD=$(cat ~/secrets/GITHUB_PWD.txt)
-
-docker login -p "$DOCKERHUB_PWD" -u "$DOCKERHUB_USR"
 #restarting registry if needed
 docker run -d -p 5001:5000 --restart=always --name registry registry:2
 
@@ -57,7 +52,7 @@ docker run -d -p 5001:5000 --restart=always --name registry registry:2
 # kubectl get ep/web -o jsonpath="{.subsets[0].ports[0].port}"
 
 #echo web address
-# echo  "$(kubectl get ep/web -o jsonpath='{.subsets[0].addresses[0].ip}'):$(kubectl get ep/web -o jsonpath='{.subsets[0].ports[0].port}')"
+#echo  "$(kubectl get ep/web -o jsonpath='{.subsets[0].addresses[0].ip}'):$(kubectl get ep/web -o jsonpath='{.subsets[0].ports[0].port}')"
 #echo  "$(kubectl get ep/flask -o jsonpath='{.subsets[0].addresses[0].ip}'):$(kubectl get ep/flask -o jsonpath='{.subsets[0].ports[0].port}')"
 
 
