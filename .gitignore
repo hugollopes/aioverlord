@@ -69,3 +69,5 @@ e2etests/reports/**
 **/package-lock.json
 .gradle/**
 **/.gradle/**
+
+**/node_modules/**
