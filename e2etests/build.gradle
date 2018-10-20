@@ -8,7 +8,6 @@ task lint( type: Exec  ) {
 }
 
 task buildImage(type: Exec) {
-    dependsOn 'lint'
     commandLine "docker", "build", ".", "--tag", "localhost:5001/e2etest:latest"
 }
 

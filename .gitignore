@@ -57,30 +57,15 @@ gradle/
 Network Trash Folder
 Temporary Items
 .apdisk
-.gradle/4.5.1/fileChanges/last-build.bin
-kubernetes/kubernetese2e/applyfolder/
-.gradle/4.5.1/taskHistory/taskHistory.bin
-.gradle/4.5.1/taskHistory/taskHistory.lock
+.vscode/**
+aioverlord-frontend/dist/**
+nginx/static/**
+**/prodIPs.json
+aioverlord/aioverlord-mobile/android/app/build/**
 
-.gradle/4.5.1/taskHistory/taskHistory.lock
-.gradle/4.5.1/fileHashes/fileHashes.lock
-.gradle/4.5.1/taskHistory/taskHistory.lock
-.gradle/buildOutputCleanup/buildOutputCleanup.lock
-.gradle/
-.gradle/
-.gradle/4.5.1/taskHistory/taskHistory.lock
-.vscode/settings.json
-aioverlord-frontend/dist/
-nginx/static/
-aioverlord-frontend/src/assets/prodIPs.json
-referenceData/prodIPs.json
-nginx/static/index.html
-.gradle/4.5.1/fileHashes/fileHashes.lock
-.gradle/buildOutputCleanup/buildOutputCleanup.lock
-.gradle/4.5.1/fileHashes/fileHashes.lock
-.gradle/4.5.1/fileHashes/fileHashes.lock
-.gradle/4.5.1/fileHashes/fileHashes.lock
-.gradle/4.5.1/fileHashes/fileHashes.lock
-.gradle/4.5.1/fileHashes/fileHashes.lock
-aioverlord-Mobile/package-lock.json
-aioverlord/aioverlord-mobile/android/app/build/
+kubernetes/kubernetese2e/applyfolder/**
+e2etests/reports/**
+
+**/package-lock.json
+.gradle/**
+**/.gradle/**
