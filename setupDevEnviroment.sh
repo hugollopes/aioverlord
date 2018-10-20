@@ -46,7 +46,7 @@ DOCKERHUB_PWD=$(cat ~/secrets/GITHUB_PWD.txt)
 
 docker login -p "$DOCKERHUB_PWD" -u "$DOCKERHUB_USR"
 #restarting registry if needed
-docker run -d -p 5000:5000 --restart=always --name registry registry:2
+docker run -d -p 5001:5000 --restart=always --name registry registry:2
 
 #example build code... should be jenkins/grunt
 #  docker build  ./aioverlord-frontend/  --tag nathor/frontend:latest
