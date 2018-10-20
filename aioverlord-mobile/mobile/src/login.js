@@ -10,10 +10,6 @@ import {
   Alert
 } from 'react-native';
 
-import { TfImageRecognition } from 'react-native-tensorflow';
-
-
-
 export default class LoginView extends Component {
 
   constructor(props) {
@@ -26,7 +22,6 @@ export default class LoginView extends Component {
 
   onClickListener = (viewId) => {
     Alert.alert("Alert", "Button pressed "+viewId);
-    await tfImageRecognition.close();
   }
 
   render() {
@@ -65,32 +60,6 @@ export default class LoginView extends Component {
     );
   }
 }
-
-const tfImageRecognition = new TfImageRecognition({
-  model: require('./assets/tensorflow_inception_graph.pb'),
-  labels: require('./assets/tensorflow_labels.txt'),
-  imageMean: 117, // Optional, defaults to 117
-  imageStd: 1 // Optional, defaults to 1
-})
-
-const results = await tfImageRecognition.recognize({
-  image: require('./assets/apple.jpg'),
-  inputName: "input", //Optional, defaults to "input"
-  inputSize: 224, //Optional, defaults to 224
-  outputName: "output", //Optional, defaults to "output"
-  maxResults: 3, //Optional, defaults to 3
-  threshold: 0.1, //Optional, defaults to 0.1
-})
-
-results.forEach(result =>
-  console.log(
-    result.id, // Id of the result
-    result.name, // Name of the result
-    result.confidence // Confidence value between 0 - 1
-  )
-)
-
-
 
 const styles = StyleSheet.create({
   container: {

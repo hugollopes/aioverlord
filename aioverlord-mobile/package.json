@@ -5,7 +5,7 @@
   "main": "entry.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "run": "webpack-dev-server --watch --port 8082"
+    "dev": "webpack-dev-server --watch --port 8082"
   },
   "author": "",
   "license": "",
