@@ -1,0 +1,47 @@
+{
+    "map": [
+      {
+        "x": 1,
+        "y": 1,
+        "contents": {"terrain":  "empty"}
+      },
+      {
+        "x": 1,
+        "y": 2,
+        "contents": {"terrain":  "empty"}
+      },
+      {
+        "x": 1,
+        "y": 3,
+        "contents": {"terrain":  "base"}
+      },
+      {
+        "x": 2,
+        "y": 1,
+        "contents": {"terrain":  "empty"}
+      },
+      {
+        "x": 2,
+        "y": 2,
+        "contents": {"terrain":  "resource"}
+      },
+      {
+        "x": 2,
+        "y": 3,
+        "contents": {"terrain":  "empty"}
+      },
+      {
+        "x": 3,
+        "y": 1,
+        "contents": {"terrain":  "empty"}
+      },
+      {
+        "x": 3,
+        "y": 2,
+        "contents": {"terrain":  "empty"}
+      }
+     
+    ]
+   
+  }
+  
