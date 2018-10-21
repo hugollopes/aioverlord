@@ -133,17 +133,29 @@ task clean(group: "Custom", description: "cleans up all pods"){
 task cleandevpartial(type: Exec, group: "Custom", description: "cleans up all pods"){
   commandLine "echo", "deleting"
   doLast {
-  exec { commandLine "kubectl", "delete","-f","./kubernetes/kubernetesdev/flask-deployment.yaml", "--ignore-not-found" }
-  exec { commandLine "kubectl", "delete","-f","./kubernetes/kubernetesdev/web-deployment.yaml", "--ignore-not-found" }
-  exec { commandLine "kubectl", "delete","-f","./kubernetes/kubernetesdev//mongodb-deployment.yaml", "--ignore-not-found" }
+  exec { commandLine "kubectl", "delete","-f","./kubernetes/kubernetesdev/applyfolder/flask-deployment.yaml", "--ignore-not-found" }
+  exec { commandLine "kubectl", "delete","-f","./kubernetes/kubernetesdev/applyfolder/web-deployment.yaml", "--ignore-not-found" }
+  exec { commandLine "kubectl", "delete","-f","./kubernetes/kubernetesdev/applyfolder/mongodb-deployment.yaml", "--ignore-not-found" }
   }
 }
+
+
 
 task deploydev(type: Exec, group: "Custom", description: "cleans up all pods"){
   commandLine "echo", "deleting"
   doLast {
-  exec { commandLine "kubectl", "apply","-f","./kubernetes/kubernetesdev/namespace.json" }
-  exec { commandLine "kubectl", "apply","-f","./kubernetes/kubernetesdev" }
+     try {
+  exec { commandLine "mkdir", "kubernetes/kubernetesdev/applyfolder"}
+  } catch(Exception e) {
+           logger.error "folder alreay exists. Continuing..."
+       }
+  copy {
+    from './kubernetes/kubernetesdev/orig'
+    into './kubernetes/kubernetesdev/applyfolder'
+        }
+  exec { commandLine "sh", "./scripts/sed.sh"}
+  exec { commandLine "kubectl", "apply","-f","./kubernetes/kubernetesdev/applyfolder/namespace.json" }
+  exec { commandLine "kubectl", "apply","-f","./kubernetes/kubernetesdev/applyfolder" }
   }
 }
 

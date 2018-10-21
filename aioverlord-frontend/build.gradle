@@ -7,9 +7,16 @@ task pushImage(type: Exec, group: "Custom"){
   commandLine "docker", "push","localhost:5001/frontend:latest"
 }
 
+task populatehostnpm(type: Exec, group: "Custom"){
+  dependsOn 'pushImage'
+  def path = "${buildDir}/../."
+  commandLine "docker", "run", "-v", path + ':/app', "localhost:5001/frontend:latest", "npm", "install"
+}
+
 task build() {
   //both dev and e2e
-  dependsOn 'pushImage'
+  dependsOn 'populatehostnpm'
+  
 }
 
 task copyreferencedata(type: Exec, group: "Custom", description: "Distributes reference data"){

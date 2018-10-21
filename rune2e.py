@@ -56,6 +56,7 @@ for f in list_files:
 
     os.system("cp kubernetes/kubernetese2e/orig/e2etest-job.yaml kubernetes/kubernetese2e/applyfolder")
 
+    os.system("sed -i -e 's?PROJECTROOT?'`pwd`'?'  kubernetes/kubernetese2e/applyfolder/e2etest-job.yaml")
     os.system(
         "sed -i -e 's/xxxx/" + f["feature"] + "/' kubernetes/kubernetese2e/applyfolder/e2etest-job.yaml")  # sed feature
     os.system("kubectl delete -f kubernetes/kubernetese2e/applyfolder/e2etest-job.yaml  > /dev/null")
