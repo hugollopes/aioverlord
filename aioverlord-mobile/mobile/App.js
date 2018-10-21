@@ -26,7 +26,7 @@ export default class LoginView extends Component {
 
   onClickListener = (viewId) => {
     Alert.alert("Alert", "Button pressed "+viewId);
-    await tfImageRecognition.close();
+    //await tfImageRecognition.close();
   }
 
   render() {
@@ -34,6 +34,7 @@ export default class LoginView extends Component {
       <View style={styles.container}>
         <View style={styles.inputContainer}>
           <Image style={styles.inputIcon} source={{uri: 'https://png.icons8.com/message/ultraviolet/50/3498db'}}/>
+         
           <TextInput style={styles.inputs}
               placeholder="Email"
               keyboardType="email-address"
@@ -51,7 +52,7 @@ export default class LoginView extends Component {
         </View>
 
         <TouchableHighlight style={[styles.buttonContainer, styles.loginButton]} onPress={() => this.onClickListener('login')}>
-          <Text style={styles.loginText}>Login</Text>
+          <Text style={styles.loginText}>Login  heeellooo</Text>
         </TouchableHighlight>
 
         <TouchableHighlight style={styles.buttonContainer} onPress={() => this.onClickListener('restore_password')}>
@@ -65,7 +66,7 @@ export default class LoginView extends Component {
     );
   }
 }
-
+/*
 const tfImageRecognition = new TfImageRecognition({
   model: require('./assets/tensorflow_inception_graph.pb'),
   labels: require('./assets/tensorflow_labels.txt'),
@@ -89,7 +90,7 @@ results.forEach(result =>
     result.confidence // Confidence value between 0 - 1
   )
 )
-
+*/
 
 
 const styles = StyleSheet.create({

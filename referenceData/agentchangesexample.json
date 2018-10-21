@@ -1,0 +1,8 @@
+{"agentchanges": [
+
+    {"agendId":1,
+     "action": "movement",
+     "position": [1,2],
+     "data": {"credits":200}
+    }
+]}
