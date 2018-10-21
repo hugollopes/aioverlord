@@ -7,14 +7,12 @@ FROM node:carbon
 
 
 WORKDIR /app
+VOLUME /app
 
-COPY package*.json ./
+#COPY package*.json ./
 
 RUN npm install
 
-#use mulltilevel in production
-#COPY . .
-VOLUME /app
 
 # Make port 80 available to the world outside this container
 EXPOSE 8080

@@ -64,6 +64,7 @@ nginx/static/**
 aioverlord/aioverlord-mobile/android/app/build/**
 
 kubernetes/kubernetese2e/applyfolder/**
+kubernetes/kubernetesdev/applyfolder/**
 e2etests/reports/**
 
 **/package-lock.json

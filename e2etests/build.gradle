@@ -16,7 +16,13 @@ task pushImage(type: Exec, group: "Custom"){
   commandLine "docker", "push","localhost:5001/e2etest:latest"
 }
 
+task populatehostnpm(type: Exec, group: "Custom"){
+  dependsOn 'pushImage'
+  def path = "${buildDir}/../."
+  commandLine "docker", "run", "-v", path + ':/app', "localhost:5001/e2etest:latest", "npm", "install"
+}
+
 task build() {
   //both dev and e2e and prod
-  dependsOn 'pushImage'
+  dependsOn 'populatehostnpm'
 }

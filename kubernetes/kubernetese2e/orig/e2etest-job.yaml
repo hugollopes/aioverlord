@@ -32,5 +32,5 @@ spec:
       volumes:
         - name: code
           hostPath:
-            path: /home/hugo/PycharmProjects/AppProject/e2etests
+            path: PROJECTROOT/e2etests
   backoffLimit: 0
